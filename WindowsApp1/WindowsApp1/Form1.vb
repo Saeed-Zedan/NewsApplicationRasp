@@ -17,4 +17,11 @@
 
         Next
     End Sub
+
+    Private Sub DeleteToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles DeleteToolStripMenuItem.Click
+        Dim rows = newsDataGridView.SelectedRows
+        For Each item As DataGridViewRow In rows
+            newsDataGridView.Rows.Remove(item)
+        Next
+    End Sub
 End Class
