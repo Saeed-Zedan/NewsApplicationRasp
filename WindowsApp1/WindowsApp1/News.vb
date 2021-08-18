@@ -4,7 +4,11 @@
     Private descriptionValue As String
     Private categoryValue As String
     Private bodyValue As String
+    Private creationDateValue As DateTime
 
+    Sub New()
+        creationDateValue = DateTime.Now
+    End Sub
     Public Property Title() As String
         Get
             Return titleValue
@@ -47,10 +51,15 @@
         End Get
         Set(value As String)
             If value.Length <= 10000 Then
-                categoryValue = value
+                bodyValue = value
             Else
-                categoryValue = value.Substring(0, 10000)
+                bodyValue = value.Substring(0, 10000)
             End If
         End Set
     End Property 'Body prop
+    Public ReadOnly Property creationDate As DateTime
+        Get
+            Return creationDateValue
+        End Get
+    End Property
 End Class
