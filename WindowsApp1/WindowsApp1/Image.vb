@@ -4,7 +4,11 @@
     Private descriptionValue As String
     Private imageValue As String
     Private bodyValue As String
+    Private creationDateValue As DateTime
 
+    Sub New()
+        creationDateValue = DateTime.Now
+    End Sub
     Public Property Title() As String
         Get
             Return titleValue
@@ -49,4 +53,9 @@
             End If
         End Set
     End Property 'Body prop
+    Public ReadOnly Property creationDate As DateTime
+        Get
+            Return creationDateValue
+        End Get
+    End Property 'CreationDate prop
 End Class

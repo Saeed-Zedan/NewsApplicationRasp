@@ -6,21 +6,24 @@ Public Class Form1
 
     End Sub
 
-    Private Sub NewToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles NewToolStripMenuItem.Click
+    Private Sub NewToolStripMenuItem_Click(sender As Object, e As EventArgs) _
+        Handles NewToolStripMenuItem.Click
         Dim newForm As addNews = New addNews()
         newForm.Show()
-    End Sub
-    Private Sub OpenToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles OpenToolStripMenuItem.Click
-        newsDataGridView.Rows.Clear()
-        Dim dirPath = My.Computer.FileSystem.SpecialDirectories.MyDocuments & "\News"
+    End Sub 'NewToolStripMenuItem_Click sub
+    Private Sub OpenToolStripMenuItem_Click(sender As Object, e As EventArgs) _
+        Handles OpenToolStripMenuItem.Click
+
+        newsDataGridView.Rows.Clear() 'Clear the table to avoid redundancy
+        Dim dirPath = My.Computer.FileSystem.SpecialDirectories.MyDocuments & "\News" 'get the directory path where the files are saved
         If Not (Directory.Exists(dirPath)) Then
             FileSystem.MkDir(dirPath)
         End If
-        Dim files = My.Computer.FileSystem.GetFiles(dirPath)
+        Dim files = My.Computer.FileSystem.GetFiles(dirPath) 'retrieve all the files' name
         Dim fileRead As FileStream
         Dim SR As StreamReader
         Dim Info As String()
-        newsDict = New Dictionary(Of String, String)
+        newsDict = New Dictionary(Of String, String) 'a dictionary to keep tracking of every file i display by storing its creation date and name
         Try
             For Each filename As String In files
                 If filename.EndsWith(".txt") Then
@@ -28,29 +31,36 @@ Public Class Form1
 
                     SR = New StreamReader(fileRead)
                     Info = Split(SR.ReadLine(), "^_^")
-                    newsDataGridView.Rows.Add({Info(0), Info(1), Info(2)})
+                    If Info(2) = "%%##" Then 'NUll description
+                        Info(2) = String.Empty
+                    End If
+                    newsDataGridView.Rows.Add({Info(0), Info(1), Info(2)}) 'adding a new row to the grid (Title, Creation date, description
 
-                    newsDict.Add(Info(1), filename)
+                    newsDict.Add(Info(1), filename) 'adding new element to the dictionary (creation date -as its the only unique attribute int the News Class-, File name)
                     fileRead.Close()
                 End If
             Next
         Catch ex As IOException
             MessageBox.Show("Process failed", "IO ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
-
-
     End Sub
 
     Private Sub DeleteToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles DeleteToolStripMenuItem.Click
         Dim rows = newsDataGridView.SelectedRows
-        Dim dirPath = My.Computer.FileSystem.SpecialDirectories.MyDocuments & "\News"
+        If rows.Count = 0 Then 'no selected file
+            MessageBox.Show("There is no selected file/s", "Duck", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+            Exit Sub
+        End If
+
+        Dim dirPath = My.Computer.FileSystem.SpecialDirectories.MyDocuments & "\News" 'get the directory path where the file/s are saved
         If Not (Directory.Exists(dirPath)) Then
             FileSystem.MkDir(dirPath)
         End If
 
         For Each item As DataGridViewRow In rows
-            newsDataGridView.Rows.Remove(item)
-            File.Delete(newsDict(item.Cells(1).Value))
+            newsDataGridView.Rows.Remove(item) 'remove the file from the gridview
+            File.Delete(newsDict(item.Cells(1).Value)) 'using the creation date as primary key to retireive the file name from the dictionary and delete it
+            newsDict.Remove(item.Cells(1).Value) 'remove the file from the dictionaty 
         Next
     End Sub
 End Class

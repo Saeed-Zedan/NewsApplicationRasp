@@ -9,33 +9,33 @@ Public Class addNews
                 MessageBox.Show("You must enter a category!", "Empty Title", MessageBoxButtons.OK, MessageBoxIcon.Stop)
                 Exit Sub
         End Select
-        If titleTextBox.Text = Nothing Then
-            MessageBox.Show("You must enter a title!", "Empty Title", MessageBoxButtons.OK, MessageBoxIcon.Stop)
-        Else
-            Dim newsOb As News = New News()
-            newsOb.Title = titleTextBox.Text
-            newsOb.Body = bodyTextBox.Text
-            newsOb.Category = categoryComboBox1.Text
+        Dim newsOb As News = New News()
+        newsOb.Title = titleTextBox.Text
+        newsOb.Body = bodyTextBox.Text
+        newsOb.Category = categoryComboBox1.Text
+        If descriptionTextBox.Text <> String.Empty Then
             newsOb.Description = descriptionTextBox.Text
-
-            Try
-                Dim dirPath = My.Computer.FileSystem.SpecialDirectories.MyDocuments & "\News"
-                If Not (Directory.Exists(dirPath)) Then
-                    FileSystem.MkDir(dirPath)
-                End If
-                Dim fileName = dirPath & "\" & Guid.NewGuid.ToString() & ".txt"
-                Dim fileWrite As FileStream = New FileStream(fileName, FileMode.Create, FileAccess.Write)
-                Dim streamWr As StreamWriter = New StreamWriter(fileWrite)
-
-                streamWr.Write(newsOb.Title & "^_^" & newsOb.creationDate & "^_^" & newsOb.Description & "^_^" & newsOb.Category & "^_^" & newsOb.Body)
-                streamWr.Flush()
-                fileWrite.Close()
-            Catch ex As IOException
-                MessageBox.Show("Process failed", "IO ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)
-            End Try
-            MessageBox.Show("Process end successfully", "Done", MessageBoxButtons.OK, MessageBoxIcon.Information)
-            Me.Dispose()
+        Else
+            newsOb.Description = "%%##" 'this will indicate a null field i can use space instead but Daaah
         End If
+
+        Try
+            Dim dirPath = My.Computer.FileSystem.SpecialDirectories.MyDocuments & "\News"
+            If Not (Directory.Exists(dirPath)) Then
+                FileSystem.MkDir(dirPath)
+            End If
+            Dim fileName = dirPath & "\" & Guid.NewGuid.ToString() & ".txt"
+            Dim fileWrite As FileStream = New FileStream(fileName, FileMode.Create, FileAccess.Write)
+            Dim streamWr As StreamWriter = New StreamWriter(fileWrite)
+
+            streamWr.Write(newsOb.Title & "^_^" & newsOb.creationDate & "^_^" & newsOb.Description & "^_^" & newsOb.Category & "^_^" & newsOb.Body)
+            streamWr.Flush()
+            fileWrite.Close()
+            MessageBox.Show("Process end successfully", "Done", MessageBoxButtons.OK, MessageBoxIcon.Information)
+        Catch ex As IOException
+            MessageBox.Show("Process failed", "IO ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End Try
+        Me.Dispose()
     End Sub
 
     Private Sub cancelButton_Click(sender As Object, e As EventArgs) Handles cancelButton.Click
