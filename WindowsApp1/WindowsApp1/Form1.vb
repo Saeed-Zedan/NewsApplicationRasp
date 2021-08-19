@@ -5,12 +5,6 @@ Public Class Form1
         Me.WindowState = FormWindowState.Maximized
 
     End Sub
-
-    Private Sub NewToolStripMenuItem_Click(sender As Object, e As EventArgs) _
-        Handles NewToolStripMenuItem.Click
-        Dim newForm As addNews = New addNews()
-        newForm.Show()
-    End Sub 'NewToolStripMenuItem_Click sub
     Private Sub OpenToolStripMenuItem_Click(sender As Object, e As EventArgs) _
         Handles OpenToolStripMenuItem.Click
 
@@ -62,5 +56,23 @@ Public Class Form1
             File.Delete(newsDict(item.Cells(1).Value)) 'using the creation date as primary key to retireive the file name from the dictionary and delete it
             newsDict.Remove(item.Cells(1).Value) 'remove the file from the dictionaty 
         Next
+    End Sub
+
+    Private Sub UserToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles UserToolStripMenuItem.Click
+        Dim userForm As addUser = New addUser()
+        userForm.Show()
+    End Sub
+
+    Private Sub NewsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles NewsToolStripMenuItem.Click
+        Dim newForm As addNews = New addNews()
+        newForm.Show()
+    End Sub
+
+    Private Sub ExitToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ExitToolStripMenuItem.Click
+        Me.Dispose()
+    End Sub
+
+    Private Sub displayUsersToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles displayUsersToolStripMenuItem.Click
+
     End Sub
 End Class

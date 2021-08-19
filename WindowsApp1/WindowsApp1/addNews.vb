@@ -4,9 +4,11 @@ Public Class addNews
         Select Case String.Empty
             Case titleTextBox.Text
                 MessageBox.Show("You must enter a title!", "Empty Title", MessageBoxButtons.OK, MessageBoxIcon.Stop)
+                titleTextBox.Select()
                 Exit Sub
             Case categoryComboBox1.Text
                 MessageBox.Show("You must enter a category!", "Empty Title", MessageBoxButtons.OK, MessageBoxIcon.Stop)
+                categoryComboBox1.Select()
                 Exit Sub
         End Select
         Dim newsOb As News = New News()
@@ -38,7 +40,7 @@ Public Class addNews
         Me.Dispose()
     End Sub
 
-    Private Sub cancelButton_Click(sender As Object, e As EventArgs) Handles cancelButton.Click
+    Private Sub cancelButton_Click(sender As Object, e As EventArgs) Handles exitButton.Click
         Me.Dispose()
     End Sub
 End Class

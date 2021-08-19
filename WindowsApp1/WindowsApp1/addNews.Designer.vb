@@ -30,7 +30,7 @@ Partial Class addNews
         Me.descriptionLabel = New System.Windows.Forms.Label()
         Me.categoryLabel = New System.Windows.Forms.Label()
         Me.bodyLabel = New System.Windows.Forms.Label()
-        Me.cancelButton = New System.Windows.Forms.Button()
+        Me.exitButton = New System.Windows.Forms.Button()
         Me.saveButton = New System.Windows.Forms.Button()
         Me.SuspendLayout()
         '
@@ -107,14 +107,14 @@ Partial Class addNews
         Me.bodyLabel.TabIndex = 2
         Me.bodyLabel.Text = "Body"
         '
-        'cancelButton
+        'exitButton
         '
-        Me.cancelButton.Location = New System.Drawing.Point(363, 386)
-        Me.cancelButton.Name = "cancelButton"
-        Me.cancelButton.Size = New System.Drawing.Size(75, 23)
-        Me.cancelButton.TabIndex = 3
-        Me.cancelButton.Text = "Cancel"
-        Me.cancelButton.UseVisualStyleBackColor = True
+        Me.exitButton.Location = New System.Drawing.Point(363, 386)
+        Me.exitButton.Name = "exitButton"
+        Me.exitButton.Size = New System.Drawing.Size(75, 23)
+        Me.exitButton.TabIndex = 3
+        Me.exitButton.Text = "Cancel"
+        Me.exitButton.UseVisualStyleBackColor = True
         '
         'saveButton
         '
@@ -131,7 +131,7 @@ Partial Class addNews
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(450, 419)
         Me.Controls.Add(Me.saveButton)
-        Me.Controls.Add(Me.cancelButton)
+        Me.Controls.Add(Me.exitButton)
         Me.Controls.Add(Me.bodyLabel)
         Me.Controls.Add(Me.categoryLabel)
         Me.Controls.Add(Me.descriptionLabel)
@@ -156,6 +156,6 @@ Partial Class addNews
     Friend WithEvents descriptionLabel As Label
     Friend WithEvents categoryLabel As Label
     Friend WithEvents bodyLabel As Label
-    Friend WithEvents cancelButton As Button
+    Friend WithEvents exitButton As Button
     Friend WithEvents saveButton As Button
 End Class

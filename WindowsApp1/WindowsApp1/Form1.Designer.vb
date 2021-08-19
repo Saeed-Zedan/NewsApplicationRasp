@@ -27,11 +27,14 @@ Partial Class Form1
         Me.MenuStrip1 = New System.Windows.Forms.MenuStrip()
         Me.FileToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.NewToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.UserToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.NewsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ImageToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.OpenToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.toolStripSeparator2 = New System.Windows.Forms.ToolStripSeparator()
         Me.ExitToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.EditToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.RedoToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.displayUsersToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.CustomizeToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.OptionsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
@@ -42,6 +45,7 @@ Partial Class Form1
         Me.ContextMenuStrip1 = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.DeleteToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.SaveFileDialog1 = New System.Windows.Forms.SaveFileDialog()
         Me.MenuStrip1.SuspendLayout()
         CType(Me.newsDataGridView, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.ContextMenuStrip1.SuspendLayout()
@@ -65,12 +69,33 @@ Partial Class Form1
         '
         'NewToolStripMenuItem
         '
+        Me.NewToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.UserToolStripMenuItem, Me.NewsToolStripMenuItem, Me.ImageToolStripMenuItem})
         Me.NewToolStripMenuItem.Image = CType(resources.GetObject("NewToolStripMenuItem.Image"), System.Drawing.Image)
         Me.NewToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.NewToolStripMenuItem.Name = "NewToolStripMenuItem"
-        Me.NewToolStripMenuItem.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.N), System.Windows.Forms.Keys)
         Me.NewToolStripMenuItem.Size = New System.Drawing.Size(146, 22)
         Me.NewToolStripMenuItem.Text = "&New"
+        '
+        'UserToolStripMenuItem
+        '
+        Me.UserToolStripMenuItem.Name = "UserToolStripMenuItem"
+        Me.UserToolStripMenuItem.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.U), System.Windows.Forms.Keys)
+        Me.UserToolStripMenuItem.Size = New System.Drawing.Size(146, 22)
+        Me.UserToolStripMenuItem.Text = "User"
+        '
+        'NewsToolStripMenuItem
+        '
+        Me.NewsToolStripMenuItem.Name = "NewsToolStripMenuItem"
+        Me.NewsToolStripMenuItem.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.N), System.Windows.Forms.Keys)
+        Me.NewsToolStripMenuItem.Size = New System.Drawing.Size(146, 22)
+        Me.NewsToolStripMenuItem.Text = "News"
+        '
+        'ImageToolStripMenuItem
+        '
+        Me.ImageToolStripMenuItem.Name = "ImageToolStripMenuItem"
+        Me.ImageToolStripMenuItem.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.I), System.Windows.Forms.Keys)
+        Me.ImageToolStripMenuItem.Size = New System.Drawing.Size(146, 22)
+        Me.ImageToolStripMenuItem.Text = "Image"
         '
         'OpenToolStripMenuItem
         '
@@ -94,17 +119,17 @@ Partial Class Form1
         '
         'EditToolStripMenuItem
         '
-        Me.EditToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.RedoToolStripMenuItem})
+        Me.EditToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.displayUsersToolStripMenuItem})
         Me.EditToolStripMenuItem.Name = "EditToolStripMenuItem"
         Me.EditToolStripMenuItem.Size = New System.Drawing.Size(48, 20)
         Me.EditToolStripMenuItem.Text = "Show"
         '
-        'RedoToolStripMenuItem
+        'displayUsersToolStripMenuItem
         '
-        Me.RedoToolStripMenuItem.Name = "RedoToolStripMenuItem"
-        Me.RedoToolStripMenuItem.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.Y), System.Windows.Forms.Keys)
-        Me.RedoToolStripMenuItem.Size = New System.Drawing.Size(142, 22)
-        Me.RedoToolStripMenuItem.Text = "&Redo"
+        Me.displayUsersToolStripMenuItem.Name = "displayUsersToolStripMenuItem"
+        Me.displayUsersToolStripMenuItem.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.D), System.Windows.Forms.Keys)
+        Me.displayUsersToolStripMenuItem.Size = New System.Drawing.Size(185, 22)
+        Me.displayUsersToolStripMenuItem.Text = "&Display Users"
         '
         'ToolsToolStripMenuItem
         '
@@ -116,13 +141,13 @@ Partial Class Form1
         'CustomizeToolStripMenuItem
         '
         Me.CustomizeToolStripMenuItem.Name = "CustomizeToolStripMenuItem"
-        Me.CustomizeToolStripMenuItem.Size = New System.Drawing.Size(130, 22)
+        Me.CustomizeToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
         Me.CustomizeToolStripMenuItem.Text = "&Customize"
         '
         'OptionsToolStripMenuItem
         '
         Me.OptionsToolStripMenuItem.Name = "OptionsToolStripMenuItem"
-        Me.OptionsToolStripMenuItem.Size = New System.Drawing.Size(130, 22)
+        Me.OptionsToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
         Me.OptionsToolStripMenuItem.Text = "&Options"
         '
         'newsDataGridView
@@ -204,7 +229,7 @@ Partial Class Form1
     End Sub
 
     Private newsDict As Dictionary(Of String, String)
-
+    Private userDict As Dictionary(Of String, String)
 
     Friend WithEvents MenuStrip1 As MenuStrip
     Friend WithEvents FileToolStripMenuItem As ToolStripMenuItem
@@ -213,7 +238,7 @@ Partial Class Form1
     Friend WithEvents toolStripSeparator2 As ToolStripSeparator
     Friend WithEvents ExitToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents EditToolStripMenuItem As ToolStripMenuItem
-    Friend WithEvents RedoToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents displayUsersToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents ToolsToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents CustomizeToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents OptionsToolStripMenuItem As ToolStripMenuItem
@@ -224,4 +249,8 @@ Partial Class Form1
     Friend WithEvents GroupBox1 As GroupBox
     Friend WithEvents ContextMenuStrip1 As ContextMenuStrip
     Friend WithEvents DeleteToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents UserToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents NewsToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents ImageToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents SaveFileDialog1 As SaveFileDialog
 End Class
