@@ -18,7 +18,7 @@ Public Module dirManipulator
         Catch ex As IOException
             MessageBox.Show("Process failed", "IO ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
-    End Sub
+    End Sub 'Add a new File
     Sub editFile(filePath As String, Info As String)
         Try
             Dim fileWrite As FileStream = New FileStream(filePath, FileMode.Create, FileAccess.Write)
@@ -32,7 +32,7 @@ Public Module dirManipulator
         Catch ex As IOException
             MessageBox.Show("Process failed", "IO ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
-    End Sub
+    End Sub 'Editting an existing file
     Function readFile(filePath As String) As String()
 
         Dim fileRead = New FileStream(filePath, FileMode.Open, FileAccess.Read)
@@ -44,5 +44,5 @@ Public Module dirManipulator
         fileRead.Close()
 
         Return Info
-    End Function
+    End Function 'Read file content
 End Module

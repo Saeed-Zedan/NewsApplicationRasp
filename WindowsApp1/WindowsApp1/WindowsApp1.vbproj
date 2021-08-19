@@ -114,6 +114,12 @@
     </Compile>
     <Compile Include="News.vb" />
     <Compile Include="User.vb" />
+    <Compile Include="veiwUsers.Designer.vb">
+      <DependentUpon>veiwUsers.vb</DependentUpon>
+    </Compile>
+    <Compile Include="veiwUsers.vb">
+      <SubType>Form</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="addNews.resx">
@@ -130,6 +136,9 @@
       <LastGenOutput>Resources.Designer.vb</LastGenOutput>
       <CustomToolNamespace>My.Resources</CustomToolNamespace>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="veiwUsers.resx">
+      <DependentUpon>veiwUsers.vb</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

@@ -57,12 +57,12 @@ Public Class Form1
 
     Private Sub UserToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles UserToolStripMenuItem.Click
         Dim userForm As addUser = New addUser()
-        userForm.Show()
+        userForm.ShowDialog()
     End Sub
 
     Private Sub NewsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles NewsToolStripMenuItem.Click
         Dim newForm As addNews = New addNews()
-        newForm.Show()
+        newForm.ShowDialog()
     End Sub
 
     Private Sub ExitToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ExitToolStripMenuItem.Click
@@ -70,6 +70,7 @@ Public Class Form1
     End Sub
 
     Private Sub displayUsersToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles displayUsersToolStripMenuItem.Click
-
+        Dim newForm As veiwUsers = New veiwUsers()
+        newForm.ShowDialog()
     End Sub
 End Class
