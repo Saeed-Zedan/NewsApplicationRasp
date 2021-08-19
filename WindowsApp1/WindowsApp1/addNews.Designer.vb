@@ -141,8 +141,9 @@ Partial Class addNews
         Me.Controls.Add(Me.descriptionTextBox)
         Me.Controls.Add(Me.titleTextBox)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
+        Me.MaximizeBox = False
         Me.Name = "addNews"
-        Me.Text = "New news"
+        Me.Text = "New News Form"
         Me.ResumeLayout(False)
         Me.PerformLayout()
 

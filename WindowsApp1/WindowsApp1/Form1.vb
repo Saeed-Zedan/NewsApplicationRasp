@@ -73,4 +73,9 @@ Public Class Form1
         Dim newForm As veiwUsers = New veiwUsers()
         newForm.ShowDialog()
     End Sub
+
+    Private Sub newsDataGridView_DoubleClick(sender As Object, e As EventArgs) Handles newsDataGridView.DoubleClick
+        MessageBox.Show(newsDataGridView.SelectedRows.Count)
+    End Sub
+
 End Class

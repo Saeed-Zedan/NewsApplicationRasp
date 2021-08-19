@@ -41,14 +41,15 @@ Partial Class veiwUsers
         '
         'ContextMenuStrip1
         '
+        Me.ContextMenuStrip1.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Bold)
         Me.ContextMenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.deleteToolStripMenuItem})
         Me.ContextMenuStrip1.Name = "ContextMenuStrip1"
-        Me.ContextMenuStrip1.Size = New System.Drawing.Size(108, 26)
+        Me.ContextMenuStrip1.Size = New System.Drawing.Size(113, 26)
         '
         'deleteToolStripMenuItem
         '
         Me.deleteToolStripMenuItem.Name = "deleteToolStripMenuItem"
-        Me.deleteToolStripMenuItem.Size = New System.Drawing.Size(107, 22)
+        Me.deleteToolStripMenuItem.Size = New System.Drawing.Size(112, 22)
         Me.deleteToolStripMenuItem.Text = "Delete"
         '
         'veiwUsers

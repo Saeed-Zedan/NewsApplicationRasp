@@ -42,7 +42,10 @@ Public Class veiwUsers
             Exit Sub
         End If
 
-
+        Dim strDeatail = "{0,-60}{1,-120}"
+        If row = String.Format(strDeatail, "Name", "Long Name") Then
+            Exit Sub
+        End If
         If Not (Directory.Exists(dirPath)) Then
             FileSystem.MkDir(dirPath)
         End If

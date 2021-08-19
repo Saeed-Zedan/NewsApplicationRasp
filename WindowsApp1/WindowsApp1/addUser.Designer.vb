@@ -118,9 +118,8 @@ Partial Class addUser
         Me.Controls.Add(Me.nameLabel)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.MaximizeBox = False
-        Me.MinimizeBox = False
         Me.Name = "addUser"
-        Me.Text = "addUser"
+        Me.Text = "New User Form"
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
