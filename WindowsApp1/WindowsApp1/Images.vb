@@ -1,4 +1,4 @@
-﻿Public Class Image
+﻿Public Class Images
     'Members
     Private titleValue As String
     Private descriptionValue As String
@@ -53,9 +53,12 @@
             End If
         End Set
     End Property 'Body prop
-    Public ReadOnly Property creationDate As DateTime
+    Public Property creationDate As DateTime
         Get
             Return creationDateValue
         End Get
+        Set(value As DateTime)
+            creationDateValue = value
+        End Set
     End Property 'CreationDate prop
 End Class

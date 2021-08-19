@@ -47,13 +47,18 @@ Public Class newsEdit
         InitializeComponent()
         Me.filePath = filePath
         Dim Info = dirManipulator.readFile(filePath)
+
         titleTextBox.Text = Info(0)
         creationDate = Info(1)
-        bodyTextBox.Text = Info(4)
         descriptionTextBox.Text = Info(2)
         categoryComboBox.DropDownStyle = ComboBoxStyle.DropDown
         categoryComboBox.Text = Info(3)
         categoryComboBox.DropDownStyle = ComboBoxStyle.DropDownList
+        bodyTextBox.Text = Info(4)
+
+
+
+
     End Sub
 
 End Class

@@ -1,5 +1,5 @@
 ﻿Imports System.IO
-
+Imports System.Drawing
 Public Class Form1
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Me.WindowState = FormWindowState.Maximized
@@ -75,10 +75,11 @@ Public Class Form1
     End Sub
 
     Private Sub newsDataGridView_DoubleClick(sender As Object, e As EventArgs) Handles newsDataGridView.DoubleClick
+
         Dim editNews = newsDataGridView.SelectedRows
 
-        If editNews.Count > 0 Then
-            MessageBox.Show(editNews.Count)
+        If editNews.Count = 1 Then
+            MessageBox.Show(editNews(0).Index)
             Dim filePath = newsDict(editNews.Item(0).Cells(1).Value)
             Dim Info = dirManipulator.readFile(filePath)
             Dim newForm As newsEdit = New newsEdit(filePath)
@@ -92,4 +93,41 @@ Public Class Form1
 
     End Sub
 
+    Private Sub newsDataGridView_RowHeaderMouseDoubleClick(sender As Object, e As DataGridViewCellMouseEventArgs) Handles newsDataGridView.RowHeaderMouseDoubleClick
+        MessageBox.Show("hey")
+    End Sub
+    Private Sub Form1_Resize(sender As Object, e As EventArgs) Handles MyBase.Resize
+        GroupBox1.Height = Me.Height \ 3
+
+    End Sub
+
+    Private Sub Button1_Click(sender As Object, e As EventArgs)
+
+    End Sub
+
+    Private Sub Label1_Click(sender As Object, e As EventArgs) Handles Label1.Click
+        Dim img As Image
+        img = Image.FromFile("C:\Users\saeed.z\Downloads\CascadiaCode-2106.17\download.jpg")
+
+        Label1.Image = img
+    End Sub
+
+    Private Sub newsDataGridView_SelectionChanged(sender As Object, e As EventArgs) Handles newsDataGridView.SelectionChanged
+
+        Dim row = newsDataGridView.SelectedRows
+        Dim creationDate1 = row(0).Cells(1).Value
+        If newsDict.ContainsKey(creationDate1) Then
+
+            Button2.Enabled = False
+            Button2.Visible = False
+            PictureBox1.Visible = False
+            PictureBox1.Enabled = False
+
+            Dim filePath = newsDict(creationDate1)
+            Label1.Text = dirManipulator.readFile(filePath)(4)
+        ElseIf imageDict.ContainsKey(creationDate1) Then
+            MessageBox.Show("To be implemented")
+
+        End If
+    End Sub
 End Class
