@@ -32,7 +32,7 @@ Public Class veiwUsers
 
     End Sub
 
-    Private Sub ContextMenuStrip1_Opening(sender As Object, e As EventArgs) Handles deleteToolStripMenuItem.Click
+    Private Sub deleteToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles deleteToolStripMenuItem.Click
         Dim dirPath = My.Computer.FileSystem.SpecialDirectories.MyDocuments & "\Users" 'get the directory path where the file/s are saved
         Dim row = usersListBox.SelectedItem
         Dim files As List(Of String) = New List(Of String)

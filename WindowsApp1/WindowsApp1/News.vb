@@ -57,9 +57,13 @@
             End If
         End Set
     End Property 'Body prop
-    Public ReadOnly Property creationDate As DateTime
+    Public Property creationDate As DateTime
         Get
             Return creationDateValue
         End Get
+        Set(ByVal value As DateTime)
+            creationDateValue = value
+        End Set
+
     End Property
 End Class

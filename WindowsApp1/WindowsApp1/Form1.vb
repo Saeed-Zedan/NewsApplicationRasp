@@ -75,7 +75,21 @@ Public Class Form1
     End Sub
 
     Private Sub newsDataGridView_DoubleClick(sender As Object, e As EventArgs) Handles newsDataGridView.DoubleClick
-        MessageBox.Show(newsDataGridView.SelectedRows.Count)
+        Dim editNews = newsDataGridView.SelectedRows
+
+        If editNews.Count > 0 Then
+            MessageBox.Show(editNews.Count)
+            Dim filePath = newsDict(editNews.Item(0).Cells(1).Value)
+            Dim Info = dirManipulator.readFile(filePath)
+            Dim newForm As newsEdit = New newsEdit(filePath)
+            Dim result = newForm.ShowDialog()
+            If result = DialogResult.OK Then
+                Dim Info2 = dirManipulator.readFile(filePath)
+                newsDataGridView.Rows.Remove(editNews(0))
+                newsDataGridView.Rows.Add({Info2(0), Info2(1), Info2(2)}) 'adding a new row to the grid (Title, Creation date, description
+            End If
+        End If
+
     End Sub
 
 End Class

@@ -60,7 +60,7 @@ Partial Class addNews
         '
         Me.categoryComboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.categoryComboBox1.FormattingEnabled = True
-        Me.categoryComboBox1.Items.AddRange(New Object() {"Politics", "Science", "Sport"})
+        Me.categoryComboBox1.Items.AddRange(New Object() {"Genera", "Health", "Politics", "Sports"})
         Me.categoryComboBox1.Location = New System.Drawing.Point(113, 91)
         Me.categoryComboBox1.Name = "categoryComboBox1"
         Me.categoryComboBox1.Size = New System.Drawing.Size(325, 21)

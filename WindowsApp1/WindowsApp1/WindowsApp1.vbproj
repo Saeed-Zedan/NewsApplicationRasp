@@ -113,6 +113,12 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="News.vb" />
+    <Compile Include="newsEdit.Designer.vb">
+      <DependentUpon>newsEdit.vb</DependentUpon>
+    </Compile>
+    <Compile Include="newsEdit.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="User.vb" />
     <Compile Include="veiwUsers.Designer.vb">
       <DependentUpon>veiwUsers.vb</DependentUpon>
@@ -136,6 +142,9 @@
       <LastGenOutput>Resources.Designer.vb</LastGenOutput>
       <CustomToolNamespace>My.Resources</CustomToolNamespace>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="newsEdit.resx">
+      <DependentUpon>newsEdit.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="veiwUsers.resx">
       <DependentUpon>veiwUsers.vb</DependentUpon>
