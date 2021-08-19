@@ -11,6 +11,8 @@ Public Class addNews
                 categoryComboBox1.Select()
                 Exit Sub
         End Select
+
+
         Dim newsOb As News = New News()
         newsOb.Title = titleTextBox.Text
         newsOb.Body = bodyTextBox.Text
@@ -18,25 +20,12 @@ Public Class addNews
         If descriptionTextBox.Text <> String.Empty Then
             newsOb.Description = descriptionTextBox.Text
         Else
-            newsOb.Description = "%%##" 'this will indicate a null field i can use space instead but Daaah
+            newsOb.Description = "  " 'this will indicate a null field i can use space instead but Daaah
         End If
 
-        Try
-            Dim dirPath = My.Computer.FileSystem.SpecialDirectories.MyDocuments & "\News"
-            If Not (Directory.Exists(dirPath)) Then
-                FileSystem.MkDir(dirPath)
-            End If
-            Dim fileName = dirPath & "\" & Guid.NewGuid.ToString() & ".txt"
-            Dim fileWrite As FileStream = New FileStream(fileName, FileMode.Create, FileAccess.Write)
-            Dim streamWr As StreamWriter = New StreamWriter(fileWrite)
-
-            streamWr.Write(newsOb.Title & "^_^" & newsOb.creationDate & "^_^" & newsOb.Description & "^_^" & newsOb.Category & "^_^" & newsOb.Body)
-            streamWr.Flush()
-            fileWrite.Close()
-            MessageBox.Show("Process end successfully", "Done", MessageBoxButtons.OK, MessageBoxIcon.Information)
-        Catch ex As IOException
-            MessageBox.Show("Process failed", "IO ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)
-        End Try
+        Dim dirPath = My.Computer.FileSystem.SpecialDirectories.MyDocuments & "\News"
+        Dim info = newsOb.Title & "^_^" & newsOb.creationDate & "^_^" & newsOb.Description & "^_^" & newsOb.Category & "^_^" & newsOb.Body
+        dirManipulator.addFile(dirPath, info)
         Me.Dispose()
     End Sub
 

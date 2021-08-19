@@ -27,24 +27,11 @@ Public Class addUser
         userOb.loginName = nameTextBox.Text
         userOb.Password = passwordTextBox.Text
 
-        Try
-            Dim dirPath = My.Computer.FileSystem.SpecialDirectories.MyDocuments & "\Users"
-            If Not (Directory.Exists(dirPath)) Then
-                FileSystem.MkDir(dirPath)
-            End If
-            Dim fileName = dirPath & "\" & Guid.NewGuid.ToString() & ".txt"
-            Dim fileWrite As FileStream = New FileStream(fileName, FileMode.Create, FileAccess.Write)
-            Dim streamWr As StreamWriter = New StreamWriter(fileWrite)
+        Dim dirPath = My.Computer.FileSystem.SpecialDirectories.MyDocuments & "\Users"
+        Dim Info = userOb.loginName & "^_^" & userOb.fullName & "^_^" & userOb.Password
+        dirManipulator.addFile(dirPath, Info)
 
-            streamWr.Write(userOb.loginName & "^_^" & userOb.fullName & "^_^" & userOb.Password)
-            streamWr.Flush()
-            fileWrite.Close()
-            MessageBox.Show("Process end successfully", "Done", MessageBoxButtons.OK, MessageBoxIcon.Information)
-        Catch ex As IOException
-            MessageBox.Show("Process failed", "IO ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)
-        End Try
         Me.Dispose()
-
     End Sub
 
     Private Sub exitButton2_Click(sender As Object, e As EventArgs) Handles exitButton2.Click

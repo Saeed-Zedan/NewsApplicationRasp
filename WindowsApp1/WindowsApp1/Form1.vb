@@ -9,29 +9,22 @@ Public Class Form1
         Handles OpenToolStripMenuItem.Click
 
         newsDataGridView.Rows.Clear() 'Clear the table to avoid redundancy
+
         Dim dirPath = My.Computer.FileSystem.SpecialDirectories.MyDocuments & "\News" 'get the directory path where the files are saved
         If Not (Directory.Exists(dirPath)) Then
             FileSystem.MkDir(dirPath)
         End If
+
         Dim files = My.Computer.FileSystem.GetFiles(dirPath) 'retrieve all the files' name
-        Dim fileRead As FileStream
-        Dim SR As StreamReader
         Dim Info As String()
         newsDict = New Dictionary(Of String, String) 'a dictionary to keep tracking of every file i display by storing its creation date and name
+
         Try
             For Each filename As String In files
                 If filename.EndsWith(".txt") Then
-                    fileRead = New FileStream(filename, FileMode.Open, FileAccess.Read)
-
-                    SR = New StreamReader(fileRead)
-                    Info = Split(SR.ReadLine(), "^_^")
-                    If Info(2) = "%%##" Then 'NUll description
-                        Info(2) = String.Empty
-                    End If
+                    Info = dirManipulator.readFile(filename)
                     newsDataGridView.Rows.Add({Info(0), Info(1), Info(2)}) 'adding a new row to the grid (Title, Creation date, description
-
                     newsDict.Add(Info(1), filename) 'adding new element to the dictionary (creation date -as its the only unique attribute int the News Class-, File name)
-                    fileRead.Close()
                 End If
             Next
         Catch ex As IOException
@@ -40,13 +33,17 @@ Public Class Form1
     End Sub
 
     Private Sub DeleteToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles DeleteToolStripMenuItem.Click
+
+        Dim dirPath = My.Computer.FileSystem.SpecialDirectories.MyDocuments & "\News" 'get the directory path where the file/s are saved
         Dim rows = newsDataGridView.SelectedRows
+        Dim files As List(Of String) = New List(Of String)
+
         If rows.Count = 0 Then 'no selected file
             MessageBox.Show("There is no selected file/s", "Duck", MessageBoxButtons.OK, MessageBoxIcon.Warning)
             Exit Sub
         End If
 
-        Dim dirPath = My.Computer.FileSystem.SpecialDirectories.MyDocuments & "\News" 'get the directory path where the file/s are saved
+
         If Not (Directory.Exists(dirPath)) Then
             FileSystem.MkDir(dirPath)
         End If
