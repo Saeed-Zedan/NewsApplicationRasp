@@ -1,6 +1,6 @@
 ﻿Imports System.IO
 Imports System.Drawing
-Public Class Form1
+Public Class newsApplication
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Me.WindowState = FormWindowState.Maximized
 
