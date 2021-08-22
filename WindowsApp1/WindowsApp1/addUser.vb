@@ -1,4 +1,6 @@
 ﻿Imports System.IO
+Imports System.Security.Cryptography
+
 Imports System.Text.RegularExpressions
 Public Class addUser
     Private Sub saveButton_Click(sender As Object, e As EventArgs) Handles saveButton.Click

@@ -1,4 +1,5 @@
-﻿Public Class User
+﻿Imports System.Security.Cryptography
+Public Class User
     Private fullNameValue As String
     Private loginNameValue As String
     Private passwordValue As String
@@ -33,11 +34,17 @@
             Return passwordValue
         End Get
         Set(value As String)
-            If value.Length <= 255 Then
-                passwordValue = value
-            Else
-                passwordValue = value.Substring(0, 255)
-            End If
+
+            Dim hashingOb As New SHA1CryptoServiceProvider
+            Dim bytesToHash() As Byte = Text.Encoding.ASCII.GetBytes(value)
+
+            bytesToHash = hashingOb.ComputeHash(bytesToHash)
+
+            Dim strResult As String = ""
+
+            For Each item In bytesToHash
+                passwordValue += item.ToString("x2")
+            Next
         End Set
     End Property 'Password prop
     Public Property lastModifier() As String

@@ -46,17 +46,17 @@ Partial Class newsApplication
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
         Me.displayTabControl = New System.Windows.Forms.TabControl()
         Me.previewTabPage = New System.Windows.Forms.TabPage()
-        Me.imageTabPage = New System.Windows.Forms.TabPage()
-        Me.SaveFileDialog1 = New System.Windows.Forms.SaveFileDialog()
-        Me.PictureBox1 = New System.Windows.Forms.PictureBox()
         Me.bodyTextBox = New System.Windows.Forms.TextBox()
+        Me.imageTabPage = New System.Windows.Forms.TabPage()
+        Me.PictureBox1 = New System.Windows.Forms.PictureBox()
+        Me.SaveFileDialog1 = New System.Windows.Forms.SaveFileDialog()
         Me.gridViewGroupBox = New System.Windows.Forms.GroupBox()
-        Me.titleLabel = New System.Windows.Forms.Label()
-        Me.creationDateLabel = New System.Windows.Forms.Label()
-        Me.categoryLabel = New System.Windows.Forms.Label()
-        Me.titleTextBox = New System.Windows.Forms.TextBox()
-        Me.creationDateTextBox = New System.Windows.Forms.TextBox()
         Me.categoryTextBox = New System.Windows.Forms.TextBox()
+        Me.creationDateTextBox = New System.Windows.Forms.TextBox()
+        Me.titleTextBox = New System.Windows.Forms.TextBox()
+        Me.categoryLabel = New System.Windows.Forms.Label()
+        Me.creationDateLabel = New System.Windows.Forms.Label()
+        Me.titleLabel = New System.Windows.Forms.Label()
         Me.MenuStrip1.SuspendLayout()
         CType(Me.newsDataGridView, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.ContextMenuStrip1.SuspendLayout()
@@ -90,28 +90,28 @@ Partial Class newsApplication
         Me.NewToolStripMenuItem.Image = CType(resources.GetObject("NewToolStripMenuItem.Image"), System.Drawing.Image)
         Me.NewToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.NewToolStripMenuItem.Name = "NewToolStripMenuItem"
-        Me.NewToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
+        Me.NewToolStripMenuItem.Size = New System.Drawing.Size(146, 22)
         Me.NewToolStripMenuItem.Text = "&New"
         '
         'UserToolStripMenuItem
         '
         Me.UserToolStripMenuItem.Name = "UserToolStripMenuItem"
         Me.UserToolStripMenuItem.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.U), System.Windows.Forms.Keys)
-        Me.UserToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
+        Me.UserToolStripMenuItem.Size = New System.Drawing.Size(146, 22)
         Me.UserToolStripMenuItem.Text = "User"
         '
         'NewsToolStripMenuItem
         '
         Me.NewsToolStripMenuItem.Name = "NewsToolStripMenuItem"
         Me.NewsToolStripMenuItem.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.N), System.Windows.Forms.Keys)
-        Me.NewsToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
+        Me.NewsToolStripMenuItem.Size = New System.Drawing.Size(146, 22)
         Me.NewsToolStripMenuItem.Text = "News"
         '
         'ImageToolStripMenuItem
         '
         Me.ImageToolStripMenuItem.Name = "ImageToolStripMenuItem"
         Me.ImageToolStripMenuItem.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.I), System.Windows.Forms.Keys)
-        Me.ImageToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
+        Me.ImageToolStripMenuItem.Size = New System.Drawing.Size(146, 22)
         Me.ImageToolStripMenuItem.Text = "Image"
         '
         'OpenToolStripMenuItem
@@ -120,18 +120,18 @@ Partial Class newsApplication
         Me.OpenToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.OpenToolStripMenuItem.Name = "OpenToolStripMenuItem"
         Me.OpenToolStripMenuItem.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.O), System.Windows.Forms.Keys)
-        Me.OpenToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
+        Me.OpenToolStripMenuItem.Size = New System.Drawing.Size(146, 22)
         Me.OpenToolStripMenuItem.Text = "&Open"
         '
         'toolStripSeparator2
         '
         Me.toolStripSeparator2.Name = "toolStripSeparator2"
-        Me.toolStripSeparator2.Size = New System.Drawing.Size(177, 6)
+        Me.toolStripSeparator2.Size = New System.Drawing.Size(143, 6)
         '
         'ExitToolStripMenuItem
         '
         Me.ExitToolStripMenuItem.Name = "ExitToolStripMenuItem"
-        Me.ExitToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
+        Me.ExitToolStripMenuItem.Size = New System.Drawing.Size(146, 22)
         Me.ExitToolStripMenuItem.Text = "E&xit"
         '
         'EditToolStripMenuItem
@@ -253,6 +253,18 @@ Partial Class newsApplication
         Me.previewTabPage.TabIndex = 0
         Me.previewTabPage.Text = "Preview"
         '
+        'bodyTextBox
+        '
+        Me.bodyTextBox.BackColor = System.Drawing.SystemColors.ControlLight
+        Me.bodyTextBox.BorderStyle = System.Windows.Forms.BorderStyle.None
+        Me.bodyTextBox.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.bodyTextBox.Location = New System.Drawing.Point(3, 3)
+        Me.bodyTextBox.Multiline = True
+        Me.bodyTextBox.Name = "bodyTextBox"
+        Me.bodyTextBox.ReadOnly = True
+        Me.bodyTextBox.Size = New System.Drawing.Size(782, 149)
+        Me.bodyTextBox.TabIndex = 0
+        '
         'imageTabPage
         '
         Me.imageTabPage.Controls.Add(Me.PictureBox1)
@@ -276,18 +288,6 @@ Partial Class newsApplication
         Me.PictureBox1.TabIndex = 0
         Me.PictureBox1.TabStop = False
         '
-        'bodyTextBox
-        '
-        Me.bodyTextBox.BackColor = System.Drawing.SystemColors.ControlLight
-        Me.bodyTextBox.BorderStyle = System.Windows.Forms.BorderStyle.None
-        Me.bodyTextBox.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.bodyTextBox.Location = New System.Drawing.Point(3, 3)
-        Me.bodyTextBox.Multiline = True
-        Me.bodyTextBox.Name = "bodyTextBox"
-        Me.bodyTextBox.ReadOnly = True
-        Me.bodyTextBox.Size = New System.Drawing.Size(782, 149)
-        Me.bodyTextBox.TabIndex = 0
-        '
         'gridViewGroupBox
         '
         Me.gridViewGroupBox.Controls.Add(Me.categoryTextBox)
@@ -304,27 +304,35 @@ Partial Class newsApplication
         Me.gridViewGroupBox.TabIndex = 4
         Me.gridViewGroupBox.TabStop = False
         '
-        'titleLabel
+        'categoryTextBox
         '
-        Me.titleLabel.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.titleLabel.AutoSize = True
-        Me.titleLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.titleLabel.Location = New System.Drawing.Point(6, 150)
-        Me.titleLabel.Name = "titleLabel"
-        Me.titleLabel.Size = New System.Drawing.Size(40, 17)
-        Me.titleLabel.TabIndex = 2
-        Me.titleLabel.Text = "Title"
+        Me.categoryTextBox.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.categoryTextBox.Location = New System.Drawing.Point(131, 210)
+        Me.categoryTextBox.Name = "categoryTextBox"
+        Me.categoryTextBox.ReadOnly = True
+        Me.categoryTextBox.Size = New System.Drawing.Size(663, 20)
+        Me.categoryTextBox.TabIndex = 7
         '
-        'creationDateLabel
+        'creationDateTextBox
         '
-        Me.creationDateLabel.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.creationDateLabel.AutoSize = True
-        Me.creationDateLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.creationDateLabel.Location = New System.Drawing.Point(6, 181)
-        Me.creationDateLabel.Name = "creationDateLabel"
-        Me.creationDateLabel.Size = New System.Drawing.Size(108, 17)
-        Me.creationDateLabel.TabIndex = 3
-        Me.creationDateLabel.Text = "Creation Date"
+        Me.creationDateTextBox.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.creationDateTextBox.Location = New System.Drawing.Point(131, 178)
+        Me.creationDateTextBox.Name = "creationDateTextBox"
+        Me.creationDateTextBox.ReadOnly = True
+        Me.creationDateTextBox.Size = New System.Drawing.Size(663, 20)
+        Me.creationDateTextBox.TabIndex = 6
+        '
+        'titleTextBox
+        '
+        Me.titleTextBox.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.titleTextBox.Location = New System.Drawing.Point(131, 147)
+        Me.titleTextBox.Name = "titleTextBox"
+        Me.titleTextBox.ReadOnly = True
+        Me.titleTextBox.Size = New System.Drawing.Size(663, 20)
+        Me.titleTextBox.TabIndex = 5
         '
         'categoryLabel
         '
@@ -337,35 +345,27 @@ Partial Class newsApplication
         Me.categoryLabel.TabIndex = 4
         Me.categoryLabel.Text = "Category"
         '
-        'titleTextBox
+        'creationDateLabel
         '
-        Me.titleTextBox.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.titleTextBox.Location = New System.Drawing.Point(131, 147)
-        Me.titleTextBox.Name = "titleTextBox"
-        Me.titleTextBox.ReadOnly = True
-        Me.titleTextBox.Size = New System.Drawing.Size(663, 20)
-        Me.titleTextBox.TabIndex = 5
+        Me.creationDateLabel.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.creationDateLabel.AutoSize = True
+        Me.creationDateLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.creationDateLabel.Location = New System.Drawing.Point(6, 181)
+        Me.creationDateLabel.Name = "creationDateLabel"
+        Me.creationDateLabel.Size = New System.Drawing.Size(108, 17)
+        Me.creationDateLabel.TabIndex = 3
+        Me.creationDateLabel.Text = "Creation Date"
         '
-        'creationDateTextBox
+        'titleLabel
         '
-        Me.creationDateTextBox.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.creationDateTextBox.Location = New System.Drawing.Point(131, 178)
-        Me.creationDateTextBox.Name = "creationDateTextBox"
-        Me.creationDateTextBox.ReadOnly = True
-        Me.creationDateTextBox.Size = New System.Drawing.Size(663, 20)
-        Me.creationDateTextBox.TabIndex = 6
-        '
-        'categoryTextBox
-        '
-        Me.categoryTextBox.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.categoryTextBox.Location = New System.Drawing.Point(131, 210)
-        Me.categoryTextBox.Name = "categoryTextBox"
-        Me.categoryTextBox.ReadOnly = True
-        Me.categoryTextBox.Size = New System.Drawing.Size(663, 20)
-        Me.categoryTextBox.TabIndex = 7
+        Me.titleLabel.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.titleLabel.AutoSize = True
+        Me.titleLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.titleLabel.Location = New System.Drawing.Point(6, 150)
+        Me.titleLabel.Name = "titleLabel"
+        Me.titleLabel.Size = New System.Drawing.Size(40, 17)
+        Me.titleLabel.TabIndex = 2
+        Me.titleLabel.Text = "Title"
         '
         'newsApplication
         '
