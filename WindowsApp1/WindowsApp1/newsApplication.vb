@@ -117,6 +117,9 @@ Public Class newsApplication
                 filePath = imageDict(creationdate1)
                 Info = dirManipulator.readFile(filePath)
                 newForm = New editImage(filePath)
+            Else
+                MessageBox.Show("Error")
+                Exit Sub
             End If
 
             If filePath <> String.Empty Then

@@ -56,9 +56,6 @@ Public Class editNews
         categoryComboBox.DropDownStyle = ComboBoxStyle.DropDownList
         bodyTextBox.Text = Info(4)
 
-
-
-
     End Sub
 
 End Class

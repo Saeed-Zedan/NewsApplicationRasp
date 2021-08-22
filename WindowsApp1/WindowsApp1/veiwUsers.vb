@@ -29,7 +29,22 @@ Public Class veiwUsers
         End If
     End Sub
     Private Sub usersListBox_DoubleClick(sender As Object, e As EventArgs) Handles usersListBox.DoubleClick
+        Dim row = usersListBox.SelectedItem
+        If row IsNot Nothing Then
+            Dim info = row.ToString().Split()
+            Dim filename = userDict(info(0))
+            Dim newForm As editUser = New editUser(filename)
+            Dim result = newForm.ShowDialog()
+            If result = DialogResult.OK Then
+                userDict.Remove(info(0))
+                info = dirManipulator.readFile(filename)
+                userDict.Add(info(0), filename)
+                usersListBox.Items.Remove(row)
+                Dim strDeatail = "{0,-60}{1,-120}"
+                usersListBox.Items.Add(String.Format(strDeatail, info(0), info(1)))
 
+            End If
+        End If
     End Sub
 
     Private Sub deleteToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles deleteToolStripMenuItem.Click

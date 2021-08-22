@@ -94,6 +94,12 @@
     <Compile Include="addUser.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="editUser.Designer.vb">
+      <DependentUpon>editUser.vb</DependentUpon>
+    </Compile>
+    <Compile Include="editUser.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="dirManipulator.vb" />
     <Compile Include="editImage.Designer.vb">
       <DependentUpon>editImage.vb</DependentUpon>
@@ -148,6 +154,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="addUser.resx">
       <DependentUpon>addUser.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="editUser.resx">
+      <DependentUpon>editUser.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="editImage.resx">
       <DependentUpon>editImage.vb</DependentUpon>

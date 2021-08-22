@@ -30,12 +30,12 @@ Partial Class editImage
         Me.bodyLabel = New System.Windows.Forms.Label()
         Me.editImageTabControl = New System.Windows.Forms.TabControl()
         Me.fileDescriptionTabPage = New System.Windows.Forms.TabPage()
-        Me.imageTabPage = New System.Windows.Forms.TabPage()
-        Me.editButton = New System.Windows.Forms.Button()
         Me.cancelButton = New System.Windows.Forms.Button()
-        Me.browseButton = New System.Windows.Forms.Button()
-        Me.imagePathTextBox = New System.Windows.Forms.TextBox()
+        Me.editButton = New System.Windows.Forms.Button()
+        Me.imageTabPage = New System.Windows.Forms.TabPage()
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
+        Me.imagePathTextBox = New System.Windows.Forms.TextBox()
+        Me.browseButton = New System.Windows.Forms.Button()
         Me.editImageTabControl.SuspendLayout()
         Me.fileDescriptionTabPage.SuspendLayout()
         Me.imageTabPage.SuspendLayout()
@@ -130,6 +130,26 @@ Partial Class editImage
         Me.fileDescriptionTabPage.Text = "File Description"
         Me.fileDescriptionTabPage.UseVisualStyleBackColor = True
         '
+        'cancelButton
+        '
+        Me.cancelButton.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.cancelButton.Location = New System.Drawing.Point(330, 338)
+        Me.cancelButton.Name = "cancelButton"
+        Me.cancelButton.Size = New System.Drawing.Size(75, 23)
+        Me.cancelButton.TabIndex = 7
+        Me.cancelButton.Text = "Cancel"
+        Me.cancelButton.UseVisualStyleBackColor = True
+        '
+        'editButton
+        '
+        Me.editButton.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.editButton.Location = New System.Drawing.Point(249, 338)
+        Me.editButton.Name = "editButton"
+        Me.editButton.Size = New System.Drawing.Size(75, 23)
+        Me.editButton.TabIndex = 6
+        Me.editButton.Text = "Edit"
+        Me.editButton.UseVisualStyleBackColor = True
+        '
         'imageTabPage
         '
         Me.imageTabPage.Controls.Add(Me.PictureBox1)
@@ -143,45 +163,6 @@ Partial Class editImage
         Me.imageTabPage.Text = "Image"
         Me.imageTabPage.UseVisualStyleBackColor = True
         '
-        'editButton
-        '
-        Me.editButton.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.editButton.Location = New System.Drawing.Point(249, 338)
-        Me.editButton.Name = "editButton"
-        Me.editButton.Size = New System.Drawing.Size(75, 23)
-        Me.editButton.TabIndex = 6
-        Me.editButton.Text = "Edit"
-        Me.editButton.UseVisualStyleBackColor = True
-        '
-        'cancelButton
-        '
-        Me.cancelButton.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.cancelButton.Location = New System.Drawing.Point(330, 338)
-        Me.cancelButton.Name = "cancelButton"
-        Me.cancelButton.Size = New System.Drawing.Size(75, 23)
-        Me.cancelButton.TabIndex = 7
-        Me.cancelButton.Text = "Cancel"
-        Me.cancelButton.UseVisualStyleBackColor = True
-        '
-        'browseButton
-        '
-        Me.browseButton.Location = New System.Drawing.Point(8, 6)
-        Me.browseButton.Name = "browseButton"
-        Me.browseButton.Size = New System.Drawing.Size(75, 20)
-        Me.browseButton.TabIndex = 0
-        Me.browseButton.Text = "Browse"
-        Me.browseButton.UseVisualStyleBackColor = True
-        '
-        'imagePathTextBox
-        '
-        Me.imagePathTextBox.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.imagePathTextBox.Location = New System.Drawing.Point(89, 6)
-        Me.imagePathTextBox.Name = "imagePathTextBox"
-        Me.imagePathTextBox.ReadOnly = True
-        Me.imagePathTextBox.Size = New System.Drawing.Size(316, 20)
-        Me.imagePathTextBox.TabIndex = 1
-        '
         'PictureBox1
         '
         Me.PictureBox1.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
@@ -194,6 +175,25 @@ Partial Class editImage
         Me.PictureBox1.TabIndex = 2
         Me.PictureBox1.TabStop = False
         '
+        'imagePathTextBox
+        '
+        Me.imagePathTextBox.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.imagePathTextBox.Location = New System.Drawing.Point(89, 6)
+        Me.imagePathTextBox.Name = "imagePathTextBox"
+        Me.imagePathTextBox.ReadOnly = True
+        Me.imagePathTextBox.Size = New System.Drawing.Size(316, 20)
+        Me.imagePathTextBox.TabIndex = 1
+        '
+        'browseButton
+        '
+        Me.browseButton.Location = New System.Drawing.Point(8, 6)
+        Me.browseButton.Name = "browseButton"
+        Me.browseButton.Size = New System.Drawing.Size(75, 20)
+        Me.browseButton.TabIndex = 0
+        Me.browseButton.Text = "Browse"
+        Me.browseButton.UseVisualStyleBackColor = True
+        '
         'editImage
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -201,7 +201,7 @@ Partial Class editImage
         Me.ClientSize = New System.Drawing.Size(421, 395)
         Me.Controls.Add(Me.editImageTabControl)
         Me.Name = "editImage"
-        Me.Text = "editImage"
+        Me.Text = "Edit Image"
         Me.editImageTabControl.ResumeLayout(False)
         Me.fileDescriptionTabPage.ResumeLayout(False)
         Me.fileDescriptionTabPage.PerformLayout()

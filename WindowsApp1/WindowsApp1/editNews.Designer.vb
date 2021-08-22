@@ -142,7 +142,7 @@ Partial Class editNews
         Me.categoryComboBox.Size = New System.Drawing.Size(151, 21)
         Me.categoryComboBox.TabIndex = 2
         '
-        'newsEdit
+        'editNews
         '
         Me.AcceptButton = Me.OK_Button
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -161,10 +161,10 @@ Partial Class editNews
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.MaximizeBox = False
         Me.MinimizeBox = False
-        Me.Name = "newsEdit"
+        Me.Name = "editNews"
         Me.ShowInTaskbar = False
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
-        Me.Text = "newsEdit"
+        Me.Text = "Edit news"
         Me.TableLayoutPanel1.ResumeLayout(False)
         Me.ResumeLayout(False)
         Me.PerformLayout()
