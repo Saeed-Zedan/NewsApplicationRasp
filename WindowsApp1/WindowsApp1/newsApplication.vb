@@ -14,7 +14,6 @@ Public Class newsApplication
         Using newForm = New LoginScreen()
             If newForm.ShowDialog = DialogResult.OK Then
                 currentUser = newForm.getUserName()
-
                 MessageBox.Show(newForm.getUserName())
             Else
                 Me.Dispose()
@@ -44,6 +43,23 @@ Public Class newsApplication
             MessageBox.Show("Process failed", "IO ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
     End Sub
+    Private Sub addingRow(filePath As String, ByRef dict As Dictionary(Of String, String))
+        If (File.Exists(filePath)) Then
+            Dim Info As String()
+            Try
+                If filePath.EndsWith(".txt") Then
+                    Info = dirManipulator.readFile(filePath)
+                    dict.Add(Info(1), filePath) 'adding new element to the dictionary (creation date -as its the only unique attribute int the News Class-, File name)
+                    newsDataGridView.Rows.Add({Info(0), Info(1), Info(2)}) 'adding a new row to the grid (Title, Creation date, description
+
+                End If
+            Catch ex As IOException
+                MessageBox.Show("Process failed", "IO ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            End Try
+        End If
+
+    End Sub
+
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Me.WindowState = FormWindowState.Maximized
 
@@ -107,8 +123,16 @@ Public Class newsApplication
     End Sub
 
     Private Sub NewsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles NewsToolStripMenuItem.Click
-        Dim newForm As addNews = New addNews()
-        newForm.ShowDialog()
+        'Dim newForm As addNews = New addNews()
+        'newForm.ShowDialog()
+
+        Using newForm = New addNews
+            If newForm.ShowDialog() = DialogResult.OK Then
+                addingRow(newForm.filename, newsDict)
+            End If
+
+        End Using
+
     End Sub
 
     Private Sub ExitToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ExitToolStripMenuItem.Click
@@ -170,8 +194,11 @@ Public Class newsApplication
     End Sub
 
     Private Sub ImageToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ImageToolStripMenuItem.Click
-        Dim newForm = New addImage()
-        newForm.ShowDialog()
+        Using newForm = New addImage
+            If newForm.ShowDialog() = DialogResult.OK Then
+                addingRow(newForm.filename, imageDict)
+            End If
+        End Using
     End Sub
 
     Private Sub EmptyFields()
@@ -245,21 +272,6 @@ Public Class newsApplication
         End Using
 
     End Sub
-
-    Private Sub loginToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles loginToolStripMenuItem.Click
-        If currentUser = String.Empty Then
-            Using newForm = New LoginScreen()
-                If newForm.ShowDialog = DialogResult.OK Then
-                    currentUser = newForm.getUserName()
-                    MessageBox.Show(newForm.getUserName())
-                End If
-            End Using
-        Else
-            MessageBox.Show($"There is an active user : {currentUser}{vbCrLf}Please logout first", "Invalid Login")
-        End If
-
-    End Sub
-
     Private Sub CurrentUserToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles CurrentUserToolStripMenuItem.Click
         MessageBox.Show(currentUser)
     End Sub

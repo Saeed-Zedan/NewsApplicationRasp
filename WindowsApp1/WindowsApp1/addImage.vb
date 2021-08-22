@@ -1,6 +1,7 @@
 ﻿
 Imports System.IO
 Public Class addImage
+    Public filename As String = String.Empty
     Private Sub browseButton_Click(sender As Object, e As EventArgs) Handles browseButton.Click
         Dim result As DialogResult
         Dim filename As String
@@ -18,6 +19,7 @@ Public Class addImage
             imagePathTextBox.Text = filename
             PictureBox1.Image = Image.FromFile(filename)
         End If
+
     End Sub
 
     Private Sub cancelButton_Click(sender As Object, e As EventArgs) Handles cancelButton.Click
@@ -48,7 +50,7 @@ Public Class addImage
 
         Dim dirPath = My.Computer.FileSystem.SpecialDirectories.MyDocuments & "\Images"
         Dim info = newsOb.Title & "^_^" & newsOb.creationDate & "^_^" & newsOb.Description & "^_^" & newsOb.Image & "^_^" & newsOb.Body
-        dirManipulator.addFile(dirPath, info)
-        Me.Dispose()
+        filename = dirManipulator.addFile(dirPath, info)
+        Me.DialogResult = DialogResult.OK
     End Sub
 End Class

@@ -1,7 +1,7 @@
 ﻿Imports System.IO
 
 Public Module dirManipulator
-    Sub addFile(dirPath As String, Info As String)
+    Function addFile(dirPath As String, Info As String) As String
         Try
 
             If Not (Directory.Exists(dirPath)) Then
@@ -15,10 +15,12 @@ Public Module dirManipulator
             streamWr.Flush()
             fileWrite.Close()
             MessageBox.Show("Process end successfully", "Done", MessageBoxButtons.OK, MessageBoxIcon.Information)
+            Return fileName
         Catch ex As IOException
             MessageBox.Show("Process failed", "IO ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            Return String.Empty
         End Try
-    End Sub 'Add a new File
+    End Function 'Add a new File
     Sub editFile(filePath As String, Info As String)
         Try
             Dim fileWrite As FileStream = New FileStream(filePath, FileMode.Create, FileAccess.Write)
