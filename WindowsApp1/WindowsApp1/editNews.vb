@@ -1,6 +1,6 @@
 ﻿Imports System.Windows.Forms
 
-Public Class newsEdit
+Public Class editNews
     Private filePath As String
     Private creationDate As String
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
@@ -28,7 +28,7 @@ Public Class newsEdit
         End If
 
         Dim info = newsOb.Title & "^_^" & creationDate & "^_^" & newsOb.Description & "^_^" & newsOb.Category & "^_^" & newsOb.Body
-        Dim result = MessageBox.Show("Aru u sure u want to comit ur edits : ", "Warning msg", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
+        Dim result = MessageBox.Show("Aru u sure u want to commit ur edits", "Warning msg", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
         If result = DialogResult.Yes Then
             dirManipulator.editFile(filePath, info)
             Me.DialogResult = System.Windows.Forms.DialogResult.OK

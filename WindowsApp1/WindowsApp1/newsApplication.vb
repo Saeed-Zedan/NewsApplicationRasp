@@ -15,8 +15,9 @@ Public Class newsApplication
             For Each filename As String In files
                 If filename.EndsWith(".txt") Then
                     Info = dirManipulator.readFile(filename)
-                    newsDataGridView.Rows.Add({Info(0), Info(1), Info(2)}) 'adding a new row to the grid (Title, Creation date, description
                     dict.Add(Info(1), filename) 'adding new element to the dictionary (creation date -as its the only unique attribute int the News Class-, File name)
+                    newsDataGridView.Rows.Add({Info(0), Info(1), Info(2)}) 'adding a new row to the grid (Title, Creation date, description
+
                 End If
             Next
         Catch ex As IOException
@@ -104,19 +105,22 @@ Public Class newsApplication
         Dim editNews = newsDataGridView.SelectedRows
 
         If editNews.Count = 1 Then
-            MessageBox.Show(editNews(0).Index)
             Dim creationdate1 = editNews.Item(0).Cells(1).Value
             Dim filePath As String = String.Empty
-
+            Dim Info As String()
+            Dim newForm
             If newsDict.ContainsKey(creationdate1) Then
-                filePath = newsDict(editNews.Item(0).Cells(1).Value)
+                filePath = newsDict(creationdate1)
+                Info = dirManipulator.readFile(filePath)
+                newForm = New editNews(filePath)
             ElseIf imageDict.ContainsKey(creationdate1) Then
                 filePath = imageDict(creationdate1)
+                Info = dirManipulator.readFile(filePath)
+                newForm = New editImage(filePath)
             End If
 
             If filePath <> String.Empty Then
-                Dim Info = dirManipulator.readFile(filePath)
-                Dim newForm As newsEdit = New newsEdit(filePath)
+
                 Dim result = newForm.ShowDialog()
                 If result = DialogResult.OK Then
                     Dim Info2 = dirManipulator.readFile(filePath)
@@ -135,46 +139,9 @@ Public Class newsApplication
         EmptyFields()
 
         Dim row = newsDataGridView.SelectedRows
-        MessageBox.Show("selc " & row.Count & " " & newsDict.Count & imageDict.Count)
         If row.Count > 0 Then
-            Dim creationDate1 = row(0).Cells(1).Value
+            displayNewsData(row(0))
 
-            If newsDict.ContainsKey(creationDate1) Then
-                categoryLabel.Enabled = True
-                categoryTextBox.Enabled = True
-                categoryLabel.Visible = True
-                categoryTextBox.Visible = True
-                imageTabPage.Enabled = False
-                imageTabPage.Visible = False
-
-
-
-                Dim filePath = newsDict(creationDate1)
-                Dim info = dirManipulator.readFile(filePath)
-
-                titleTextBox.Text = info(0)
-                creationDateTextBox.Text = info(1)
-                categoryTextBox.Text = info(3)
-                bodyTextBox.Text = info(4)
-
-            ElseIf imageDict.ContainsKey(creationDate1) Then
-                categoryLabel.Enabled = False
-                categoryTextBox.Enabled = False
-                categoryLabel.Visible = False
-                categoryTextBox.Visible = False
-
-                imageTabPage.Enabled = True
-                imageTabPage.Visible = True
-
-                Dim filePath = imageDict(creationDate1)
-                Dim info = dirManipulator.readFile(filePath)
-
-                titleTextBox.Text = info(0)
-                creationDateTextBox.Text = info(1)
-                PictureBox1.Image = Image.FromFile(info(3))
-                bodyTextBox.Text = info(4)
-
-            End If
         End If
 
     End Sub
@@ -189,9 +156,7 @@ Public Class newsApplication
         bodyTextBox.Text = String.Empty
         categoryTextBox.Text = String.Empty
         creationDateTextBox.Text = String.Empty
-        If PictureBox1.Image IsNot Nothing Then
-            PictureBox1.Image.Dispose()
-        End If
+        PictureBox1.Image = Nothing
 
     End Sub
 
@@ -202,16 +167,17 @@ Public Class newsApplication
 
     Private Sub displayNewsData(row As DataGridViewRow)
         Dim creationDate1 = row.Cells(1).Value
-        MessageBox.Show("dis")
         If newsDict.ContainsKey(creationDate1) Then
             categoryLabel.Enabled = True
             categoryTextBox.Enabled = True
             categoryLabel.Visible = True
             categoryTextBox.Visible = True
+
             imageTabPage.Enabled = False
             imageTabPage.Visible = False
 
-
+            displayTabControl.TabPages(1).Visible = False
+            displayTabControl.TabPages(1).Enabled = False
 
             Dim filePath = newsDict(creationDate1)
             Dim info = dirManipulator.readFile(filePath)

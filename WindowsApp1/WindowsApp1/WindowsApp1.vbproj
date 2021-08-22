@@ -95,6 +95,12 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="dirManipulator.vb" />
+    <Compile Include="editImage.Designer.vb">
+      <DependentUpon>editImage.vb</DependentUpon>
+    </Compile>
+    <Compile Include="editImage.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="newsApplication.vb">
       <SubType>Form</SubType>
     </Compile>
@@ -119,10 +125,10 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="News.vb" />
-    <Compile Include="newsEdit.Designer.vb">
-      <DependentUpon>newsEdit.vb</DependentUpon>
+    <Compile Include="editNews.Designer.vb">
+      <DependentUpon>editNews.vb</DependentUpon>
     </Compile>
-    <Compile Include="newsEdit.vb">
+    <Compile Include="editNews.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="User.vb" />
@@ -143,6 +149,9 @@
     <EmbeddedResource Include="addUser.resx">
       <DependentUpon>addUser.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="editImage.resx">
+      <DependentUpon>editImage.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="newsApplication.resx">
       <DependentUpon>newsApplication.vb</DependentUpon>
     </EmbeddedResource>
@@ -152,8 +161,8 @@
       <CustomToolNamespace>My.Resources</CustomToolNamespace>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="newsEdit.resx">
-      <DependentUpon>newsEdit.vb</DependentUpon>
+    <EmbeddedResource Include="editNews.resx">
+      <DependentUpon>editNews.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="veiwUsers.resx">
       <DependentUpon>veiwUsers.vb</DependentUpon>
