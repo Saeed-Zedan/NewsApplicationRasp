@@ -30,6 +30,7 @@ Public Class LoginScreen
                     Info = dirManipulator.readFile(filename)
                     If Info(0) = curUser.loginName And Info(2) = curUser.Password Then
                         Me.DialogResult = DialogResult.OK
+
                         Me.Close()
                         Exit Sub
                     End If

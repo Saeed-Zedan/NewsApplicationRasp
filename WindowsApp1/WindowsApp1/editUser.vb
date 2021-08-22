@@ -1,4 +1,5 @@
-﻿Imports System.Windows.Forms
+﻿Imports System.IO
+Imports System.Windows.Forms
 
 Public Class editUser
     Private filePath As String
@@ -15,6 +16,17 @@ Public Class editUser
 
     End Sub
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles edit_Button.Click
+        Dim allUsersName As List(Of String) = New List(Of String)
+        Dim dirPath = My.Computer.FileSystem.SpecialDirectories.MyDocuments & "\Users"
+
+        Dim files = Directory.GetFiles(dirPath)
+
+        For Each item In files
+            If item.EndsWith(".txt") Then
+                Dim name = readFile(item)(0)
+                allUsersName.Add(name)
+            End If
+        Next
 
         Select Case String.Empty
             Case nameTextBox.Text
@@ -26,6 +38,12 @@ Public Class editUser
                 longNameTextBox.Select()
                 Exit Sub
         End Select
+
+        If allUsersName.Contains(nameTextBox.Text) Then
+            MessageBox.Show("The name is already used!", "Not valid value", MessageBoxButtons.OK, MessageBoxIcon.Stop)
+            nameTextBox.Select()
+            Exit Sub
+        End If
 
         Dim newsOb As User = New User()
         newsOb.loginName = nameTextBox.Text

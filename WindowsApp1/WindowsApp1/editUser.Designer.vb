@@ -118,7 +118,7 @@ Partial Class editUser
         Me.Name = "editUser"
         Me.ShowInTaskbar = False
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
-        Me.Text = "Dialog1"
+        Me.Text = "Edit User"
         Me.TableLayoutPanel1.ResumeLayout(False)
         Me.ResumeLayout(False)
         Me.PerformLayout()

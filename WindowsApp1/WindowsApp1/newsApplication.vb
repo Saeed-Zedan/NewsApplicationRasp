@@ -3,6 +3,7 @@ Imports System.Drawing
 
 Public Class newsApplication
     Private currentUser As String = String.Empty
+    Private userPriv As Boolean
     Public Sub New()
 
         ' This call is required by the designer.

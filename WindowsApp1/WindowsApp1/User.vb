@@ -3,6 +3,7 @@ Public Class User
     Private fullNameValue As String
     Private loginNameValue As String
     Private passwordValue As String
+    Private privValue As Boolean = False
     Private lastModifierValue As String
 
     Public Property fullName() As String
@@ -59,4 +60,12 @@ Public Class User
             End If
         End Set
     End Property 'lastModifier prop
+    Public Property Priv() As Boolean
+        Get
+            Return privValue
+        End Get
+        Set(value As Boolean)
+            privValue = value
+        End Set
+    End Property
 End Class
