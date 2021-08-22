@@ -1,7 +1,7 @@
 Imports System.IO
 
 Public Class LoginScreen
-
+    Private Priv As Boolean
     ' TODO: Insert code to perform custom authentication using the provided username and password 
     ' (See https://go.microsoft.com/fwlink/?LinkId=35339).  
     ' The custom principal can then be attached to the current thread's principal as follows: 
@@ -29,6 +29,8 @@ Public Class LoginScreen
                 If filename.EndsWith(".txt") Then
                     Info = dirManipulator.readFile(filename)
                     If Info(0) = curUser.loginName And Info(2) = curUser.Password Then
+                        Priv = Info(4)
+
                         Me.DialogResult = DialogResult.OK
 
                         Me.Close()
@@ -51,5 +53,11 @@ Public Class LoginScreen
     Public Function getUserName() As String
         Return UsernameTextBox.Text
     End Function
+
+    Public ReadOnly Property getPriv As Boolean
+        Get
+            Return Priv
+        End Get
+    End Property
 
 End Class

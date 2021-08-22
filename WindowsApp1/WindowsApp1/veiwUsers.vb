@@ -2,7 +2,19 @@
 Imports System.IO
 Public Class veiwUsers
     Dim userDict As Dictionary(Of String, String)
+    Dim curUser As String
+    Dim Priv As Boolean
 
+    Public Sub New(curUser As String, priv As Boolean)
+
+        ' This call is required by the designer.
+        InitializeComponent()
+
+        ' Add any initialization after the InitializeComponent() call.
+        Me.curUser = curUser
+        Me.Priv = priv
+
+    End Sub
     Private Sub veiwUsers_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Dim dirPath = My.Computer.FileSystem.SpecialDirectories.MyDocuments + "\Users"
 
@@ -29,6 +41,10 @@ Public Class veiwUsers
         End If
     End Sub
     Private Sub usersListBox_DoubleClick(sender As Object, e As EventArgs) Handles usersListBox.DoubleClick
+        If Not Priv Then
+            MessageBox.Show("You are not allowed to modify users information", "Privilage Violation", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+            Exit Sub
+        End If
         Dim row = usersListBox.SelectedItem
         If row IsNot Nothing Then
             Dim info = row.ToString().Split()
@@ -48,6 +64,11 @@ Public Class veiwUsers
     End Sub
 
     Private Sub deleteToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles deleteToolStripMenuItem.Click
+        If Not Priv Then
+            MessageBox.Show("You are not allowed to modify users information", "Privilage Violation", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+            Exit Sub
+        End If
+
         Dim dirPath = My.Computer.FileSystem.SpecialDirectories.MyDocuments & "\Users" 'get the directory path where the file/s are saved
         Dim row = usersListBox.SelectedItem
         Dim files As List(Of String) = New List(Of String)

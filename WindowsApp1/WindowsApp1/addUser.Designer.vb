@@ -30,6 +30,7 @@ Partial Class addUser
         Me.passwordTextBox = New System.Windows.Forms.TextBox()
         Me.saveButton = New System.Windows.Forms.Button()
         Me.exitButton2 = New System.Windows.Forms.Button()
+        Me.adminCheckBox = New System.Windows.Forms.CheckBox()
         Me.SuspendLayout()
         '
         'nameLabel
@@ -67,7 +68,7 @@ Partial Class addUser
         Me.nameTextBox.Location = New System.Drawing.Point(118, 13)
         Me.nameTextBox.MaxLength = 255
         Me.nameTextBox.Name = "nameTextBox"
-        Me.nameTextBox.Size = New System.Drawing.Size(127, 20)
+        Me.nameTextBox.Size = New System.Drawing.Size(204, 20)
         Me.nameTextBox.TabIndex = 0
         '
         'longNameTextBox
@@ -75,7 +76,7 @@ Partial Class addUser
         Me.longNameTextBox.Location = New System.Drawing.Point(118, 52)
         Me.longNameTextBox.MaxLength = 255
         Me.longNameTextBox.Name = "longNameTextBox"
-        Me.longNameTextBox.Size = New System.Drawing.Size(127, 20)
+        Me.longNameTextBox.Size = New System.Drawing.Size(204, 20)
         Me.longNameTextBox.TabIndex = 1
         '
         'passwordTextBox
@@ -84,12 +85,12 @@ Partial Class addUser
         Me.passwordTextBox.MaxLength = 255
         Me.passwordTextBox.Name = "passwordTextBox"
         Me.passwordTextBox.PasswordChar = Global.Microsoft.VisualBasic.ChrW(42)
-        Me.passwordTextBox.Size = New System.Drawing.Size(127, 20)
+        Me.passwordTextBox.Size = New System.Drawing.Size(204, 20)
         Me.passwordTextBox.TabIndex = 2
         '
         'saveButton
         '
-        Me.saveButton.Location = New System.Drawing.Point(38, 125)
+        Me.saveButton.Location = New System.Drawing.Point(81, 169)
         Me.saveButton.Name = "saveButton"
         Me.saveButton.Size = New System.Drawing.Size(75, 23)
         Me.saveButton.TabIndex = 4
@@ -98,19 +99,31 @@ Partial Class addUser
         '
         'exitButton2
         '
-        Me.exitButton2.Location = New System.Drawing.Point(135, 125)
+        Me.exitButton2.Location = New System.Drawing.Point(162, 169)
         Me.exitButton2.Name = "exitButton2"
         Me.exitButton2.Size = New System.Drawing.Size(75, 23)
         Me.exitButton2.TabIndex = 5
         Me.exitButton2.Text = "Cancel"
         Me.exitButton2.UseVisualStyleBackColor = True
         '
+        'adminCheckBox
+        '
+        Me.adminCheckBox.CheckAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.adminCheckBox.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.adminCheckBox.Location = New System.Drawing.Point(26, 113)
+        Me.adminCheckBox.Name = "adminCheckBox"
+        Me.adminCheckBox.Size = New System.Drawing.Size(108, 28)
+        Me.adminCheckBox.TabIndex = 6
+        Me.adminCheckBox.Text = "Admin"
+        Me.adminCheckBox.UseVisualStyleBackColor = True
+        '
         'addUser
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(261, 160)
+        Me.ClientSize = New System.Drawing.Size(334, 204)
         Me.ControlBox = False
+        Me.Controls.Add(Me.adminCheckBox)
         Me.Controls.Add(Me.exitButton2)
         Me.Controls.Add(Me.saveButton)
         Me.Controls.Add(Me.passwordTextBox)
@@ -136,4 +149,5 @@ Partial Class addUser
     Friend WithEvents passwordTextBox As TextBox
     Friend WithEvents saveButton As Button
     Friend WithEvents exitButton2 As Button
+    Friend WithEvents adminCheckBox As CheckBox
 End Class

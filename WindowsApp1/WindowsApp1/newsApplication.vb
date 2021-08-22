@@ -15,7 +15,8 @@ Public Class newsApplication
         Using newForm = New LoginScreen()
             If newForm.ShowDialog = DialogResult.OK Then
                 currentUser = newForm.getUserName()
-                MessageBox.Show(newForm.getUserName())
+                userPriv = newForm.getPriv()
+                MessageBox.Show(newForm.getUserName() & userPriv)
             Else
                 Me.Dispose()
             End If
@@ -119,7 +120,7 @@ Public Class newsApplication
     End Sub
 
     Private Sub UserToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles UserToolStripMenuItem.Click
-        Dim userForm As addUser = New addUser()
+        Dim userForm As addUser = New addUser(currentUser)
         userForm.ShowDialog()
     End Sub
 
@@ -141,7 +142,7 @@ Public Class newsApplication
     End Sub
 
     Private Sub displayUsersToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles displayUsersToolStripMenuItem.Click
-        Dim newForm As veiwUsers = New veiwUsers()
+        Dim newForm As veiwUsers = New veiwUsers(currentUser, userPriv)
         newForm.ShowDialog()
     End Sub
 
@@ -264,7 +265,7 @@ Public Class newsApplication
         Using newForm = New LoginScreen()
             If newForm.ShowDialog = DialogResult.OK Then
                 currentUser = newForm.getUserName()
-
+                userPriv = newForm.getPriv()
                 MessageBox.Show(newForm.getUserName())
                 Me.Show()
             Else

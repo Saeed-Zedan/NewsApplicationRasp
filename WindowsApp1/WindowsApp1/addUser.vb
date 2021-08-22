@@ -3,6 +3,15 @@ Imports System.Security.Cryptography
 
 Imports System.Text.RegularExpressions
 Public Class addUser
+    Private curUser As String = String.Empty
+    Public Sub New(curUser As String)
+
+        ' This call is required by the designer.
+        InitializeComponent()
+
+        ' Add any initialization after the InitializeComponent() call.
+        Me.curUser = curUser
+    End Sub
     Private Sub saveButton_Click(sender As Object, e As EventArgs) Handles saveButton.Click
 
         Dim longNameFormat As String = "[a-zA-Z]+(\s[a-zA-Z]+)+"
@@ -45,9 +54,9 @@ Public Class addUser
         userOb.fullName = longNameTextBox.Text
         userOb.loginName = nameTextBox.Text
         userOb.Password = passwordTextBox.Text
-
-
-        Dim Info = userOb.loginName & "^_^" & userOb.fullName & "^_^" & userOb.Password
+        userOb.Priv = adminCheckBox.Checked
+        userOb.lastModifier = curUser
+        Dim Info = userOb.loginName & "^_^" & userOb.fullName & "^_^" & userOb.Password & "^_^" & userOb.lastModifier & "^_^" & userOb.Priv
         dirManipulator.addFile(dirPath, Info)
 
         Me.Dispose()
