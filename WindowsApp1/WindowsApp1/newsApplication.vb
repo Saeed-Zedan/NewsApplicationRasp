@@ -232,6 +232,18 @@ Public Class newsApplication
 
     Private Sub logoutToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles logoutToolStripMenuItem.Click
         currentUser = String.Empty
+        Me.Hide()
+        Using newForm = New LoginScreen()
+            If newForm.ShowDialog = DialogResult.OK Then
+                currentUser = newForm.getUserName()
+
+                MessageBox.Show(newForm.getUserName())
+                Me.Show()
+            Else
+                Me.Dispose()
+            End If
+        End Using
+
     End Sub
 
     Private Sub loginToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles loginToolStripMenuItem.Click
