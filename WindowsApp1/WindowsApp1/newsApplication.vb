@@ -2,6 +2,26 @@
 Imports System.Drawing
 
 Public Class newsApplication
+    Private currentUser As String = String.Empty
+    Public Sub New()
+
+        ' This call is required by the designer.
+        InitializeComponent()
+
+        ' Add any initialization after the InitializeComponent() call.
+        'Dim newForm As LoginScreen = New LoginScreen()
+        'Dim result = LoginScreen.ShowDialog()
+        Using newForm = New LoginScreen()
+            If newForm.ShowDialog = DialogResult.OK Then
+                currentUser = newForm.getUserName()
+
+                MessageBox.Show(newForm.getUserName())
+            Else
+                Me.Dispose()
+            End If
+        End Using
+
+    End Sub
     Private Sub addingRows(dirPath As String, ByRef dict As Dictionary(Of String, String))
         If Not (Directory.Exists(dirPath)) Then
             FileSystem.MkDir(dirPath)
@@ -208,5 +228,27 @@ Public Class newsApplication
             bodyTextBox.Text = info(4)
 
         End If
+    End Sub
+
+    Private Sub logoutToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles logoutToolStripMenuItem.Click
+        currentUser = String.Empty
+    End Sub
+
+    Private Sub loginToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles loginToolStripMenuItem.Click
+        If currentUser = String.Empty Then
+            Using newForm = New LoginScreen()
+                If newForm.ShowDialog = DialogResult.OK Then
+                    currentUser = newForm.getUserName()
+                    MessageBox.Show(newForm.getUserName())
+                End If
+            End Using
+        Else
+            MessageBox.Show($"There is an active user : {currentUser}{vbCrLf}Please logout first", "Invalid Login")
+        End If
+
+    End Sub
+
+    Private Sub CurrentUserToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles CurrentUserToolStripMenuItem.Click
+        MessageBox.Show(currentUser)
     End Sub
 End Class
