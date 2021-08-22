@@ -20,7 +20,7 @@ Public Class addNews
         If descriptionTextBox.Text <> String.Empty Then
             newsOb.Description = descriptionTextBox.Text
         Else
-            newsOb.Description = "  " 'this will indicate a null field i can use space instead but Daaah
+            newsOb.Description = "  "
         End If
 
         Dim dirPath = My.Computer.FileSystem.SpecialDirectories.MyDocuments & "\News"
