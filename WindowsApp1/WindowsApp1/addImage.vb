@@ -32,7 +32,6 @@ Public Class addImage
                 Exit Sub
             Case imagePathTextBox.Text
                 MessageBox.Show("You must select a picture!", "Empty picture", MessageBoxButtons.OK, MessageBoxIcon.Stop)
-                imageTabPage.Show()
                 Exit Sub
         End Select
 
@@ -44,7 +43,7 @@ Public Class addImage
         If descriptionTextBox.Text <> String.Empty Then
             newsOb.Description = descriptionTextBox.Text
         Else
-            newsOb.Description = "  " 'this will indicate a null field i can use space instead but Daaah
+            newsOb.Description = "  "
         End If
 
         Dim dirPath = My.Computer.FileSystem.SpecialDirectories.MyDocuments & "\Images"

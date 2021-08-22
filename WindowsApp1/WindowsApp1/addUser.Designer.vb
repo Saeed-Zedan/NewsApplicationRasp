@@ -65,6 +65,7 @@ Partial Class addUser
         'nameTextBox
         '
         Me.nameTextBox.Location = New System.Drawing.Point(118, 13)
+        Me.nameTextBox.MaxLength = 255
         Me.nameTextBox.Name = "nameTextBox"
         Me.nameTextBox.Size = New System.Drawing.Size(127, 20)
         Me.nameTextBox.TabIndex = 0
@@ -72,6 +73,7 @@ Partial Class addUser
         'longNameTextBox
         '
         Me.longNameTextBox.Location = New System.Drawing.Point(118, 52)
+        Me.longNameTextBox.MaxLength = 255
         Me.longNameTextBox.Name = "longNameTextBox"
         Me.longNameTextBox.Size = New System.Drawing.Size(127, 20)
         Me.longNameTextBox.TabIndex = 1
@@ -79,6 +81,7 @@ Partial Class addUser
         'passwordTextBox
         '
         Me.passwordTextBox.Location = New System.Drawing.Point(118, 87)
+        Me.passwordTextBox.MaxLength = 255
         Me.passwordTextBox.Name = "passwordTextBox"
         Me.passwordTextBox.PasswordChar = Global.Microsoft.VisualBasic.ChrW(42)
         Me.passwordTextBox.Size = New System.Drawing.Size(127, 20)

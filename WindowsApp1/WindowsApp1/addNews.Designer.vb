@@ -37,6 +37,7 @@ Partial Class addNews
         'titleTextBox
         '
         Me.titleTextBox.Location = New System.Drawing.Point(113, 12)
+        Me.titleTextBox.MaxLength = 255
         Me.titleTextBox.Name = "titleTextBox"
         Me.titleTextBox.Size = New System.Drawing.Size(325, 20)
         Me.titleTextBox.TabIndex = 0
@@ -44,6 +45,7 @@ Partial Class addNews
         'descriptionTextBox
         '
         Me.descriptionTextBox.Location = New System.Drawing.Point(113, 50)
+        Me.descriptionTextBox.MaxLength = 255
         Me.descriptionTextBox.Name = "descriptionTextBox"
         Me.descriptionTextBox.Size = New System.Drawing.Size(325, 20)
         Me.descriptionTextBox.TabIndex = 1
@@ -51,6 +53,7 @@ Partial Class addNews
         'bodyTextBox
         '
         Me.bodyTextBox.Location = New System.Drawing.Point(113, 132)
+        Me.bodyTextBox.MaxLength = 10000
         Me.bodyTextBox.Multiline = True
         Me.bodyTextBox.Name = "bodyTextBox"
         Me.bodyTextBox.Size = New System.Drawing.Size(325, 248)

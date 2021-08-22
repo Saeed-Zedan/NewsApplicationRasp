@@ -1,6 +1,27 @@
 ﻿Imports System.IO
 Imports System.Drawing
 Public Class newsApplication
+    Private Sub addingRows(dirPath As String, ByRef dict As Dictionary(Of String, String))
+        If Not (Directory.Exists(dirPath)) Then
+            FileSystem.MkDir(dirPath)
+        End If
+
+        Dim files = My.Computer.FileSystem.GetFiles(dirPath) 'retrieve all the files' name
+        Dim Info As String()
+
+
+        Try
+            For Each filename As String In files
+                If filename.EndsWith(".txt") Then
+                    Info = dirManipulator.readFile(filename)
+                    newsDataGridView.Rows.Add({Info(0), Info(1), Info(2)}) 'adding a new row to the grid (Title, Creation date, description
+                    dict.Add(Info(1), filename) 'adding new element to the dictionary (creation date -as its the only unique attribute int the News Class-, File name)
+                End If
+            Next
+        Catch ex As IOException
+            MessageBox.Show("Process failed", "IO ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End Try
+    End Sub
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Me.WindowState = FormWindowState.Maximized
 
@@ -10,26 +31,17 @@ Public Class newsApplication
 
         newsDataGridView.Rows.Clear() 'Clear the table to avoid redundancy
 
+        'a dictionary to keep tracking of every file i display by storing its creation date and name
+        newsDict = New Dictionary(Of String, String)
+        imageDict = New Dictionary(Of String, String)
+
         Dim dirPath = My.Computer.FileSystem.SpecialDirectories.MyDocuments & "\News" 'get the directory path where the files are saved
-        If Not (Directory.Exists(dirPath)) Then
-            FileSystem.MkDir(dirPath)
-        End If
+        addingRows(dirPath, newsDict)
 
-        Dim files = My.Computer.FileSystem.GetFiles(dirPath) 'retrieve all the files' name
-        Dim Info As String()
-        newsDict = New Dictionary(Of String, String) 'a dictionary to keep tracking of every file i display by storing its creation date and name
+        dirPath = My.Computer.FileSystem.SpecialDirectories.MyDocuments & "\Images" 'get the directory path where the files are saved
+        addingRows(dirPath, imageDict)
 
-        Try
-            For Each filename As String In files
-                If filename.EndsWith(".txt") Then
-                    Info = dirManipulator.readFile(filename)
-                    newsDataGridView.Rows.Add({Info(0), Info(1), Info(2)}) 'adding a new row to the grid (Title, Creation date, description
-                    newsDict.Add(Info(1), filename) 'adding new element to the dictionary (creation date -as its the only unique attribute int the News Class-, File name)
-                End If
-            Next
-        Catch ex As IOException
-            MessageBox.Show("Process failed", "IO ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)
-        End Try
+
     End Sub
 
     Private Sub DeleteToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles DeleteToolStripMenuItem.Click
@@ -97,22 +109,44 @@ Public Class newsApplication
 
     End Sub
     Private Sub newsDataGridView_SelectionChanged(sender As Object, e As EventArgs) Handles newsDataGridView.SelectionChanged
-
         Dim row = newsDataGridView.SelectedRows
-        Dim creationDate1 = row(0).Cells(1).Value
-        If newsDict.ContainsKey(creationDate1) Then
+        If row.Count > 0 Then
+            Dim creationDate1 = row(0).Cells(1).Value
+            If newsDict.ContainsKey(creationDate1) Then
+                categoryLabel.Enabled = True
+                categoryTextBox.Enabled = True
+                categoryLabel.Visible = True
+                categoryTextBox.Visible = True
+                imageTabPage.Enabled = False
+                imageTabPage.Visible = False
 
-            'Button2.Enabled = False
-            'Button2.Visible = False
-            'PictureBox1.Visible = False
-            'PictureBox1.Enabled = False
+                Dim filePath = newsDict(creationDate1)
+                Dim info = dirManipulator.readFile(filePath)
 
-            Dim filePath = newsDict(creationDate1)
-            'Label1.Text = dirManipulator.readFile(filePath)(4)
-        ElseIf imageDict.ContainsKey(creationDate1) Then
-            MessageBox.Show("To be implemented")
+                titleTextBox.Text = info(0)
+                creationDateTextBox.Text = info(1)
+                categoryTextBox.Text = info(3)
+                bodyTextBox.Text = info(4)
+            ElseIf imageDict.ContainsKey(creationDate1) Then
+                categoryLabel.Enabled = False
+                categoryTextBox.Enabled = False
+                categoryLabel.Visible = False
+                categoryTextBox.Visible = False
 
+                imageTabPage.Enabled = True
+                imageTabPage.Visible = True
+
+                Dim filePath = imageDict(creationDate1)
+                Dim info = dirManipulator.readFile(filePath)
+
+                titleTextBox.Text = info(0)
+                creationDateTextBox.Text = info(1)
+                PictureBox1.Image = Image.FromFile(info(3))
+                bodyTextBox.Text = info(4)
+
+            End If
         End If
+
     End Sub
 
     Private Sub ImageToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ImageToolStripMenuItem.Click

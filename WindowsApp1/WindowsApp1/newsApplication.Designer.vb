@@ -44,15 +44,28 @@ Partial Class newsApplication
         Me.ContextMenuStrip1 = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.DeleteToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.displayTabControl = New System.Windows.Forms.TabControl()
+        Me.previewTabPage = New System.Windows.Forms.TabPage()
+        Me.imageTabPage = New System.Windows.Forms.TabPage()
         Me.SaveFileDialog1 = New System.Windows.Forms.SaveFileDialog()
-        Me.TabControl1 = New System.Windows.Forms.TabControl()
-        Me.TabPage1 = New System.Windows.Forms.TabPage()
-        Me.TabPage2 = New System.Windows.Forms.TabPage()
+        Me.PictureBox1 = New System.Windows.Forms.PictureBox()
+        Me.bodyTextBox = New System.Windows.Forms.TextBox()
+        Me.gridViewGroupBox = New System.Windows.Forms.GroupBox()
+        Me.titleLabel = New System.Windows.Forms.Label()
+        Me.creationDateLabel = New System.Windows.Forms.Label()
+        Me.categoryLabel = New System.Windows.Forms.Label()
+        Me.titleTextBox = New System.Windows.Forms.TextBox()
+        Me.creationDateTextBox = New System.Windows.Forms.TextBox()
+        Me.categoryTextBox = New System.Windows.Forms.TextBox()
         Me.MenuStrip1.SuspendLayout()
         CType(Me.newsDataGridView, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.ContextMenuStrip1.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
-        Me.TabControl1.SuspendLayout()
+        Me.displayTabControl.SuspendLayout()
+        Me.previewTabPage.SuspendLayout()
+        Me.imageTabPage.SuspendLayout()
+        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.gridViewGroupBox.SuspendLayout()
         Me.SuspendLayout()
         '
         'MenuStrip1
@@ -158,20 +171,21 @@ Partial Class newsApplication
         '
         Me.newsDataGridView.AllowUserToAddRows = False
         Me.newsDataGridView.AllowUserToDeleteRows = False
-        Me.newsDataGridView.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+        Me.newsDataGridView.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.newsDataGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill
         Me.newsDataGridView.BackgroundColor = System.Drawing.SystemColors.Control
         Me.newsDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.newsDataGridView.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.Title, Me.creationDate, Me.Description})
         Me.newsDataGridView.ContextMenuStrip = Me.ContextMenuStrip1
-        Me.newsDataGridView.Location = New System.Drawing.Point(12, 27)
+        Me.newsDataGridView.Location = New System.Drawing.Point(6, 6)
         Me.newsDataGridView.Name = "newsDataGridView"
         Me.newsDataGridView.ReadOnly = True
         Me.newsDataGridView.RowHeadersVisible = False
         Me.newsDataGridView.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToFirstHeader
         Me.newsDataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
-        Me.newsDataGridView.Size = New System.Drawing.Size(776, 133)
+        Me.newsDataGridView.Size = New System.Drawing.Size(788, 132)
         Me.newsDataGridView.TabIndex = 1
         '
         'Title
@@ -206,7 +220,7 @@ Partial Class newsApplication
         '
         'GroupBox1
         '
-        Me.GroupBox1.Controls.Add(Me.TabControl1)
+        Me.GroupBox1.Controls.Add(Me.displayTabControl)
         Me.GroupBox1.Dock = System.Windows.Forms.DockStyle.Bottom
         Me.GroupBox1.Location = New System.Drawing.Point(0, 265)
         Me.GroupBox1.Name = "GroupBox1"
@@ -214,43 +228,152 @@ Partial Class newsApplication
         Me.GroupBox1.TabIndex = 2
         Me.GroupBox1.TabStop = False
         '
-        'TabControl1
+        'displayTabControl
         '
-        Me.TabControl1.Controls.Add(Me.TabPage1)
-        Me.TabControl1.Controls.Add(Me.TabPage2)
-        Me.TabControl1.Location = New System.Drawing.Point(0, 0)
-        Me.TabControl1.Name = "TabControl1"
-        Me.TabControl1.SelectedIndex = 0
-        Me.TabControl1.Size = New System.Drawing.Size(800, 185)
-        Me.TabControl1.TabIndex = 4
+        Me.displayTabControl.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.displayTabControl.Controls.Add(Me.previewTabPage)
+        Me.displayTabControl.Controls.Add(Me.imageTabPage)
+        Me.displayTabControl.Location = New System.Drawing.Point(0, 0)
+        Me.displayTabControl.Name = "displayTabControl"
+        Me.displayTabControl.SelectedIndex = 0
+        Me.displayTabControl.Size = New System.Drawing.Size(800, 185)
+        Me.displayTabControl.TabIndex = 4
         '
-        'TabPage1
+        'previewTabPage
         '
-        Me.TabPage1.Location = New System.Drawing.Point(4, 22)
-        Me.TabPage1.Name = "TabPage1"
-        Me.TabPage1.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage1.Size = New System.Drawing.Size(792, 159)
-        Me.TabPage1.TabIndex = 0
-        Me.TabPage1.Text = "displayInfoTabPage"
-        Me.TabPage1.UseVisualStyleBackColor = True
+        Me.previewTabPage.BackColor = System.Drawing.Color.Transparent
+        Me.previewTabPage.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
+        Me.previewTabPage.Controls.Add(Me.bodyTextBox)
+        Me.previewTabPage.Location = New System.Drawing.Point(4, 22)
+        Me.previewTabPage.Name = "previewTabPage"
+        Me.previewTabPage.Padding = New System.Windows.Forms.Padding(3)
+        Me.previewTabPage.Size = New System.Drawing.Size(792, 159)
+        Me.previewTabPage.TabIndex = 0
+        Me.previewTabPage.Text = "Preview"
         '
-        'TabPage2
+        'imageTabPage
         '
-        Me.TabPage2.Location = New System.Drawing.Point(4, 22)
-        Me.TabPage2.Name = "TabPage2"
-        Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage2.Size = New System.Drawing.Size(792, 159)
-        Me.TabPage2.TabIndex = 1
-        Me.TabPage2.Text = "TabPage2"
-        Me.TabPage2.UseVisualStyleBackColor = True
+        Me.imageTabPage.Controls.Add(Me.PictureBox1)
+        Me.imageTabPage.Location = New System.Drawing.Point(4, 22)
+        Me.imageTabPage.Name = "imageTabPage"
+        Me.imageTabPage.Padding = New System.Windows.Forms.Padding(3)
+        Me.imageTabPage.Size = New System.Drawing.Size(792, 159)
+        Me.imageTabPage.TabIndex = 1
+        Me.imageTabPage.Text = "Image"
+        Me.imageTabPage.UseVisualStyleBackColor = True
+        '
+        'PictureBox1
+        '
+        Me.PictureBox1.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.PictureBox1.Location = New System.Drawing.Point(6, 6)
+        Me.PictureBox1.Name = "PictureBox1"
+        Me.PictureBox1.Size = New System.Drawing.Size(783, 145)
+        Me.PictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
+        Me.PictureBox1.TabIndex = 0
+        Me.PictureBox1.TabStop = False
+        '
+        'bodyTextBox
+        '
+        Me.bodyTextBox.BackColor = System.Drawing.SystemColors.ControlLight
+        Me.bodyTextBox.BorderStyle = System.Windows.Forms.BorderStyle.None
+        Me.bodyTextBox.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.bodyTextBox.Location = New System.Drawing.Point(3, 3)
+        Me.bodyTextBox.Multiline = True
+        Me.bodyTextBox.Name = "bodyTextBox"
+        Me.bodyTextBox.ReadOnly = True
+        Me.bodyTextBox.Size = New System.Drawing.Size(782, 149)
+        Me.bodyTextBox.TabIndex = 0
+        '
+        'gridViewGroupBox
+        '
+        Me.gridViewGroupBox.Controls.Add(Me.categoryTextBox)
+        Me.gridViewGroupBox.Controls.Add(Me.creationDateTextBox)
+        Me.gridViewGroupBox.Controls.Add(Me.titleTextBox)
+        Me.gridViewGroupBox.Controls.Add(Me.categoryLabel)
+        Me.gridViewGroupBox.Controls.Add(Me.creationDateLabel)
+        Me.gridViewGroupBox.Controls.Add(Me.titleLabel)
+        Me.gridViewGroupBox.Controls.Add(Me.newsDataGridView)
+        Me.gridViewGroupBox.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.gridViewGroupBox.Location = New System.Drawing.Point(0, 24)
+        Me.gridViewGroupBox.Name = "gridViewGroupBox"
+        Me.gridViewGroupBox.Size = New System.Drawing.Size(800, 241)
+        Me.gridViewGroupBox.TabIndex = 4
+        Me.gridViewGroupBox.TabStop = False
+        '
+        'titleLabel
+        '
+        Me.titleLabel.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.titleLabel.AutoSize = True
+        Me.titleLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.titleLabel.Location = New System.Drawing.Point(6, 150)
+        Me.titleLabel.Name = "titleLabel"
+        Me.titleLabel.Size = New System.Drawing.Size(40, 17)
+        Me.titleLabel.TabIndex = 2
+        Me.titleLabel.Text = "Title"
+        '
+        'creationDateLabel
+        '
+        Me.creationDateLabel.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.creationDateLabel.AutoSize = True
+        Me.creationDateLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.creationDateLabel.Location = New System.Drawing.Point(6, 181)
+        Me.creationDateLabel.Name = "creationDateLabel"
+        Me.creationDateLabel.Size = New System.Drawing.Size(108, 17)
+        Me.creationDateLabel.TabIndex = 3
+        Me.creationDateLabel.Text = "Creation Date"
+        '
+        'categoryLabel
+        '
+        Me.categoryLabel.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.categoryLabel.AutoSize = True
+        Me.categoryLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.categoryLabel.Location = New System.Drawing.Point(6, 213)
+        Me.categoryLabel.Name = "categoryLabel"
+        Me.categoryLabel.Size = New System.Drawing.Size(73, 17)
+        Me.categoryLabel.TabIndex = 4
+        Me.categoryLabel.Text = "Category"
+        '
+        'titleTextBox
+        '
+        Me.titleTextBox.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.titleTextBox.Location = New System.Drawing.Point(131, 147)
+        Me.titleTextBox.Name = "titleTextBox"
+        Me.titleTextBox.ReadOnly = True
+        Me.titleTextBox.Size = New System.Drawing.Size(663, 20)
+        Me.titleTextBox.TabIndex = 5
+        '
+        'creationDateTextBox
+        '
+        Me.creationDateTextBox.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.creationDateTextBox.Location = New System.Drawing.Point(131, 178)
+        Me.creationDateTextBox.Name = "creationDateTextBox"
+        Me.creationDateTextBox.ReadOnly = True
+        Me.creationDateTextBox.Size = New System.Drawing.Size(663, 20)
+        Me.creationDateTextBox.TabIndex = 6
+        '
+        'categoryTextBox
+        '
+        Me.categoryTextBox.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.categoryTextBox.Location = New System.Drawing.Point(131, 210)
+        Me.categoryTextBox.Name = "categoryTextBox"
+        Me.categoryTextBox.ReadOnly = True
+        Me.categoryTextBox.Size = New System.Drawing.Size(663, 20)
+        Me.categoryTextBox.TabIndex = 7
         '
         'newsApplication
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(800, 450)
+        Me.Controls.Add(Me.gridViewGroupBox)
         Me.Controls.Add(Me.GroupBox1)
-        Me.Controls.Add(Me.newsDataGridView)
         Me.Controls.Add(Me.MenuStrip1)
         Me.MainMenuStrip = Me.MenuStrip1
         Me.Name = "newsApplication"
@@ -260,7 +383,13 @@ Partial Class newsApplication
         CType(Me.newsDataGridView, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ContextMenuStrip1.ResumeLayout(False)
         Me.GroupBox1.ResumeLayout(False)
-        Me.TabControl1.ResumeLayout(False)
+        Me.displayTabControl.ResumeLayout(False)
+        Me.previewTabPage.ResumeLayout(False)
+        Me.previewTabPage.PerformLayout()
+        Me.imageTabPage.ResumeLayout(False)
+        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.gridViewGroupBox.ResumeLayout(False)
+        Me.gridViewGroupBox.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -292,7 +421,16 @@ Partial Class newsApplication
     Friend WithEvents NewsToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents ImageToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents SaveFileDialog1 As SaveFileDialog
-    Friend WithEvents TabControl1 As TabControl
-    Friend WithEvents TabPage1 As TabPage
-    Friend WithEvents TabPage2 As TabPage
+    Friend WithEvents displayTabControl As TabControl
+    Friend WithEvents previewTabPage As TabPage
+    Friend WithEvents imageTabPage As TabPage
+    Friend WithEvents bodyTextBox As TextBox
+    Friend WithEvents PictureBox1 As PictureBox
+    Friend WithEvents gridViewGroupBox As GroupBox
+    Friend WithEvents categoryLabel As Label
+    Friend WithEvents creationDateLabel As Label
+    Friend WithEvents titleLabel As Label
+    Friend WithEvents categoryTextBox As TextBox
+    Friend WithEvents creationDateTextBox As TextBox
+    Friend WithEvents titleTextBox As TextBox
 End Class

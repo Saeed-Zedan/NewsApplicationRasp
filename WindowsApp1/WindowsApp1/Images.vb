@@ -47,9 +47,9 @@
         End Get
         Set(value As String)
             If value.Length <= 10000 Then
-                imageValue = value
+                bodyValue = value
             Else
-                imageValue = value.Substring(0, 10000)
+                bodyValue = value.Substring(0, 10000)
             End If
         End Set
     End Property 'Body prop
