@@ -40,7 +40,8 @@ Public Module dirManipulator
         Dim fileRead = New FileStream(filePath, FileMode.Open, FileAccess.Read)
         Dim streamRd = New StreamReader(fileRead)
 
-        Dim line = streamRd.ReadLine()
+        ' line = streamRd.ReadLine()
+        Dim line = streamRd.ReadToEnd()
         Dim Info = Split(line, "^_^")
 
         fileRead.Close()
