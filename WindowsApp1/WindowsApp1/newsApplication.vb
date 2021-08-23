@@ -188,8 +188,7 @@ Public Class newsApplication
 
     End Sub
     Private Sub Form1_Resize(sender As Object, e As EventArgs) Handles MyBase.Resize
-        GroupBox1.Height = Me.Height \ 3
-
+        displayTabControl.Height = Me.Height \ 3
     End Sub
     Private Sub newsDataGridView_SelectionChanged(sender As Object, e As EventArgs) Handles newsDataGridView.SelectionChanged
         EmptyFields()
