@@ -3,16 +3,24 @@ Imports System.Windows.Forms
 
 Public Class editUser
     Private filePath As String
-    Private password As String
+    Private curUser As String
+    Private oldUser As User
 
-    Sub New(filePath As String)
+    Sub New(filePath As String, curUser As String)
         InitializeComponent()
         Me.filePath = filePath
         Dim Info = dirManipulator.readFile(filePath)
 
+        oldUser = New User
         nameTextBox.Text = Info(0)
+        oldUser.loginName = Info(0)
         longNameTextBox.Text = Info(1)
-        password = Info(2)
+        oldUser.fullName = Info(1)
+        oldUser.Password = Info(2)
+        oldUser.lastModifier = Info(3)
+        oldUser.Priv = CType(Info(4), Boolean)
+
+        Me.curUser = curUser
 
     End Sub
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles edit_Button.Click
@@ -28,6 +36,7 @@ Public Class editUser
             End If
         Next
 
+
         Select Case String.Empty
             Case nameTextBox.Text
                 MessageBox.Show("You must enter a Name!", "Empty Name", MessageBoxButtons.OK, MessageBoxIcon.Stop)
@@ -39,17 +48,17 @@ Public Class editUser
                 Exit Sub
         End Select
 
-        If allUsersName.Contains(nameTextBox.Text) Then
+        If oldUser.loginName <> nameTextBox.Text AndAlso allUsersName.Contains(nameTextBox.Text) Then
             MessageBox.Show("The name is already used!", "Not valid value", MessageBoxButtons.OK, MessageBoxIcon.Stop)
             nameTextBox.Select()
             Exit Sub
         End If
 
-        Dim newsOb As User = New User()
-        newsOb.loginName = nameTextBox.Text
-        newsOb.fullName = longNameTextBox.Text
 
-        Dim info = newsOb.loginName & "^_^" & newsOb.fullName & "^_^" & password
+        oldUser.loginName = nameTextBox.Text
+        oldUser.fullName = longNameTextBox.Text
+        oldUser.lastModifier = curUser
+        Dim info = oldUser.loginName & "^_^" & oldUser.fullName & "^_^" & oldUser.Password & "^_^" & oldUser.lastModifier & "^_^" & oldUser.Priv
         Dim result = MessageBox.Show("Aru u sure u want to commit ur edits", "Warning msg", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
         If result = DialogResult.Yes Then
             dirManipulator.editFile(filePath, info)

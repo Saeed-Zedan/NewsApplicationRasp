@@ -49,7 +49,7 @@ Public Class veiwUsers
         If row IsNot Nothing Then
             Dim info = row.ToString().Split()
             Dim filename = userDict(info(0))
-            Dim newForm As editUser = New editUser(filename)
+            Dim newForm As editUser = New editUser(filename, curUser)
             Dim result = newForm.ShowDialog()
             If result = DialogResult.OK Then
                 userDict.Remove(info(0))

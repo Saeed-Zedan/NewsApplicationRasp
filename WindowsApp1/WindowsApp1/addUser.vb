@@ -4,13 +4,15 @@ Imports System.Security.Cryptography
 Imports System.Text.RegularExpressions
 Public Class addUser
     Private curUser As String = String.Empty
-    Public Sub New(curUser As String)
+    Private userPriv As Boolean
+    Public Sub New(curUser As String, userPriv As Boolean)
 
         ' This call is required by the designer.
         InitializeComponent()
 
         ' Add any initialization after the InitializeComponent() call.
         Me.curUser = curUser
+        Me.userPriv = userPriv
     End Sub
     Private Sub saveButton_Click(sender As Object, e As EventArgs) Handles saveButton.Click
 
@@ -64,5 +66,12 @@ Public Class addUser
 
     Private Sub exitButton2_Click(sender As Object, e As EventArgs) Handles exitButton2.Click
         Me.Dispose()
+    End Sub
+
+    Private Sub adminCheckBox_CheckedChanged(sender As Object, e As EventArgs) Handles adminCheckBox.CheckedChanged
+        If adminCheckBox.Checked AndAlso Not userPriv Then
+            adminCheckBox.Checked = False
+            MessageBox.Show("Only Admin can create another admin user " & userPriv, "Privilage Violation", MessageBoxButtons.OK, MessageBoxIcon.Stop)
+        End If
     End Sub
 End Class

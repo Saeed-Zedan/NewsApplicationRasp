@@ -120,7 +120,7 @@ Public Class newsApplication
     End Sub
 
     Private Sub UserToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles UserToolStripMenuItem.Click
-        Dim userForm As addUser = New addUser(currentUser)
+        Dim userForm As addUser = New addUser(currentUser, userPriv)
         userForm.ShowDialog()
     End Sub
 
