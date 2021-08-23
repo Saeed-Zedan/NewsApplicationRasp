@@ -120,7 +120,7 @@ Public Class newsApplication
     End Sub
 
     Private Sub UserToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles UserToolStripMenuItem.Click
-        Dim userForm As addUser = New addUser(currentUser, userPriv)
+        Dim userForm As UserAdd = New UserAdd(currentUser, userPriv)
         userForm.ShowDialog()
     End Sub
 
@@ -128,7 +128,7 @@ Public Class newsApplication
         'Dim newForm As addNews = New addNews()
         'newForm.ShowDialog()
 
-        Using newForm = New addNews
+        Using newForm = New NewsAdd
             If newForm.ShowDialog() = DialogResult.OK Then
                 addingRow(newForm.filename, newsDict)
             End If
@@ -142,7 +142,7 @@ Public Class newsApplication
     End Sub
 
     Private Sub displayUsersToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles displayUsersToolStripMenuItem.Click
-        Dim newForm As veiwUsers = New veiwUsers(currentUser, userPriv)
+        Dim newForm As UsersView = New UsersView(currentUser, userPriv)
         newForm.ShowDialog()
     End Sub
 
@@ -158,11 +158,11 @@ Public Class newsApplication
             If newsDict.ContainsKey(creationdate1) Then
                 filePath = newsDict(creationdate1)
                 Info = dirManipulator.readFile(filePath)
-                newForm = New editNews(filePath)
+                newForm = New NewsEdit(filePath)
             ElseIf imageDict.ContainsKey(creationdate1) Then
                 filePath = imageDict(creationdate1)
                 Info = dirManipulator.readFile(filePath)
-                newForm = New editImage(filePath)
+                newForm = New ImageEdit(filePath)
             Else
                 MessageBox.Show("Error")
                 Exit Sub
@@ -196,7 +196,7 @@ Public Class newsApplication
     End Sub
 
     Private Sub ImageToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ImageToolStripMenuItem.Click
-        Using newForm = New addImage
+        Using newForm = New ImageAdd
             If newForm.ShowDialog() = DialogResult.OK Then
                 addingRow(newForm.filename, imageDict)
             End If

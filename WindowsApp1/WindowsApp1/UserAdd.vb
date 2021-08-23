@@ -2,7 +2,7 @@
 Imports System.Security.Cryptography
 
 Imports System.Text.RegularExpressions
-Public Class addUser
+Public Class UserAdd
     Private curUser As String = String.Empty
     Private userPriv As Boolean
     Public Sub New(curUser As String, userPriv As Boolean)

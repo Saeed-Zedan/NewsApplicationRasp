@@ -1,6 +1,6 @@
 ﻿
 Imports System.IO
-Public Class addImage
+Public Class ImageAdd
     Public filename As String = String.Empty
     Private Sub browseButton_Click(sender As Object, e As EventArgs) Handles browseButton.Click
         Dim result As DialogResult

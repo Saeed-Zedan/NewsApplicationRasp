@@ -1,6 +1,6 @@
 ﻿Imports System.Windows.Forms
 Imports System.IO
-Public Class veiwUsers
+Public Class UsersView
     Dim userDict As Dictionary(Of String, String)
     Dim curUser As String
     Dim Priv As Boolean
@@ -49,7 +49,7 @@ Public Class veiwUsers
         If row IsNot Nothing Then
             Dim info = row.ToString().Split()
             Dim filename = userDict(info(0))
-            Dim newForm As editUser = New editUser(filename, curUser)
+            Dim newForm As UserEdit = New UserEdit(filename, curUser)
             Dim result = newForm.ShowDialog()
             If result = DialogResult.OK Then
                 userDict.Remove(info(0))

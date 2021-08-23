@@ -1,6 +1,6 @@
 ﻿Imports System.IO
 
-Public Class editImage
+Public Class ImageEdit
     Private filePath As String
     Private creationDate As String
     Sub New(filePath As String)

@@ -1,6 +1,6 @@
 ﻿Imports System.Windows.Forms
 
-Public Class editNews
+Public Class NewsEdit
     Private filePath As String
     Private creationDate As String
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click

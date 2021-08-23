@@ -1,7 +1,7 @@
 ﻿Imports System.IO
 Imports System.Windows.Forms
 
-Public Class editUser
+Public Class UserEdit
     Private filePath As String
     Private curUser As String
     Private oldUser As User

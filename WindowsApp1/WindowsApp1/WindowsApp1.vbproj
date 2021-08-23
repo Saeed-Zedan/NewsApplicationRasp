@@ -76,35 +76,35 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="addImage.Designer.vb">
-      <DependentUpon>addImage.vb</DependentUpon>
+    <Compile Include="ImageAdd.Designer.vb">
+      <DependentUpon>ImageAdd.vb</DependentUpon>
     </Compile>
-    <Compile Include="addImage.vb">
+    <Compile Include="ImageAdd.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="addNews.Designer.vb">
-      <DependentUpon>addNews.vb</DependentUpon>
+    <Compile Include="NewsAdd.Designer.vb">
+      <DependentUpon>NewsAdd.vb</DependentUpon>
     </Compile>
-    <Compile Include="addNews.vb">
+    <Compile Include="NewsAdd.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="addUser.Designer.vb">
-      <DependentUpon>addUser.vb</DependentUpon>
+    <Compile Include="UserAdd.Designer.vb">
+      <DependentUpon>UserAdd.vb</DependentUpon>
     </Compile>
-    <Compile Include="addUser.vb">
+    <Compile Include="UserAdd.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="editUser.Designer.vb">
-      <DependentUpon>editUser.vb</DependentUpon>
+    <Compile Include="UserEdit.Designer.vb">
+      <DependentUpon>UserEdit.vb</DependentUpon>
     </Compile>
-    <Compile Include="editUser.vb">
+    <Compile Include="UserEdit.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="dirManipulator.vb" />
-    <Compile Include="editImage.Designer.vb">
-      <DependentUpon>editImage.vb</DependentUpon>
+    <Compile Include="DirManipulator.vb" />
+    <Compile Include="ImageEdit.Designer.vb">
+      <DependentUpon>ImageEdit.vb</DependentUpon>
     </Compile>
-    <Compile Include="editImage.vb">
+    <Compile Include="ImageEdit.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="LoginScreen.Designer.vb">
@@ -113,11 +113,11 @@
     <Compile Include="LoginScreen.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="newsApplication.vb">
+    <Compile Include="NewsApplication.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="newsApplication.Designer.vb">
-      <DependentUpon>newsApplication.vb</DependentUpon>
+    <Compile Include="NewsApplication.Designer.vb">
+      <DependentUpon>NewsApplication.vb</DependentUpon>
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Images.vb" />
@@ -137,41 +137,41 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="News.vb" />
-    <Compile Include="editNews.Designer.vb">
-      <DependentUpon>editNews.vb</DependentUpon>
+    <Compile Include="NewsEdit.Designer.vb">
+      <DependentUpon>NewsEdit.vb</DependentUpon>
     </Compile>
-    <Compile Include="editNews.vb">
+    <Compile Include="NewsEdit.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="User.vb" />
-    <Compile Include="veiwUsers.Designer.vb">
-      <DependentUpon>veiwUsers.vb</DependentUpon>
+    <Compile Include="UsersView.Designer.vb">
+      <DependentUpon>UsersView.vb</DependentUpon>
     </Compile>
-    <Compile Include="veiwUsers.vb">
+    <Compile Include="UsersView.vb">
       <SubType>Form</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="addImage.resx">
-      <DependentUpon>addImage.vb</DependentUpon>
+    <EmbeddedResource Include="ImageAdd.resx">
+      <DependentUpon>ImageAdd.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="addNews.resx">
-      <DependentUpon>addNews.vb</DependentUpon>
+    <EmbeddedResource Include="NewsAdd.resx">
+      <DependentUpon>NewsAdd.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="addUser.resx">
-      <DependentUpon>addUser.vb</DependentUpon>
+    <EmbeddedResource Include="UserAdd.resx">
+      <DependentUpon>UserAdd.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="editUser.resx">
-      <DependentUpon>editUser.vb</DependentUpon>
+    <EmbeddedResource Include="UserEdit.resx">
+      <DependentUpon>UserEdit.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="editImage.resx">
-      <DependentUpon>editImage.vb</DependentUpon>
+    <EmbeddedResource Include="ImageEdit.resx">
+      <DependentUpon>ImageEdit.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="LoginScreen.resx">
       <DependentUpon>LoginScreen.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="newsApplication.resx">
-      <DependentUpon>newsApplication.vb</DependentUpon>
+    <EmbeddedResource Include="NewsApplication.resx">
+      <DependentUpon>NewsApplication.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
@@ -179,11 +179,11 @@
       <CustomToolNamespace>My.Resources</CustomToolNamespace>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="editNews.resx">
-      <DependentUpon>editNews.vb</DependentUpon>
+    <EmbeddedResource Include="NewsEdit.resx">
+      <DependentUpon>NewsEdit.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="veiwUsers.resx">
-      <DependentUpon>veiwUsers.vb</DependentUpon>
+    <EmbeddedResource Include="UsersView.resx">
+      <DependentUpon>UsersView.vb</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

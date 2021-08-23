@@ -1,5 +1,5 @@
 ﻿Imports System.IO
-Public Class addNews
+Public Class NewsAdd
     Public filename As String = String.Empty
     Private Sub saveButton_Click(sender As Object, e As EventArgs) Handles saveButton.Click
         Select Case String.Empty
