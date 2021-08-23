@@ -68,4 +68,7 @@ Public Class User
             privValue = value
         End Set
     End Property
+    Public Sub SetPassword(passwordValue As String)
+        Me.passwordValue = passwordValue
+    End Sub
 End Class

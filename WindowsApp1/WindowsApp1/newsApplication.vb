@@ -16,7 +16,7 @@ Public Class newsApplication
             If newForm.ShowDialog = DialogResult.OK Then
                 currentUser = newForm.getUserName()
                 userPriv = newForm.getPriv()
-                MessageBox.Show(newForm.getUserName() & userPriv)
+                MessageBox.Show($"Welcome {currentUser}")
             Else
                 Me.Dispose()
             End If

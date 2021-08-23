@@ -16,7 +16,7 @@ Public Class UserEdit
         oldUser.loginName = Info(0)
         longNameTextBox.Text = Info(1)
         oldUser.fullName = Info(1)
-        oldUser.Password = Info(2)
+        oldUser.SetPassword(Info(2))
         oldUser.lastModifier = Info(3)
         oldUser.Priv = CType(Info(4), Boolean)
 

@@ -28,12 +28,12 @@ Public Class UsersView
             MessageBox.Show("There is no users in the system", "Empty Directory", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
         Else
             Dim w = Me.Width
-            Dim strDeatail = "{0,-60}{1,-120}"
-            usersListBox.Items.Add(String.Format(strDeatail, "Name", "Long Name"))
+            Dim strDeatail = "{0,-60}{1,-60}{2,-60}"
+            usersListBox.Items.Add(String.Format(strDeatail, "Name", "Long Name", "Last Modifier"))
             userDict = New Dictionary(Of String, String)
             For Each filename In files
                 Dim Info = dirManipulator.readFile(filename)
-                usersListBox.Items.Add(String.Format(strDeatail, Info(0), Info(1)))
+                usersListBox.Items.Add(String.Format(strDeatail, Info(0), Info(1), Info(3)))
                 userDict.Add(Info(0), filename)
             Next
 
@@ -56,8 +56,8 @@ Public Class UsersView
                 info = dirManipulator.readFile(filename)
                 userDict.Add(info(0), filename)
                 usersListBox.Items.Remove(row)
-                Dim strDeatail = "{0,-60}{1,-120}"
-                usersListBox.Items.Add(String.Format(strDeatail, info(0), info(1)))
+                Dim strDeatail = "{0,-60}{1,-60}{2,-60}"
+                usersListBox.Items.Add(String.Format(strDeatail, info(0), info(1), info(3)))
 
             End If
         End If
@@ -78,8 +78,8 @@ Public Class UsersView
             Exit Sub
         End If
 
-        Dim strDeatail = "{0,-60}{1,-120}"
-        If row = String.Format(strDeatail, "Name", "Long Name") Then
+        Dim strDeatail = "{0,-60}{1,-60}{2,-60}"
+        If row = String.Format(strDeatail, "Name", "Long Name", "Last Modifier") Then
             Exit Sub
         End If
         If Not (Directory.Exists(dirPath)) Then

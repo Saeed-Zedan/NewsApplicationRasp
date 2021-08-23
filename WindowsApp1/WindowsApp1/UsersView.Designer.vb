@@ -36,7 +36,7 @@ Partial Class UsersView
         Me.usersListBox.FormattingEnabled = True
         Me.usersListBox.Location = New System.Drawing.Point(0, 0)
         Me.usersListBox.Name = "usersListBox"
-        Me.usersListBox.Size = New System.Drawing.Size(284, 160)
+        Me.usersListBox.Size = New System.Drawing.Size(472, 186)
         Me.usersListBox.TabIndex = 1
         '
         'ContextMenuStrip1
@@ -52,16 +52,16 @@ Partial Class UsersView
         Me.deleteToolStripMenuItem.Size = New System.Drawing.Size(112, 22)
         Me.deleteToolStripMenuItem.Text = "Delete"
         '
-        'veiwUsers
+        'UsersView
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(284, 159)
+        Me.ClientSize = New System.Drawing.Size(472, 186)
         Me.Controls.Add(Me.usersListBox)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.MaximizeBox = False
         Me.MinimizeBox = False
-        Me.Name = "veiwUsers"
+        Me.Name = "UsersView"
         Me.ShowInTaskbar = False
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "List of all Users"
