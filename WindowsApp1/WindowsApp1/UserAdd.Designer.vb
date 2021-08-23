@@ -117,7 +117,7 @@ Partial Class UserAdd
         Me.adminCheckBox.Text = "Admin"
         Me.adminCheckBox.UseVisualStyleBackColor = True
         '
-        'addUser
+        'UserAdd
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
@@ -134,7 +134,7 @@ Partial Class UserAdd
         Me.Controls.Add(Me.nameLabel)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.MaximizeBox = False
-        Me.Name = "addUser"
+        Me.Name = "UserAdd"
         Me.Text = "New User Form"
         Me.ResumeLayout(False)
         Me.PerformLayout()

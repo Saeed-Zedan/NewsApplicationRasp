@@ -67,11 +67,10 @@ Public Class UserAdd
     Private Sub exitButton2_Click(sender As Object, e As EventArgs) Handles exitButton2.Click
         Me.Dispose()
     End Sub
-
-    Private Sub adminCheckBox_CheckedChanged(sender As Object, e As EventArgs) Handles adminCheckBox.CheckedChanged
-        If adminCheckBox.Checked AndAlso Not userPriv Then
+    Private Sub UserAdd_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        If Not userPriv Then
             adminCheckBox.Checked = False
-            MessageBox.Show("Only Admin can create another admin user " & userPriv, "Privilage Violation", MessageBoxButtons.OK, MessageBoxIcon.Stop)
+            adminCheckBox.Enabled = False
         End If
     End Sub
 End Class

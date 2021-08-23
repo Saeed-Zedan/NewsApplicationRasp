@@ -64,7 +64,14 @@ Public Class newsApplication
 
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Me.WindowState = FormWindowState.Maximized
+        newsDict = New Dictionary(Of String, String)
+        imageDict = New Dictionary(Of String, String)
 
+        Dim dirPath = My.Computer.FileSystem.SpecialDirectories.MyDocuments & "\News" 'get the directory path where the files are saved
+        addingRows(dirPath, newsDict)
+
+        dirPath = My.Computer.FileSystem.SpecialDirectories.MyDocuments & "\Images" 'get the directory path where the files are saved
+        addingRows(dirPath, imageDict)
     End Sub
     Private Sub OpenToolStripMenuItem_Click(sender As Object, e As EventArgs) _
         Handles OpenToolStripMenuItem.Click
