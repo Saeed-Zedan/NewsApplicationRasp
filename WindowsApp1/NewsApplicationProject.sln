@@ -5,6 +5,8 @@ VisualStudioVersion = 16.0.31005.135
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "NewsApplicationProject", "WindowsApp1\NewsApplicationProject.vbproj", "{033E9AA4-2324-493B-B7F9-9136F6510AF6}"
 EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "FileWorksObject", "FileWorksObject\FileWorksObject.vbproj", "{AE7E52F4-31F0-4D83-91FA-B7F1FAD2EC7B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{033E9AA4-2324-493B-B7F9-9136F6510AF6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{033E9AA4-2324-493B-B7F9-9136F6510AF6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{033E9AA4-2324-493B-B7F9-9136F6510AF6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AE7E52F4-31F0-4D83-91FA-B7F1FAD2EC7B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AE7E52F4-31F0-4D83-91FA-B7F1FAD2EC7B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AE7E52F4-31F0-4D83-91FA-B7F1FAD2EC7B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AE7E52F4-31F0-4D83-91FA-B7F1FAD2EC7B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

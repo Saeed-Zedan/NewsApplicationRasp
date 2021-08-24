@@ -17,26 +17,32 @@ Public Class UserAdd
     Private Sub saveButton_Click(sender As Object, e As EventArgs) Handles saveButton.Click
 
         Dim longNameFormat As String = "[a-zA-Z]+(\s[a-zA-Z]+)+"
-        Dim userOb As User = New User()
+        Dim userOb As FileWorksObject.User = New FileWorksObject.User()
 
         Dim allUsersName As List(Of String) = New List(Of String)
-        Dim dirPath = My.Computer.FileSystem.SpecialDirectories.MyDocuments & "\Users"
 
-        Dim files = Directory.GetFiles(dirPath)
 
-        For Each item In files
-            If item.EndsWith(".txt") Then
-                Dim name = readFile(item)(0)
-                allUsersName.Add(name)
-            End If
-        Next
+        'Using allRecords As New FileWorksObject.NewsApplicationDBDataContext()
+        '    For Each record In allRecords.T_BUSINESSOBJECTs
+        '        If record.C_CLASSID = "U" Then
+        '            allUsersName.Add(record.C_NAME)
+        '        End If
+        '    Next
+        'End Using
+
+        Dim query As FileWorksObject.UserQuery = New FileWorksObject.UserQuery()
+
 
         If nameTextBox.Text = String.Empty Then
             MessageBox.Show("You must enter a Valid Name!", "Not valid value", MessageBoxButtons.OK, MessageBoxIcon.Stop)
             nameTextBox.Select()
             Exit Sub
-        ElseIf allUsersName.Contains(nameTextBox.Text) Then
+        ElseIf query.Search(nameTextBox.Text) = 1 Then
             MessageBox.Show("The name is already used!", "Not valid value", MessageBoxButtons.OK, MessageBoxIcon.Stop)
+            nameTextBox.Select()
+            Exit Sub
+        ElseIf query.Search(nameTextBox.Text) = -1 Then
+            MessageBox.Show("The query is not working correctly!", "Not valid value", MessageBoxButtons.OK, MessageBoxIcon.Stop)
             nameTextBox.Select()
             Exit Sub
         End If
@@ -53,13 +59,17 @@ Public Class UserAdd
             Exit Sub
         End If
 
-        userOb.fullName = longNameTextBox.Text
-        userOb.loginName = nameTextBox.Text
+        userOb.FullName = longNameTextBox.Text
+        userOb.Name = nameTextBox.Text
         userOb.Password = passwordTextBox.Text
-        userOb.Priv = adminCheckBox.Checked
-        userOb.lastModifier = curUser
-        Dim Info = userOb.loginName & "^_^" & userOb.fullName & "^_^" & userOb.Password & "^_^" & userOb.lastModifier & "^_^" & userOb.Priv
-        dirManipulator.addFile(dirPath, Info)
+        userOb.PrivilegeLevel = adminCheckBox.Checked
+        userOb.LastModifier = curUser
+        userOb.ClassID = "U"
+        If userOb.Add() Then
+            MessageBox.Show("YaaaaaaaaaaaaaY")
+        Else
+            MessageBox.Show("Bad Luck :(")
+        End If
 
         Me.Dispose()
     End Sub

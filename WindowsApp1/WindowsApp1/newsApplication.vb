@@ -1,6 +1,5 @@
 ﻿Imports System.IO
-Imports System.Drawing
-
+Imports WindowsApp1
 Public Class newsApplication
     Private currentUser As String = String.Empty
     Private userPriv As Boolean
@@ -8,7 +7,6 @@ Public Class newsApplication
 
         ' This call is required by the designer.
         InitializeComponent()
-
         ' Add any initialization after the InitializeComponent() call.
         'Dim newForm As LoginScreen = New LoginScreen()
         'Dim result = LoginScreen.ShowDialog()
@@ -21,7 +19,6 @@ Public Class newsApplication
                 Me.Dispose()
             End If
         End Using
-
     End Sub
     Private Sub addingRows(dirPath As String, ByRef dict As Dictionary(Of String, String))
         If Not (Directory.Exists(dirPath)) Then
@@ -282,5 +279,16 @@ Public Class newsApplication
     End Sub
     Private Sub CurrentUserToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles CurrentUserToolStripMenuItem.Click
         MessageBox.Show(currentUser)
+    End Sub
+
+    Private Sub TryNewUserToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles TryNewUserToolStripMenuItem.Click
+        Dim newUser As FileWorksObject.User = New FileWorksObject.User("saeed hell", "123456", False, DateTime.Now, "sandy", "U", "Auto Run")
+        newUser.ID = 7
+
+        If True Then
+            MessageBox.Show("Mission Done Successfully." & newUser.Read())
+        Else
+            MessageBox.Show("Retreat Retreat Mission Failed.")
+        End If
     End Sub
 End Class

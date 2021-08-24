@@ -57,6 +57,7 @@ Partial Class newsApplication
         Me.categoryTextBox = New System.Windows.Forms.TextBox()
         Me.Splitter1 = New System.Windows.Forms.Splitter()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.TryNewUserToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.MenuStrip1.SuspendLayout()
         CType(Me.newsDataGridView, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.ContextMenuStrip1.SuspendLayout()
@@ -89,7 +90,7 @@ Partial Class newsApplication
         Me.NewToolStripMenuItem.Image = CType(resources.GetObject("NewToolStripMenuItem.Image"), System.Drawing.Image)
         Me.NewToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.NewToolStripMenuItem.Name = "NewToolStripMenuItem"
-        Me.NewToolStripMenuItem.Size = New System.Drawing.Size(146, 22)
+        Me.NewToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
         Me.NewToolStripMenuItem.Text = "&New"
         '
         'UserToolStripMenuItem
@@ -119,23 +120,23 @@ Partial Class newsApplication
         Me.OpenToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.OpenToolStripMenuItem.Name = "OpenToolStripMenuItem"
         Me.OpenToolStripMenuItem.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.O), System.Windows.Forms.Keys)
-        Me.OpenToolStripMenuItem.Size = New System.Drawing.Size(146, 22)
+        Me.OpenToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
         Me.OpenToolStripMenuItem.Text = "&Open"
         '
         'toolStripSeparator2
         '
         Me.toolStripSeparator2.Name = "toolStripSeparator2"
-        Me.toolStripSeparator2.Size = New System.Drawing.Size(143, 6)
+        Me.toolStripSeparator2.Size = New System.Drawing.Size(177, 6)
         '
         'ExitToolStripMenuItem
         '
         Me.ExitToolStripMenuItem.Name = "ExitToolStripMenuItem"
-        Me.ExitToolStripMenuItem.Size = New System.Drawing.Size(146, 22)
+        Me.ExitToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
         Me.ExitToolStripMenuItem.Text = "E&xit"
         '
         'EditToolStripMenuItem
         '
-        Me.EditToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.displayUsersToolStripMenuItem})
+        Me.EditToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.displayUsersToolStripMenuItem, Me.TryNewUserToolStripMenuItem})
         Me.EditToolStripMenuItem.Name = "EditToolStripMenuItem"
         Me.EditToolStripMenuItem.Size = New System.Drawing.Size(48, 20)
         Me.EditToolStripMenuItem.Text = "Show"
@@ -157,13 +158,13 @@ Partial Class newsApplication
         'logoutToolStripMenuItem
         '
         Me.logoutToolStripMenuItem.Name = "logoutToolStripMenuItem"
-        Me.logoutToolStripMenuItem.Size = New System.Drawing.Size(140, 22)
+        Me.logoutToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
         Me.logoutToolStripMenuItem.Text = "&Logout"
         '
         'CurrentUserToolStripMenuItem
         '
         Me.CurrentUserToolStripMenuItem.Name = "CurrentUserToolStripMenuItem"
-        Me.CurrentUserToolStripMenuItem.Size = New System.Drawing.Size(140, 22)
+        Me.CurrentUserToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
         Me.CurrentUserToolStripMenuItem.Text = "Current User"
         '
         'newsDataGridView
@@ -258,7 +259,7 @@ Partial Class newsApplication
         Me.imageTabPage.Location = New System.Drawing.Point(4, 22)
         Me.imageTabPage.Name = "imageTabPage"
         Me.imageTabPage.Padding = New System.Windows.Forms.Padding(3)
-        Me.imageTabPage.Size = New System.Drawing.Size(792, 159)
+        Me.imageTabPage.Size = New System.Drawing.Size(792, 163)
         Me.imageTabPage.TabIndex = 1
         Me.imageTabPage.Text = "Image"
         Me.imageTabPage.UseVisualStyleBackColor = True
@@ -363,6 +364,12 @@ Partial Class newsApplication
         Me.GroupBox1.TabIndex = 9
         Me.GroupBox1.TabStop = False
         '
+        'TryNewUserToolStripMenuItem
+        '
+        Me.TryNewUserToolStripMenuItem.Name = "TryNewUserToolStripMenuItem"
+        Me.TryNewUserToolStripMenuItem.Size = New System.Drawing.Size(185, 22)
+        Me.TryNewUserToolStripMenuItem.Text = "Try New User"
+        '
         'newsApplication
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -429,4 +436,5 @@ Partial Class newsApplication
     Friend WithEvents categoryTextBox As TextBox
     Friend WithEvents Splitter1 As Splitter
     Friend WithEvents GroupBox1 As GroupBox
+    Friend WithEvents TryNewUserToolStripMenuItem As ToolStripMenuItem
 End Class

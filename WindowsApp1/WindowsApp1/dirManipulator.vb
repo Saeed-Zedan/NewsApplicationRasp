@@ -36,7 +36,6 @@ Public Module dirManipulator
         End Try
     End Sub 'Editting an existing file
     Function readFile(filePath As String) As String()
-
         Dim fileRead = New FileStream(filePath, FileMode.Open, FileAccess.Read)
         Dim streamRd = New StreamReader(fileRead)
 
