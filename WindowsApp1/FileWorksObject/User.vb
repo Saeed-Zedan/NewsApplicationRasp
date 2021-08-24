@@ -143,4 +143,14 @@ Public Class User
         Dim Info As String = $"^_^{Me.FullName}^_^{Me.Password}^_^{Me.PrivilegeLevel}"
         Return MyBase.ToString() & Info
     End Function
+    Public Overrides Function Equals(obj As Object) As Boolean
+        Dim userOb = CType(obj, User)
+        Select Case False
+            Case Me.Name = userOb.Name
+                Return False
+            Case Me.FullName = userOb.FullName
+                Return False
+        End Select
+        Return True
+    End Function
 End Class

@@ -19,9 +19,6 @@ Public Class UserAdd
         Dim longNameFormat As String = "[a-zA-Z]+(\s[a-zA-Z]+)+"
         Dim userOb As FileWorksObject.User = New FileWorksObject.User()
 
-        Dim allUsersName As List(Of String) = New List(Of String)
-
-
         'Using allRecords As New FileWorksObject.NewsApplicationDBDataContext()
         '    For Each record In allRecords.T_BUSINESSOBJECTs
         '        If record.C_CLASSID = "U" Then

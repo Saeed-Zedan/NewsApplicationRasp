@@ -16,84 +16,84 @@ Public Class UsersView
 
     End Sub
     Private Sub veiwUsers_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        Dim dirPath = My.Computer.FileSystem.SpecialDirectories.MyDocuments + "\Users"
 
-        If Not Directory.Exists(dirPath) Then
-            Directory.CreateDirectory(dirPath)
-        End If
 
-        Dim files = Directory.GetFiles(dirPath)
-
-        If files.Length = 0 Then
-            MessageBox.Show("There is no users in the system", "Empty Directory", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+        Dim query As FileWorksObject.UserQuery = New FileWorksObject.UserQuery()
+        Dim allUsers = query.Run()
+        If allUsers.Count = 0 Then
+            MessageBox.Show("There is no users in the system", "That's Impossible", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
         Else
             Dim w = Me.Width
-            Dim strDeatail = "{0,-60}{1,-60}{2,-60}"
-            usersListBox.Items.Add(String.Format(strDeatail, "Name", "Long Name", "Last Modifier"))
+            Dim strDeatail = "{0,-5}{1,-29}{2,-60}{3,-29}"
+            usersListBox.Items.Add(String.Format(strDeatail, "ID", "Name", "Long Name", "Last Modifier"))
             userDict = New Dictionary(Of String, String)
-            For Each filename In files
-                Dim Info = dirManipulator.readFile(filename)
-                usersListBox.Items.Add(String.Format(strDeatail, Info(0), Info(1), Info(3)))
-                userDict.Add(Info(0), filename)
+            For Each user In allUsers
+                usersListBox.Items.Add(String.Format(strDeatail, user(0), user(2), user(5), user(4)))
             Next
 
 
         End If
     End Sub
     Private Sub usersListBox_DoubleClick(sender As Object, e As EventArgs) Handles usersListBox.DoubleClick
-        If Not Priv Then
+        Dim row = usersListBox.SelectedItem
+        Dim strDeatail = "{0,-5}{1,-29}{2,-60}{3,-29}"
+
+        If row = String.Empty Then 'no selected file
+            MessageBox.Show("There is no selected user/s", "Duck", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+            Exit Sub
+        ElseIf row = String.Format(strDeatail, "ID", "Name", "Long Name", "Last Modifier") Then 'Can't remove the header
+            Exit Sub
+        ElseIf Not Priv And curUser <> row.ToString().Split()(1) Then 'only admins and user himself can delete his account
             MessageBox.Show("You are not allowed to modify users information", "Privilage Violation", MessageBoxButtons.OK, MessageBoxIcon.Warning)
             Exit Sub
         End If
-        Dim row = usersListBox.SelectedItem
-        If row IsNot Nothing Then
-            Dim info = row.ToString().Split()
-            Dim filename = userDict(info(0))
-            Dim newForm As UserEdit = New UserEdit(filename, curUser)
-            Dim result = newForm.ShowDialog()
-            If result = DialogResult.OK Then
-                userDict.Remove(info(0))
-                info = dirManipulator.readFile(filename)
-                userDict.Add(info(0), filename)
-                usersListBox.Items.Remove(row)
-                Dim strDeatail = "{0,-60}{1,-60}{2,-60}"
-                usersListBox.Items.Add(String.Format(strDeatail, info(0), info(1), info(3)))
 
+        Dim info = row.ToString().Split()
+        Dim userOb As FileWorksObject.User = New FileWorksObject.User()
+        userOb.ID = info(0)
+        userOb.Read()
+        Dim newUser As FileWorksObject.User = New FileWorksObject.User(userOb)
+
+        Dim newForm As UserEdit = New UserEdit(newUser, curUser)
+        Dim result = newForm.ShowDialog()
+
+        If result = DialogResult.OK Then
+            newUser.Read()
+            If Not newUser.Equals(userOb) Then
+                usersListBox.Items.Remove(row)
+                usersListBox.Items.Add(String.Format(strDeatail, newUser.ID, newUser.Name, newUser.FullName, newUser.LastModifier))
             End If
         End If
     End Sub
 
     Private Sub deleteToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles deleteToolStripMenuItem.Click
-        If Not Priv Then
-            MessageBox.Show("You are not allowed to modify users information", "Privilage Violation", MessageBoxButtons.OK, MessageBoxIcon.Warning)
-            Exit Sub
-        End If
-
-        Dim dirPath = My.Computer.FileSystem.SpecialDirectories.MyDocuments & "\Users" 'get the directory path where the file/s are saved
         Dim row = usersListBox.SelectedItem
-        Dim files As List(Of String) = New List(Of String)
+        Dim strDeatail = "{0,-5}{1,-29}{2,-60}{3,-29}"
 
         If row = String.Empty Then 'no selected file
             MessageBox.Show("There is no selected user/s", "Duck", MessageBoxButtons.OK, MessageBoxIcon.Warning)
             Exit Sub
-        End If
-
-        Dim strDeatail = "{0,-60}{1,-60}{2,-60}"
-        If row = String.Format(strDeatail, "Name", "Long Name", "Last Modifier") Then
+        ElseIf row = String.Format(strDeatail, "ID", "Name", "Long Name", "Last Modifier") Then 'Can't remove the header
+            Exit Sub
+        ElseIf Not Priv And curUser <> row.ToString().Split()(1) Then 'only admins and user himself can delete his account
+            MessageBox.Show("You are not allowed to modify users information", "Privilage Violation", MessageBoxButtons.OK, MessageBoxIcon.Warning)
             Exit Sub
         End If
-        If Not (Directory.Exists(dirPath)) Then
-            FileSystem.MkDir(dirPath)
-        End If
 
 
-        Dim result = MessageBox.Show("Aru u sure u want to delete the user : " & row.ToString.Split(" ")(0), "Warning msg", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
+        Dim result = MessageBox.Show("Aru u sure u want to delete the user : " & row.ToString.Split(" ")(1), "Warning msg", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
         If result = DialogResult.Yes Then
-            usersListBox.Items.Remove(row) 'remove the file from the gridview
             row = CType(row, String)
-            Dim rows As String() = Split(row)
-            File.Delete(userDict(rows(0))) 'using the creation date as primary key to retireive the file name from the dictionary and delete it
-            userDict.Remove(rows(0)) 'remove the file from the dictionaty 
+            Dim columns As String() = Split(row)
+            Dim userOb As FileWorksObject.User = New FileWorksObject.User()
+            userOb.ID = columns(0)
+            If userOb.Delete() Then
+                usersListBox.Items.Remove(row) 'remove the file from the gridview
+                MessageBox.Show("User has been deleted", "POOR USER")
+            Else
+                MessageBox.Show("User doesn't exist", "LUCKY")
+            End If
+
         End If
 
     End Sub

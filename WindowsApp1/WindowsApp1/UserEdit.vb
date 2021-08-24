@@ -1,70 +1,73 @@
 ﻿Imports System.IO
+Imports System.Text.RegularExpressions
 Imports System.Windows.Forms
 
 Public Class UserEdit
     Private filePath As String
     Private curUser As String
-    Private oldUser As User
+    Private oldUser As FileWorksObject.User
 
-    Sub New(filePath As String, curUser As String)
+    Sub New(newUser As FileWorksObject.User, curUser As String)
         InitializeComponent()
-        Me.filePath = filePath
-        Dim Info = dirManipulator.readFile(filePath)
 
-        oldUser = New User
-        nameTextBox.Text = Info(0)
-        oldUser.loginName = Info(0)
-        longNameTextBox.Text = Info(1)
-        oldUser.fullName = Info(1)
-        oldUser.SetPassword(Info(2))
-        oldUser.lastModifier = Info(3)
-        oldUser.Priv = CType(Info(4), Boolean)
-
+        oldUser = newUser
         Me.curUser = curUser
 
+        nameTextBox.Text = oldUser.Name
+        longNameTextBox.Text = oldUser.FullName
     End Sub
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles edit_Button.Click
-        Dim allUsersName As List(Of String) = New List(Of String)
-        Dim dirPath = My.Computer.FileSystem.SpecialDirectories.MyDocuments & "\Users"
 
-        Dim files = Directory.GetFiles(dirPath)
+        Dim longNameFormat As String = "[a-zA-Z]+(\s[a-zA-Z]+)+"
+        Dim userOb As FileWorksObject.User = New FileWorksObject.User()
 
-        For Each item In files
-            If item.EndsWith(".txt") Then
-                Dim name = readFile(item)(0)
-                allUsersName.Add(name)
-            End If
-        Next
+        'Using allRecords As New FileWorksObject.NewsApplicationDBDataContext()
+        '    For Each record In allRecords.T_BUSINESSOBJECTs
+        '        If record.C_CLASSID = "U" Then
+        '            allUsersName.Add(record.C_NAME)
+        '        End If
+        '    Next
+        'End Using
 
-
-        Select Case String.Empty
-            Case nameTextBox.Text
-                MessageBox.Show("You must enter a Name!", "Empty Name", MessageBoxButtons.OK, MessageBoxIcon.Stop)
-                nameTextBox.Select()
-                Exit Sub
-            Case longNameTextBox.Text
-                MessageBox.Show("You must enter a long name!", "Empty Long Name", MessageBoxButtons.OK, MessageBoxIcon.Stop)
-                longNameTextBox.Select()
-                Exit Sub
-        End Select
-
-        If oldUser.loginName <> nameTextBox.Text AndAlso allUsersName.Contains(nameTextBox.Text) Then
+        Dim query As FileWorksObject.UserQuery = New FileWorksObject.UserQuery()
+        Dim result = query.Search(nameTextBox.Text)
+        If nameTextBox.Text = String.Empty Then
+            MessageBox.Show("You must enter a Valid Name!", "Not valid value", MessageBoxButtons.OK, MessageBoxIcon.Stop)
+            nameTextBox.Select()
+            Exit Sub
+        ElseIf oldUser.Name <> nameTextBox.Text AndAlso result = 1 Then
             MessageBox.Show("The name is already used!", "Not valid value", MessageBoxButtons.OK, MessageBoxIcon.Stop)
+            nameTextBox.Select()
+            Exit Sub
+        ElseIf result = -1 Then
+            MessageBox.Show("The query is not working correctly!", "Not valid value", MessageBoxButtons.OK, MessageBoxIcon.Stop)
             nameTextBox.Select()
             Exit Sub
         End If
 
-
-        oldUser.loginName = nameTextBox.Text
-        oldUser.fullName = longNameTextBox.Text
-        oldUser.lastModifier = curUser
-        Dim info = oldUser.loginName & "^_^" & oldUser.fullName & "^_^" & oldUser.Password & "^_^" & oldUser.lastModifier & "^_^" & oldUser.Priv
-        Dim result = MessageBox.Show("Aru u sure u want to commit ur edits", "Warning msg", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
-        If result = DialogResult.Yes Then
-            dirManipulator.editFile(filePath, info)
-            Me.DialogResult = System.Windows.Forms.DialogResult.OK
-            Me.Close()
+        If longNameTextBox.Text = String.Empty Or Not Regex.IsMatch(longNameTextBox.Text, longNameFormat) Then
+            MessageBox.Show("You must enter a Valid Long Name!", "Not valid value", MessageBoxButtons.OK, MessageBoxIcon.Stop)
+            longNameTextBox.Select()
+            Exit Sub
         End If
+
+
+        If oldUser.Name = nameTextBox.Text AndAlso oldUser.FullName = longNameTextBox.Text Then
+            MessageBox.Show("OPERATION NOT DONE :(")
+            Me.Close()
+        Else
+            Dim msgBoxResult = MessageBox.Show("Aru u sure u want to commit ur edits", "Warning msg", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
+            oldUser.Name = nameTextBox.Text
+            oldUser.FullName = longNameTextBox.Text
+            oldUser.LastModifier = curUser
+            If msgBoxResult = DialogResult.Yes AndAlso oldUser.Update() Then
+                Me.DialogResult = System.Windows.Forms.DialogResult.OK
+                MessageBox.Show("OPERATION DONE")
+                Me.Close()
+            End If
+        End If
+
+
 
     End Sub
 
