@@ -20,6 +20,7 @@ Public Class newsApplication
             End If
         End Using
     End Sub
+
     Private Sub addingRows(dirPath As String, ByRef dict As Dictionary(Of String, String))
         If Not (Directory.Exists(dirPath)) Then
             FileSystem.MkDir(dirPath)
@@ -42,6 +43,15 @@ Public Class newsApplication
             MessageBox.Show("Process failed", "IO ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
     End Sub
+    Private Sub addingRows(Rows As List(Of String()))
+        Try
+            For Each Row In Rows
+                newsDataGridView.Rows.Add({Row(2), Row(1), Row(7)}) 'adding a new row to the grid (Title, Creation date, description
+            Next
+        Catch ex As IOException
+            MessageBox.Show("Process failed", "IO ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End Try
+    End Sub
     Private Sub addingRow(filePath As String, ByRef dict As Dictionary(Of String, String))
         If (File.Exists(filePath)) Then
             Dim Info As String()
@@ -58,17 +68,17 @@ Public Class newsApplication
         End If
 
     End Sub
+    Private Sub addingRow(name As String, creationDate As DateTime, description As String)
+        Try
+            newsDataGridView.Rows.Add({name, creationDate.ToString(), description}) 'adding a new row to the grid (Title, Creation date, description
+        Catch ex As IOException
+            MessageBox.Show("Process failed", "IO ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End Try
+    End Sub
 
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Me.WindowState = FormWindowState.Maximized
-        newsDict = New Dictionary(Of String, String)
-        imageDict = New Dictionary(Of String, String)
-
-        Dim dirPath = My.Computer.FileSystem.SpecialDirectories.MyDocuments & "\News" 'get the directory path where the files are saved
-        addingRows(dirPath, newsDict)
-
-        dirPath = My.Computer.FileSystem.SpecialDirectories.MyDocuments & "\Images" 'get the directory path where the files are saved
-        addingRows(dirPath, imageDict)
+        addingRows((New FileWorksObject.FileQuery()).Run())
     End Sub
     Private Sub OpenToolStripMenuItem_Click(sender As Object, e As EventArgs) _
         Handles OpenToolStripMenuItem.Click
@@ -90,8 +100,7 @@ Public Class newsApplication
 
     Private Sub DeleteToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles DeleteToolStripMenuItem.Click
         EmptyFields()
-        Dim dirPathNews = My.Computer.FileSystem.SpecialDirectories.MyDocuments & "\News" 'get the directory path where the file/s are saved
-        Dim dirPathImages = My.Computer.FileSystem.SpecialDirectories.MyDocuments & "\Images" 'get the directory path where the file/s are saved
+
         Dim rows = newsDataGridView.SelectedRows
         Dim files As List(Of String) = New List(Of String)
 
@@ -99,26 +108,16 @@ Public Class newsApplication
             MessageBox.Show("There is no selected file/s", "Duck", MessageBoxButtons.OK, MessageBoxIcon.Warning)
             Exit Sub
         End If
-
-
-        If Not (Directory.Exists(dirPathNews)) Then
-            FileSystem.MkDir(dirPathNews)
-        End If
-
-        If Not (Directory.Exists(dirPathImages)) Then
-            FileSystem.MkDir(dirPathImages)
-        End If
-
+        Dim newOb As FileWorksObject.File
         For Each item As DataGridViewRow In rows
-            Dim creationDate1 = item.Cells(1).Value
-            newsDataGridView.Rows.Remove(item) 'remove the file from the gridview
-
-            If newsDict.ContainsKey(creationDate1) Then
-                File.Delete(newsDict(creationDate1)) 'using the creation date as primary key to retireive the file name from the dictionary and delete it
-                newsDict.Remove(creationDate1) 'remove the file from the dictionaty
-            ElseIf imageDict.ContainsKey(creationDate1) Then
-                File.Delete(imageDict(creationDate1))
-                imageDict.Remove(creationDate1)
+            Dim name = item.Cells(0).Value
+            Dim result = MessageBox.Show("Aru u sure u want to delete the user : " & name, "Warning msg", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
+            If result = DialogResult.Yes Then
+                newOb = New FileWorksObject.File()
+                newOb.Name = name
+                If newOb.Delete() Then
+                    newsDataGridView.Rows.Remove(item) 'remove the file from the gridview
+                End If
             End If
         Next
     End Sub
@@ -132,9 +131,10 @@ Public Class newsApplication
         'Dim newForm As addNews = New addNews()
         'newForm.ShowDialog()
 
-        Using newForm = New NewsAdd
+        Using newForm = New NewsAdd(currentUser)
             If newForm.ShowDialog() = DialogResult.OK Then
-                addingRow(newForm.filename, newsDict)
+                addingRow(newForm.newsOb.Name, newForm.newsOb.CreationDate, newForm.newsOb.Description)
+                MessageBox.Show("Done SUCCESSFULLY")
             End If
 
         End Using
@@ -149,37 +149,40 @@ Public Class newsApplication
         Dim newForm As UsersView = New UsersView(currentUser, userPriv)
         newForm.ShowDialog()
     End Sub
-
     Private Sub newsDataGridView_DoubleClick(sender As Object, e As EventArgs) Handles newsDataGridView.DoubleClick
         EmptyFields()
-        Dim editNews = newsDataGridView.SelectedRows
+        Dim selectedNews = newsDataGridView.SelectedRows
 
-        If editNews.Count = 1 Then
-            Dim creationdate1 = editNews.Item(0).Cells(1).Value
-            Dim filePath As String = String.Empty
-            Dim Info As String()
-            Dim newForm
-            If newsDict.ContainsKey(creationdate1) Then
-                filePath = newsDict(creationdate1)
-                Info = dirManipulator.readFile(filePath)
-                newForm = New NewsEdit(filePath)
-            ElseIf imageDict.ContainsKey(creationdate1) Then
-                filePath = imageDict(creationdate1)
-                Info = dirManipulator.readFile(filePath)
-                newForm = New ImageEdit(filePath)
-            Else
-                MessageBox.Show("Error")
-                Exit Sub
-            End If
+        If selectedNews.Count = 1 Then
+            Dim row = selectedNews(0)
+            Dim fileOb As FileWorksObject.FileQuery = New FileWorksObject.FileQuery()
+            fileOb.Name = row.Cells(0).Value
+            Dim Tagged = fileOb.RetrieveTag()
 
-            If filePath <> String.Empty Then
+            If Tagged = "N" Then
+                Using newForm = New NewsEdit(fileOb.Name)
+                    If newForm.ShowDialog() = DialogResult.OK Then
+                        newsDataGridView.Rows.Remove(row)
+                        newsDataGridView.Rows.Add({newForm.newsOB.Name, newForm.newsOB.CreationDate.ToString(), newForm.newsOB.Description})
+                        MessageBox.Show("IT'S DONE")
+                        'ElseIf 
 
-                Dim result = newForm.ShowDialog()
-                If result = DialogResult.OK Then
-                    Dim Info2 = dirManipulator.readFile(filePath)
-                    newsDataGridView.Rows.Remove(editNews(0))
-                    newsDataGridView.Rows.Add({Info2(0), Info2(1), Info2(2)}) 'adding a new row to the grid (Title, Creation date, description
-                End If
+                    End If
+                End Using
+
+            ElseIf Tagged = "F" Then
+
+                Using newForm = New ImageEdit(fileOb.Name)
+                    If newForm.ShowDialog() = DialogResult.OK Then
+                        newsDataGridView.Rows.Remove(row)
+                        'addingRow(newForm., imageDict)
+                    End If
+                End Using
+
+            ElseIf Tagged = "X" Then
+                MessageBox.Show("Couldn't Access DB")
+            ElseIf Tagged = "E" Then
+                MessageBox.Show("No Match In DB")
             End If
         End If
 
@@ -199,9 +202,11 @@ Public Class newsApplication
     End Sub
 
     Private Sub ImageToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ImageToolStripMenuItem.Click
-        Using newForm = New ImageAdd
+        Using newForm = New ImageAdd(currentUser)
             If newForm.ShowDialog() = DialogResult.OK Then
-                addingRow(newForm.filename, imageDict)
+                addingRow(newForm.newOb.Name, newForm.newOb.CreationDate.ToString(), newForm.newOb.Description)
+            Else
+                MessageBox.Show("Not completed.")
             End If
         End Using
     End Sub

@@ -16,7 +16,7 @@ Public Class Photo
     'Methods
     Public Overrides Function Add() As Boolean
         If MyBase.Add() Then
-            Dim query As String = $"insert into T_NEWS 
+            Dim query As String = $"insert into T_PHOTO
                                     values( IDENT_CURRENT('T_BUSINESSOBJECT'), '{Me.PhotoPath}')"
 
             Return Exec(query)
@@ -32,9 +32,9 @@ Public Class Photo
     End Function
     Public Overrides Function Update() As Boolean
         If MyBase.Update() Then
-            Dim query As String = $"update	T_NEWS
-                                    set		C_CATEGORY = '{Me.PhotoPath}'
-                                    where	ID = {Me.ID}"
+            Dim query As String = $"update	T_PHOTO
+                                    set		C_LOCATION = '{Me.PhotoPath}'
+                                    where	C_NAME = '{Me.Name}'"
             Return Exec(query)
         Else
             Return False

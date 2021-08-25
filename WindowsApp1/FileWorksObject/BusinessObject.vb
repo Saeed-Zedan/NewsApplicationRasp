@@ -66,13 +66,38 @@ Public Class BusinessObject
     End Property
     'Methods Implementation
     Public Overridable Function Read() As String
+        Try
+            Dim connectionString As String = "Data Source=SAEED\MSSQLSERVER01;Initial Catalog=NewsApplicationDB;Integrated Security=True"
+            Dim connection As New SqlConnection(connectionString)
 
+            Dim query As String = $"select * 
+                                    from T_BUSINESSOBJECT
+                                    where C_NAME = '{Me.Name}'"
 
-        Return String.Empty
+            Dim command As SqlCommand = New SqlCommand(query, connection)
+
+            connection.Open()
+            Dim reader As SqlDataReader
+            reader = command.ExecuteReader()
+            If Not reader.HasRows Then
+                Return "No Rows"
+            End If
+            reader.Read()
+            Me.ID = reader.GetInt32(0)
+            Me.CreationDate = reader.GetDateTime(1)
+            Me.Name = reader.GetString(2)
+            Me.ClassID = CChar(reader.GetString(3))
+            Me.LastModifier = reader.GetString(4)
+            connection.Close()
+
+            Return Me.ToString()
+        Catch ex As SqlException
+            Return "Failed"
+        End Try
     End Function
     Public Overridable Function Delete() As Boolean
         Dim query As String = $"delete from	T_BUSINESSOBJECT
-                                    where	ID = {Me.ID}"
+                                    where	C_NAME = '{Me.Name}'"
         Return Exec(query)
     End Function
     Public Overridable Function Update() As Boolean

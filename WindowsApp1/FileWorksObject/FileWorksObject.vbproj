@@ -66,6 +66,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BusinessObject.vb" />
+    <Compile Include="BusinessQuery.vb" />
+    <Compile Include="FileQuery.vb" />
     <Compile Include="NewsApplicationDB.designer.vb">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -88,7 +90,9 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="News.vb" />
+    <Compile Include="NewsQuery.vb" />
     <Compile Include="Photo.vb" />
+    <Compile Include="PhotoQuery.vb" />
     <Compile Include="User.vb" />
     <Compile Include="UserQuery.vb" />
   </ItemGroup>

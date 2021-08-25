@@ -1,6 +1,14 @@
 ﻿Imports System.IO
 Public Class NewsAdd
-    Public filename As String = String.Empty
+    Public currentUser As String
+    Private newsObValue As FileWorksObject.News
+    Public Sub New(curUser As String)
+
+        ' This call is required by the designer.
+        InitializeComponent()
+        ' Add any initialization after the InitializeComponent() call.
+        Me.currentUser = curUser
+    End Sub
     Private Sub saveButton_Click(sender As Object, e As EventArgs) Handles saveButton.Click
         Select Case String.Empty
             Case titleTextBox.Text
@@ -14,25 +22,33 @@ Public Class NewsAdd
         End Select
 
 
-        Dim newsOb As News = New News()
-        newsOb.Title = titleTextBox.Text
-        newsOb.Body = bodyTextBox.Text
-        newsOb.Category = categoryComboBox1.Text
+        newsObValue = New FileWorksObject.News()
+        newsObValue.Name = titleTextBox.Text
+        newsObValue.Body = bodyTextBox.Text
+        newsObValue.Category = categoryComboBox1.Text
+        newsObValue.ClassID = "F"
+        newsObValue.Tagged = "N"
+        newsObValue.LastModifier = currentUser
+        newsObValue.CreationDate = DateTime.Now
         If descriptionTextBox.Text <> String.Empty Then
-            newsOb.Description = descriptionTextBox.Text
+            newsObValue.Description = descriptionTextBox.Text
         Else
-            newsOb.Description = "  "
+            newsObValue.Description = " "
         End If
 
-        Dim dirPath = My.Computer.FileSystem.SpecialDirectories.MyDocuments & "\News"
-        Dim info = newsOb.Title & "^_^" & newsOb.creationDate & "^_^" & newsOb.Description & "^_^" & newsOb.Category & "^_^" & newsOb.Body
-        filename = dirManipulator.addFile(dirPath, info)
+        If newsObValue.Add() Then
+            Me.DialogResult = DialogResult.OK
+        End If
 
-        Me.DialogResult = DialogResult.OK
     End Sub
 
     Private Sub cancelButton_Click(sender As Object, e As EventArgs) Handles exitButton.Click
         Me.DialogResult = DialogResult.Cancel
         Me.Dispose()
     End Sub
+    Public ReadOnly Property newsOb As FileWorksObject.News
+        Get
+            Return newsObValue
+        End Get
+    End Property
 End Class

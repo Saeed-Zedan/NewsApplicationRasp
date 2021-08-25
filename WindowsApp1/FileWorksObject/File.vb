@@ -49,8 +49,8 @@ Public Class File
             Dim connection As New SqlConnection(connectionString)
 
             Dim query As String = $"select * 
-                                    from T_FILE, T_BUSINESSOBJECT
-                                    where T_BUSINESSOBJECT.ID = T_FILE.ID and T_FILE.ID = {Me.ID}"
+                                    from  T_BUSINESSOBJECT, T_FILE
+                                    where T_BUSINESSOBJECT.ID = T_FILE.ID and C_NAME = '{Me.Name}'"
 
             Dim command As SqlCommand = New SqlCommand(query, connection)
 
@@ -62,13 +62,13 @@ Public Class File
             End If
             reader.Read()
             Me.ID = reader.GetInt32(0)
-            Me.CreationDate = reader.GetDateTime(5)
-            Me.Name = reader.GetString(6)
-            Me.ClassID = CChar(reader.GetString(7))
-            Me.LastModifier = reader.GetString(8)
-            Me.Body = reader.GetString(1)
-            Me.Tagged = CChar(reader.GetString(2))
-            Me.Description = reader.GetString(3)
+            Me.CreationDate = reader.GetDateTime(1)
+            Me.Name = reader.GetString(2)
+            Me.ClassID = CChar(reader.GetString(3))
+            Me.LastModifier = reader.GetString(4)
+            Me.Body = reader.GetString(6)
+            Me.Tagged = CChar(reader.GetString(7))
+            Me.Description = reader.GetString(8)
             connection.Close()
 
             Return Me.ToString()
@@ -92,7 +92,7 @@ Public Class File
     Public Overrides Function Update() As Boolean
         If MyBase.Update() Then
             Dim query As String = $"update	T_FILE
-                                    set		C_BODY = '{Me.Body}', C_TAGGED = '{Me.Tagged}', C_Description = {Me.Description}
+                                    set		C_BODY = '{Me.Body}', C_TAGGED = '{Me.Tagged}', C_Description = '{Me.Description}'
                                     where	ID = {Me.ID}"
             Return Exec(query)
         Else

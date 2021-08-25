@@ -37,6 +37,7 @@ Public Class UsersView
         Dim row = usersListBox.SelectedItem
         Dim strDeatail = "{0,-5}{1,-29}{2,-60}{3,-29}"
 
+        Dim rowCopy As String = row
         Do Until InStr(row, "  ") = 0       ' Loop until there are no more double spaces
             row = Replace(row, "  ", " ")   ' Replace 2 spaces with 1 space
         Loop
@@ -62,10 +63,8 @@ Public Class UsersView
 
         If result = DialogResult.OK Then
             newUser.Read()
-            If Not newUser.Equals(userOb) Then
-                usersListBox.Items.Remove(row)
-                usersListBox.Items.Add(String.Format(strDeatail, newUser.ID, newUser.Name, newUser.FullName, newUser.LastModifier))
-            End If
+            usersListBox.Items.Remove(rowCopy)
+            usersListBox.Items.Add(String.Format(strDeatail, newUser.ID, newUser.Name, newUser.FullName, newUser.LastModifier))
         End If
     End Sub
 

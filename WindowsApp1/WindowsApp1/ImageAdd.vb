@@ -1,7 +1,17 @@
 ﻿
 Imports System.IO
 Public Class ImageAdd
-    Public filename As String = String.Empty
+    Public currentUser As String
+    Public newOb As FileWorksObject.PhotoQuery
+
+    Public Sub New(currentUser As String)
+
+        ' This call is required by the designer.
+        InitializeComponent()
+
+        ' Add any initialization after the InitializeComponent() call.
+        Me.currentUser = currentUser
+    End Sub
     Private Sub browseButton_Click(sender As Object, e As EventArgs) Handles browseButton.Click
         Dim result As DialogResult
         Dim filename As String
@@ -37,20 +47,32 @@ Public Class ImageAdd
                 Exit Sub
         End Select
 
+        newOb = New FileWorksObject.PhotoQuery()
 
-        Dim newsOb As Images = New Images()
-        newsOb.Title = titleTextBox.Text
-        newsOb.Body = bodyTextBox.Text
-        newsOb.Image = imagePathTextBox.Text
+        newOb.Name = titleTextBox.Text
+        newOb.Body = bodyTextBox.Text
+        newOb.ClassID = "F"
+        newOb.LastModifier = currentUser
+        newOb.CreationDate = DateTime.Now
         If descriptionTextBox.Text <> String.Empty Then
-            newsOb.Description = descriptionTextBox.Text
+            newOb.Description = descriptionTextBox.Text
         Else
-            newsOb.Description = "  "
+            newOb.Description = " "
+        End If
+        newOb.Tagged = "P"
+        Dim newPhotoName = Guid.NewGuid.ToString() & Path.GetExtension(imagePathTextBox.Text)
+        Dim dirPath = My.Computer.FileSystem.SpecialDirectories.Desktop & "\Photos"
+        If Not Directory.Exists(dirPath) Then
+            Directory.CreateDirectory(dirPath)
+        End If
+        Dim newPath = Path.Combine(dirPath, newPhotoName)
+        File.Copy(imagePathTextBox.Text, newPath)
+        newOb.PhotoPath = newPath
+        If newOb.Add() Then
+            Me.DialogResult = DialogResult.OK
+        Else
+            Me.DialogResult = DialogResult.Cancel
         End If
 
-        Dim dirPath = My.Computer.FileSystem.SpecialDirectories.MyDocuments & "\Images"
-        Dim info = newsOb.Title & "^_^" & newsOb.creationDate & "^_^" & newsOb.Description & "^_^" & newsOb.Image & "^_^" & newsOb.Body
-        filename = dirManipulator.addFile(dirPath, info)
-        Me.DialogResult = DialogResult.OK
     End Sub
 End Class

@@ -69,7 +69,7 @@ Public Class User
             Dim connection As New SqlConnection(connectionString)
 
             Dim query As String = $"select * 
-                                    from T_USER, T_BUSINESSOBJECT
+                                    from T_BUSINESSOBJECT, T_USER
                                     where T_BUSINESSOBJECT.ID = T_USER.ID and T_USER.ID = {Me.ID}"
 
             Dim command As SqlCommand = New SqlCommand(query, connection)
@@ -82,13 +82,13 @@ Public Class User
             End If
             reader.Read()
             Me.ID = reader.GetInt32(0)
-            Me.CreationDate = reader.GetDateTime(5)
-            Me.Name = reader.GetString(6)
-            Me.ClassID = CChar(reader.GetString(7))
-            Me.LastModifier = reader.GetString(8)
-            Me.FullName = reader.GetString(1)
-            Me.passwordValue = reader.GetString(2)
-            Me.PrivilegeLevel = reader.GetBoolean(3)
+            Me.CreationDate = reader.GetDateTime(1)
+            Me.Name = reader.GetString(2)
+            Me.ClassID = CChar(reader.GetString(3))
+            Me.LastModifier = reader.GetString(4)
+            Me.FullName = reader.GetString(6)
+            Me.passwordValue = reader.GetString(7)
+            Me.PrivilegeLevel = reader.GetBoolean(8)
             connection.Close()
 
             Return Me.ToString()

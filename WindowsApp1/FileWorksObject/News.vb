@@ -28,7 +28,38 @@ Public Class News
         Return MyBase.Delete()
     End Function
     Public Overrides Function Read() As String
-        Return MyBase.Read()
+        Try
+            Dim connectionString As String = "Data Source=SAEED\MSSQLSERVER01;Initial Catalog=NewsApplicationDB;Integrated Security=True"
+            Dim connection As New SqlConnection(connectionString)
+
+            Dim query As String = $"select *
+                                    from T_BUSINESSOBJECT, T_FILE, T_NEWS
+                                    where T_BUSINESSOBJECT.ID = T_FILE.ID and T_FILE.ID = T_NEWS.ID and T_NEWS.ID = {Me.ID}"
+
+            Dim command As SqlCommand = New SqlCommand(query, connection)
+
+            connection.Open()
+            Dim reader As SqlDataReader
+            reader = command.ExecuteReader()
+            If Not reader.HasRows Then
+                Return "No Rows"
+            End If
+            reader.Read()
+            Me.ID = reader.GetInt32(0)
+            Me.CreationDate = reader.GetDateTime(1)
+            Me.Name = reader.GetString(2)
+            Me.ClassID = CChar(reader.GetString(3))
+            Me.LastModifier = reader.GetString(4)
+            Me.Body = reader.GetString(6)
+            Me.Tagged = CChar(reader.GetString(7))
+            Me.Description = reader.GetString(8)
+            Me.Category = reader.GetString(10)
+            connection.Close()
+
+            Return Me.ToString()
+        Catch ex As SqlException
+            Return "Failed"
+        End Try
     End Function
     Public Overrides Function Update() As Boolean
         If MyBase.Update() Then
