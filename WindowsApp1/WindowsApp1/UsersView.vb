@@ -37,6 +37,10 @@ Public Class UsersView
         Dim row = usersListBox.SelectedItem
         Dim strDeatail = "{0,-5}{1,-29}{2,-60}{3,-29}"
 
+        Do Until InStr(row, "  ") = 0       ' Loop until there are no more double spaces
+            row = Replace(row, "  ", " ")   ' Replace 2 spaces with 1 space
+        Loop
+
         If row = String.Empty Then 'no selected file
             MessageBox.Show("There is no selected user/s", "Duck", MessageBoxButtons.OK, MessageBoxIcon.Warning)
             Exit Sub
