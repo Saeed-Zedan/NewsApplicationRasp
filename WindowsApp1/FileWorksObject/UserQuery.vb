@@ -29,7 +29,7 @@ Public Class UserQuery
                         Me.ClassID = CChar(reader.GetString(7))
                         Me.LastModifier = reader.GetString(8)
                         Me.FullName = reader.GetString(1)
-                        Me.Password = reader.GetString(2)
+                        Me.AssignPasswordDirectly(reader.GetString(2))
                         Me.PrivilegeLevel = reader.GetBoolean(3)
                         record = Me.ToString()
                         result.Add(Strings.Split(record, "^_^"))
@@ -65,6 +65,34 @@ Public Class UserQuery
             Return -1
         End Try
     End Function
+    Public Function ValidatingUser() As Int32
+        Dim connectionString As String = "Data Source=SAEED\MSSQLSERVER01;Initial Catalog=NewsApplicationDB;Integrated Security=True"
+        Try
+            Dim connection As SqlConnection = New SqlConnection(connectionString)
+            Dim query As String = $"select T_USER.ID, C_Password 
+                                    from T_USER, T_BUSINESSOBJECT
+                                    where T_BUSINESSOBJECT.ID = T_USER.ID and T_BUSINESSOBJECT.C_NAME = '{Name}'"
+
+            Dim command As SqlCommand = New SqlCommand(query, connection)
+            connection.Open()
+            Dim reader As SqlDataReader
+            reader = command.ExecuteReader()
+            If reader.HasRows = True Then
+                reader.Read()
+                If Me.Password = reader.GetString(1) Then
+                    Me.ID = reader.GetInt32(0)
+                    Return 1
+                Else
+                    Return 0
+                End If
+            Else
+                    Return 0
+            End If
+        Catch ex As SqlException
+            Return -1
+        End Try
+    End Function
+
     Public Overrides Function ToString() As String
         Return MyBase.ToString()
     End Function

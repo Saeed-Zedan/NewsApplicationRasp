@@ -3,7 +3,6 @@ Imports System.Text.RegularExpressions
 Imports System.Windows.Forms
 
 Public Class UserEdit
-    Private filePath As String
     Private curUser As String
     Private oldUser As FileWorksObject.User
 

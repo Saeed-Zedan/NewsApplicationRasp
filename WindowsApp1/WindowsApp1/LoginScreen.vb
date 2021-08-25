@@ -1,7 +1,7 @@
 Imports System.IO
 
 Public Class LoginScreen
-    Private Priv As Boolean
+    Private privValue As Boolean
     ' TODO: Insert code to perform custom authentication using the provided username and password 
     ' (See https://go.microsoft.com/fwlink/?LinkId=35339).  
     ' The custom principal can then be attached to the current thread's principal as follows: 
@@ -12,37 +12,22 @@ Public Class LoginScreen
 
     Private Sub OK_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK.Click
 
-        Dim dirPath = My.Computer.FileSystem.SpecialDirectories.MyDocuments & "\Users" 'get the directory path where the files are saved
-        If Not (Directory.Exists(dirPath)) Then
-            FileSystem.MkDir(dirPath)
-        End If
-
-        Dim curUser As User = New User()
-        curUser.loginName = UsernameTextBox.Text
+        Dim curUser As FileWorksObject.UserQuery = New FileWorksObject.UserQuery()
+        curUser.Name = UsernameTextBox.Text
         curUser.Password = PasswordTextBox.Text
-        Dim files = My.Computer.FileSystem.GetFiles(dirPath) 'retrieve all the files' name
-        Dim Info As String()
+        Dim result = curUser.ValidatingUser()
 
-
-        Try
-            For Each filename As String In files
-                If filename.EndsWith(".txt") Then
-                    Info = dirManipulator.readFile(filename)
-                    If Info(0) = curUser.loginName And Info(2) = curUser.Password Then
-                        Priv = Info(4)
-
-                        Me.DialogResult = DialogResult.OK
-
-                        Me.Close()
-                        Exit Sub
-                    End If
-                End If
-            Next
-            MessageBox.Show("Wrong name or password", "Invalid Login", MessageBoxButtons.OK, MessageBoxIcon.Stop)
-        Catch ex As IOException
-            MessageBox.Show("Process failed", "IO ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)
-        End Try
-
+        If result = 1 Then
+            curUser.Read()
+            privValue = curUser.PrivilegeLevel
+            Me.DialogResult = DialogResult.OK
+            Me.Close()
+            Exit Sub
+        ElseIf result = -1 Then
+            MessageBox.Show("Failed to access DB", "Invalid DB Access", MessageBoxButtons.OK, MessageBoxIcon.Stop)
+            Exit Sub
+        End If
+        MessageBox.Show("Wrong name or password", "Invalid Login", MessageBoxButtons.OK, MessageBoxIcon.Stop)
     End Sub
 
     Private Sub Cancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel.Click
@@ -50,13 +35,15 @@ Public Class LoginScreen
         Me.Close()
     End Sub
 
-    Public Function getUserName() As String
-        Return UsernameTextBox.Text
-    End Function
-
-    Public ReadOnly Property getPriv As Boolean
+    Public ReadOnly Property UserName As String
         Get
-            Return Priv
+            Return UsernameTextBox.Text
+        End Get
+    End Property
+
+    Public ReadOnly Property Priv As Boolean
+        Get
+            Return privValue
         End Get
     End Property
 

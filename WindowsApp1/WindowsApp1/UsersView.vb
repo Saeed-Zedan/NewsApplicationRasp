@@ -1,7 +1,7 @@
 ﻿Imports System.Windows.Forms
 Imports System.IO
 Public Class UsersView
-    Dim userDict As Dictionary(Of String, String)
+
     Dim curUser As String
     Dim Priv As Boolean
 
@@ -26,7 +26,6 @@ Public Class UsersView
             Dim w = Me.Width
             Dim strDeatail = "{0,-5}{1,-29}{2,-60}{3,-29}"
             usersListBox.Items.Add(String.Format(strDeatail, "ID", "Name", "Long Name", "Last Modifier"))
-            userDict = New Dictionary(Of String, String)
             For Each user In allUsers
                 usersListBox.Items.Add(String.Format(strDeatail, user(0), user(2), user(5), user(4)))
             Next

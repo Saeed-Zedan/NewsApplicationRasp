@@ -12,9 +12,9 @@ Public Class newsApplication
         'Dim result = LoginScreen.ShowDialog()
         Using newForm = New LoginScreen()
             If newForm.ShowDialog = DialogResult.OK Then
-                currentUser = newForm.getUserName()
-                userPriv = newForm.getPriv()
-                MessageBox.Show($"Welcome {currentUser}")
+                currentUser = newForm.UserName
+                userPriv = newForm.Priv
+                MessageBox.Show($"Welcome {currentUser} {userPriv}")
             Else
                 Me.Dispose()
             End If
@@ -267,9 +267,9 @@ Public Class newsApplication
         Me.Hide()
         Using newForm = New LoginScreen()
             If newForm.ShowDialog = DialogResult.OK Then
-                currentUser = newForm.getUserName()
-                userPriv = newForm.getPriv()
-                MessageBox.Show(newForm.getUserName())
+                currentUser = newForm.UserName
+                userPriv = newForm.Priv
+                MessageBox.Show($"Welcome {currentUser}")
                 Me.Show()
             Else
                 Me.Dispose()
@@ -282,11 +282,11 @@ Public Class newsApplication
     End Sub
 
     Private Sub TryNewUserToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles TryNewUserToolStripMenuItem.Click
-        Dim newUser As FileWorksObject.User = New FileWorksObject.User("saeed hell", "123456", False, DateTime.Now, "sandy", "U", "Auto Run")
-        newUser.ID = 7
+        Dim newUser As FileWorksObject.User = New FileWorksObject.User("saeed hell", "123456", True, DateTime.Now, "Ahmed", "U", "Auto Run")
+        newUser.ID = 1
 
         If True Then
-            MessageBox.Show("Mission Done Successfully." & newUser.Read())
+            MessageBox.Show("Mission Done Successfully." & newUser.Add())
         Else
             MessageBox.Show("Retreat Retreat Mission Failed.")
         End If

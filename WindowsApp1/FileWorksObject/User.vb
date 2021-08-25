@@ -87,7 +87,7 @@ Public Class User
             Me.ClassID = CChar(reader.GetString(7))
             Me.LastModifier = reader.GetString(8)
             Me.FullName = reader.GetString(1)
-            Me.Password = reader.GetString(2)
+            Me.passwordValue = reader.GetString(2)
             Me.PrivilegeLevel = reader.GetBoolean(3)
             connection.Close()
 
