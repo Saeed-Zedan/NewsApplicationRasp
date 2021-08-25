@@ -45,7 +45,7 @@ Public Class NewsEdit
         Me.Close()
     End Sub
 
-    Sub New(Title As String)
+    Sub New(currentUser As String, Title As String)
         InitializeComponent()
         newsOB = New FileWorksObject.NewsQuery()
         newsOB.Name = Title
@@ -64,6 +64,7 @@ Public Class NewsEdit
             categoryComboBox.Text = infos(8)
             categoryComboBox.DropDownStyle = ComboBoxStyle.DropDownList
             bodyTextBox.Text = infos(5)
+            Me.currentUser = currentUser
         End If
 
     End Sub

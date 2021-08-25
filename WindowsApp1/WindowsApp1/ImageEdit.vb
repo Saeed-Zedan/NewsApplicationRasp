@@ -1,20 +1,24 @@
 ﻿Imports System.IO
 
 Public Class ImageEdit
-    Private filePath As String
-    Private creationDate As String
-    Sub New(filePath As String)
+    Private currentUserValue As String
+    Private newObValue As FileWorksObject.PhotoQuery
+    Sub New(currentUser As String, name As String)
         InitializeComponent()
-        Me.filePath = filePath
-        Dim Info = dirManipulator.readFile(filePath)
-        titleTextBox.Text = Info(0)
-        creationDate = Info(1)
-        descriptionTextBox.Text = Info(2)
-        imagePathTextBox.Text = Info(3)
-        bodyTextBox.Text = Info(4)
-        PictureBox1.Image = Image.FromFile(Info(3))
+
+        newObValue = New FileWorksObject.PhotoQuery()
+        newObValue.Name = name
+        newObValue.Read()
+        InitializeControls()
+
+        Me.currentUserValue = currentUser
     End Sub
 
+    Public ReadOnly Property newOb As FileWorksObject.PhotoQuery
+        Get
+            Return newObValue
+        End Get
+    End Property
     Private Sub browseButton_Click(sender As Object, e As EventArgs) Handles browseButton.Click
         Dim result As DialogResult
         Dim filename As String
@@ -50,22 +54,47 @@ Public Class ImageEdit
             Exit Sub
         End If
 
-        Dim newsOb As Images = New Images()
-        newsOb.Title = titleTextBox.Text
-        newsOb.Body = bodyTextBox.Text
-        newsOb.Image = imagePathTextBox.Text
+        newObValue.Name = titleTextBox.Text
+        newObValue.Body = bodyTextBox.Text
+        newObValue.PhotoPath = CopyImage(imagePathTextBox.Text)
         If descriptionTextBox.Text <> String.Empty Then
-            newsOb.Description = descriptionTextBox.Text
+            newObValue.Description = descriptionTextBox.Text
         Else
-            newsOb.Description = "  "
+            newObValue.Description = " "
         End If
+        newObValue.LastModifier = currentUserValue
 
-        Dim info = newsOb.Title & "^_^" & creationDate & "^_^" & newsOb.Description & "^_^" & newsOb.Image & "^_^" & newsOb.Body
         Dim result = MessageBox.Show("Aru u sure u want to commit ur edits", "Warning msg", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
         If result = DialogResult.Yes Then
-            dirManipulator.editFile(filePath, info)
-            Me.DialogResult = System.Windows.Forms.DialogResult.OK
-            Me.Close()
+            If newObValue.Update() Then
+                Me.DialogResult = DialogResult.OK
+            Else
+                Me.DialogResult = DialogResult.No
+            End If
         End If
+
+        Me.Close()
+    End Sub
+    Private Function CopyImage(oldPath As String) As String
+        Dim newPath As String
+
+        Dim newPhotoName = Guid.NewGuid.ToString() & Path.GetExtension(oldPath)
+        Dim dirPath = My.Computer.FileSystem.SpecialDirectories.Desktop & "\Photos"
+        If Not Directory.Exists(dirPath) Then
+            Directory.CreateDirectory(dirPath)
+        End If
+
+        newPath = Path.Combine(dirPath, newPhotoName)
+        File.Copy(oldPath, newPath)
+        PictureBox1.Image.Dispose()
+        File.Delete(oldPath)
+        Return newPath
+    End Function
+    Private Sub InitializeControls()
+        titleTextBox.Text = newObValue.Name
+        descriptionTextBox.Text = newObValue.Description
+        imagePathTextBox.Text = newObValue.PhotoPath
+        bodyTextBox.Text = newObValue.Body
+        PictureBox1.Image = Image.FromFile(newObValue.PhotoPath)
     End Sub
 End Class

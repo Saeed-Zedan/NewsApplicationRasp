@@ -160,7 +160,7 @@ Public Class newsApplication
             Dim Tagged = fileOb.RetrieveTag()
 
             If Tagged = "N" Then
-                Using newForm = New NewsEdit(fileOb.Name)
+                Using newForm = New NewsEdit(currentUser, fileOb.Name)
                     If newForm.ShowDialog() = DialogResult.OK Then
                         newsDataGridView.Rows.Remove(row)
                         newsDataGridView.Rows.Add({newForm.newsOB.Name, newForm.newsOB.CreationDate.ToString(), newForm.newsOB.Description})
@@ -170,11 +170,11 @@ Public Class newsApplication
                     End If
                 End Using
 
-            ElseIf Tagged = "F" Then
-
-                Using newForm = New ImageEdit(fileOb.Name)
+            ElseIf Tagged = "P" Then
+                Using newForm = New ImageEdit(currentUser, fileOb.Name)
                     If newForm.ShowDialog() = DialogResult.OK Then
                         newsDataGridView.Rows.Remove(row)
+                        newsDataGridView.Rows.Add({newForm.newOb.Name, newForm.newOb.CreationDate.ToString(), newForm.newOb.Description})
                         'addingRow(newForm., imageDict)
                     End If
                 End Using
