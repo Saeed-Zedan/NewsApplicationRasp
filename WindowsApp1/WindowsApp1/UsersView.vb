@@ -27,7 +27,8 @@ Public Class UsersView
             Dim strDeatail = "{0,-5}{1,-29}{2,-60}{3,-29}"
             usersListBox.Items.Add(String.Format(strDeatail, "ID", "Name", "Long Name", "Last Modifier"))
             For Each user In allUsers
-                usersListBox.Items.Add(String.Format(strDeatail, user(0), user(2), user(5), user(4)))
+                Dim userInfo = Strings.Split(user, "^_^")
+                usersListBox.Items.Add(String.Format(strDeatail, userInfo(0), userInfo(2), userInfo(5), userInfo(4)))
             Next
 
 

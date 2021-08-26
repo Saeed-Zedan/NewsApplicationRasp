@@ -2,7 +2,7 @@
 
 Public Class NewsEdit
     Private currentUser As String
-    Public newsOB As FileWorksObject.NewsQuery
+    Public newsOB As FileWorksObject.News
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
 
         Select Case String.Empty
@@ -47,9 +47,15 @@ Public Class NewsEdit
 
     Sub New(currentUser As String, Title As String)
         InitializeComponent()
-        newsOB = New FileWorksObject.NewsQuery()
+        newsOB = New FileWorksObject.News()
         newsOB.Name = Title
-        Dim allInfo = newsOB.RetrieveData()
+        Dim allInfo As String
+        If newsOB.Read() Then
+            allInfo = newsOB.ToString()
+        Else
+            allInfo = "No Rows"
+        End If
+
         If allInfo = "Failed" Then
             Me.DialogResult = System.Windows.Forms.DialogResult.Abort
             Me.Close()

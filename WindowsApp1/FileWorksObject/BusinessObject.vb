@@ -15,7 +15,7 @@ Public Class BusinessObject
         lastModifierValue = lastModifier
     End Sub
     Public Sub New()
-
+        idValue = 0
     End Sub
     Public Sub New(Obj As BusinessObject)
         Me.ID = Obj.ID
@@ -65,7 +65,7 @@ Public Class BusinessObject
         End Set
     End Property
     'Methods Implementation
-    Public Overridable Function Read() As String
+    Public Overridable Function Read() As Boolean
         Try
             Dim connectionString As String = "Data Source=SAEED\MSSQLSERVER01;Initial Catalog=NewsApplicationDB;Integrated Security=True"
             Dim connection As New SqlConnection(connectionString)
@@ -80,7 +80,7 @@ Public Class BusinessObject
             Dim reader As SqlDataReader
             reader = command.ExecuteReader()
             If Not reader.HasRows Then
-                Return "No Rows"
+                Return False
             End If
             reader.Read()
             Me.ID = reader.GetInt32(0)
@@ -90,9 +90,9 @@ Public Class BusinessObject
             Me.LastModifier = reader.GetString(4)
             connection.Close()
 
-            Return Me.ToString()
+            Return True
         Catch ex As SqlException
-            Return "Failed"
+            Throw New Exception("DB Crashed", ex)
         End Try
     End Function
     Public Overridable Function Delete() As Boolean
@@ -101,18 +101,19 @@ Public Class BusinessObject
         Return Exec(query)
     End Function
     Public Overridable Function Update() As Boolean
-        Dim query As String = $"update	T_BUSINESSOBJECT
+        Dim query As String
+        If ID <> 0 Then
+            query = $"update	T_BUSINESSOBJECT
                                 set		C_NAME = '{Me.Name}', C_CLASSID = '{Me.ClassID}', C_LASTMODIFIER = '{Me.LastModifier}'
                                 where	ID = {Me.ID}"
+        Else
+            query = $"insert into T_BUSINESSOBJECT 
+                      values(getdate(), '{Me.Name}', '{Me.ClassID}', '{Me.LastModifier}')"
+        End If
+
         Return Exec(query)
     End Function
-    Public Overridable Function Add() As Boolean
-        Dim query As String = $"insert into T_BUSINESSOBJECT 
-                                values(getdate(), '{Me.Name}', '{Me.ClassID}', '{Me.LastModifier}')"
-        Return Exec(query)
-        Return False
-    End Function
-    Public Overridable Function Exec(query As String) As Boolean
+    Private Function Exec(query As String) As Boolean
         Try
             Dim connectionString As String = "Data Source=SAEED\MSSQLSERVER01;Initial Catalog=NewsApplicationDB;Integrated Security=True"
             Dim connection As New SqlConnection(connectionString)
@@ -127,8 +128,8 @@ Public Class BusinessObject
             End If
 
             Return False
-        Catch ex As Exception
-            Return False
+        Catch ex As SqlException
+            Throw New Exception("DB Crashed", ex)
         End Try
     End Function
     Public Overrides Function ToString() As String

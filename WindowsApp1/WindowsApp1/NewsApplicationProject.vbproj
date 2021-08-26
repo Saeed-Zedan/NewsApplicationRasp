@@ -101,7 +101,6 @@
     <Compile Include="UserEdit.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="DirManipulator.vb" />
     <Compile Include="ImageEdit.Designer.vb">
       <DependentUpon>ImageEdit.vb</DependentUpon>
     </Compile>
@@ -121,7 +120,6 @@
       <DependentUpon>NewsApplication.vb</DependentUpon>
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Images.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -137,14 +135,12 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="News.vb" />
     <Compile Include="NewsEdit.Designer.vb">
       <DependentUpon>NewsEdit.vb</DependentUpon>
     </Compile>
     <Compile Include="NewsEdit.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="User.vb" />
     <Compile Include="UsersView.Designer.vb">
       <DependentUpon>UsersView.vb</DependentUpon>
     </Compile>

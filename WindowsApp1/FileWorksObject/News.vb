@@ -14,27 +14,14 @@ Public Class News
         End Set
     End Property
     'Methods
-    Public Overrides Function Add() As Boolean
-        If MyBase.Add() Then
-            Dim query As String = $"insert into T_NEWS 
-                                    values( IDENT_CURRENT('T_BUSINESSOBJECT'), '{Me.Category}')"
-
-            Return Exec(query)
-        Else
-            Return False
-        End If
-    End Function
-    Public Overrides Function Delete() As Boolean
-        Return MyBase.Delete()
-    End Function
-    Public Overrides Function Read() As String
+    Public Overrides Function Read() As Boolean
         Try
             Dim connectionString As String = "Data Source=SAEED\MSSQLSERVER01;Initial Catalog=NewsApplicationDB;Integrated Security=True"
             Dim connection As New SqlConnection(connectionString)
 
             Dim query As String = $"select *
                                     from T_BUSINESSOBJECT, T_FILE, T_NEWS
-                                    where T_BUSINESSOBJECT.ID = T_FILE.ID and T_FILE.ID = T_NEWS.ID and T_NEWS.ID = {Me.ID}"
+                                    where T_BUSINESSOBJECT.ID = T_FILE.ID and T_FILE.ID = T_NEWS.ID and C_NAME = '{Me.Name}'"
 
             Dim command As SqlCommand = New SqlCommand(query, connection)
 
@@ -42,7 +29,7 @@ Public Class News
             Dim reader As SqlDataReader
             reader = command.ExecuteReader()
             If Not reader.HasRows Then
-                Return "No Rows"
+                Return False
             End If
             reader.Read()
             Me.ID = reader.GetInt32(0)
@@ -56,22 +43,32 @@ Public Class News
             Me.Category = reader.GetString(10)
             connection.Close()
 
-            Return Me.ToString()
+            Return True
         Catch ex As SqlException
-            Return "Failed"
+            Throw New Exception("DB Crashed", ex)
         End Try
     End Function
+    Public Overrides Function Delete() As Boolean
+        Return MyBase.Delete()
+    End Function
     Public Overrides Function Update() As Boolean
+        Dim query As String
+        If Me.ID <> 0 Then
+            query = $"update	T_NEWS
+                                set		C_CATEGORY = '{Me.Category}'
+                                where	ID = {Me.ID}"
+        Else
+            query = $"insert into T_NEWS 
+                       values( IDENT_CURRENT('T_BUSINESSOBJECT'), '{Me.Category}')"
+        End If
+
         If MyBase.Update() Then
-            Dim query As String = $"update	T_NEWS
-                                    set		C_CATEGORY = '{Me.Category}'
-                                    where	ID = {Me.ID}"
             Return Exec(query)
         Else
             Return False
         End If
     End Function
-    Public Overrides Function Exec(query As String) As Boolean
+    Private Function Exec(query As String) As Boolean
         Try
             Dim connectionString As String = "Data Source=SAEED\MSSQLSERVER01;Initial Catalog=NewsApplicationDB;Integrated Security=True"
             Dim connection As New SqlConnection(connectionString)
@@ -87,7 +84,7 @@ Public Class News
 
             Return False
         Catch ex As Exception
-            Return False
+            Throw New Exception("DB Crashed", ex)
         End Try
     End Function
     Public Overrides Function ToString() As String

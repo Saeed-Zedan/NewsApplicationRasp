@@ -1,19 +1,18 @@
 ﻿Imports System.Data.SqlClient
 
 Public Class FileQuery
-    Inherits File
-    Public Function Run() As List(Of String())
+    Inherits BusinessQuery
+    Private Q_Select As String = "Select *"
+    Private Q_From As String = "From T_BUSINESSOBJECT, T_FILE"
+    Private Q_Where As String = "Where T_BUSINESSOBJECT.ID = T_FILE.ID"
+    Public Overrides Function Run() As List(Of String)
+        Dim result As List(Of String) = New List(Of String)
+        Dim Query = BuildingQuery()
         Dim connectionString As String = "Data Source=SAEED\MSSQLSERVER01;Initial Catalog=NewsApplicationDB;Integrated Security=True"
         Dim record As String
-        Dim result As List(Of String()) = New List(Of String())
         Try
             Using connection As New SqlConnection(connectionString)
-
-                Dim query As String = $"select *
-                                        from T_BUSINESSOBJECT, T_FILE
-                                        where T_BUSINESSOBJECT.ID = T_FILE.ID"
-
-                Using command As SqlCommand = New SqlCommand(query, connection)
+                Using command As SqlCommand = New SqlCommand(Query, connection)
 
                     connection.Open()
                     Dim reader As SqlDataReader
@@ -24,15 +23,15 @@ Public Class FileQuery
                     End If
                     Do While reader.Read()
                         Me.ID = reader.GetInt32(0)
-                        Me.CreationDate = reader.GetDateTime(1)
-                        Me.Name = reader.GetString(2)
-                        Me.ClassID = CChar(reader.GetString(3))
-                        Me.LastModifier = reader.GetString(4)
-                        Me.Body = reader.GetString(6)
-                        Me.Tagged = CChar(reader.GetString(7))
-                        Me.Description = reader.GetString(8)
+                        Me.C_CreationDate = reader.GetDateTime(1)
+                        Me.C_Name = reader.GetString(2)
+                        Me.C_ClassID = CChar(reader.GetString(3))
+                        Me.C_LastModifier = reader.GetString(4)
+                        Me.C_Body = reader.GetString(6)
+                        Me.C_Tagged = reader.GetString(7)
+                        Me.C_Description = If((reader.GetString(8) = Nothing), " ", reader.GetString(8))
                         record = Me.ToString()
-                        result.Add(Strings.Split(record, "^_^"))
+                        result.Add(record)
                     Loop
 
 
@@ -41,62 +40,80 @@ Public Class FileQuery
 
             Return result
         Catch ex As SqlException
-            Return Nothing
+            ResetProperties()
+            Throw New Exception("Couldn't EXecute query", ex)
         End Try
-    End Function
-    Public Function RetrieveTag() As Char
-        Dim connectionString As String = "Data Source=SAEED\MSSQLSERVER01;Initial Catalog=NewsApplicationDB;Integrated Security=True"
-        Try
-            Dim connection As SqlConnection = New SqlConnection(connectionString)
-            Dim query As String = $"select C_TAGGED
-                                    from T_BUSINESSOBJECT, T_FILE
-                                    where T_BUSINESSOBJECT.ID = T_FILE.ID and C_NAME = '{Me.Name}'"
 
-            Dim command As SqlCommand = New SqlCommand(query, connection)
-            connection.Open()
-            Dim reader As SqlDataReader
-            reader = command.ExecuteReader()
-            If Not reader.HasRows Then
-                Return "E"
+        ResetProperties()
+        Return result
+    End Function
+
+    Private Function BuildingQuery() As String
+        Dim ID As String = "T_FILE.ID"
+        Dim C_CreationDate As String = "C_CreationDate"
+        Dim C_Name As String = "C_Name"
+        Dim C_ClassID As String = "C_ClassID"
+        Dim C_LastModifier As String = "C_LastModifier"
+        Dim C_Body As String = "C_Body"
+        Dim C_Tagged As String = "C_Tagged"
+        Dim C_Description As String = "C_Description"
+
+        AddingCol(ID, Me.ID)
+
+        If Me.C_CreationDate = Nothing Then
+            AddingCol(C_CreationDate, String.Empty)
+        Else
+            AddingCol(C_CreationDate, Format(C_CreationDate, "yyyy-MM-dd hh:mm:ss"))
+        End If
+        AddingCol(C_Name, Me.C_Name)
+        AddingCol(C_ClassID, Me.C_ClassID)
+        AddingCol(C_LastModifier, Me.C_LastModifier)
+        AddingCol(C_Body, Me.C_Body)
+        AddingCol(C_Tagged, Me.C_Tagged)
+        AddingCol(C_Description, Me.C_Description)
+
+        Dim Query As String = ""
+        Query &= $"{Q_Select}{vbCrLf}{Q_From}"
+        If Not Q_Where = "Where" Then
+            Query &= $"{vbCrLf}{Q_Where}"
+        End If
+
+        Return Query
+    End Function
+    Private Sub AddingCol(colName As String, colValue As Integer)
+        If colValue <> Nothing Then
+            If Q_Where = "Where" Then
+                Q_Where &= $" {colName} = {colValue}"
+            Else
+                Q_Where &= $" and {colName} = {colValue}"
             End If
-            reader.Read()
-            Me.Tagged = CChar(reader.GetString(0))
-            connection.Close()
-
-            Return Me.Tagged
-        Catch ex As SqlException
-            Return "X"
-        End Try
-    End Function
-    Public Function RetreiveByName() As String
-        Dim connectionString As String = "Data Source=SAEED\MSSQLSERVER01;Initial Catalog=NewsApplicationDB;Integrated Security=True"
-        Try
-            Dim connection As SqlConnection = New SqlConnection(connectionString)
-            Dim query As String = $"select *
-                                    from T_BUSINESSOBJECT, T_FILE, T_NEWS
-                                    where T_BUSINESSOBJECT.ID = T_FILE.ID and T_FILE.ID = T_NEWS.ID and C_NAME = '{Me.Name}'"
-
-            Dim command As SqlCommand = New SqlCommand(query, connection)
-            connection.Open()
-            Dim reader As SqlDataReader
-            reader = command.ExecuteReader()
-            If Not reader.HasRows Then
-                Return "No Rows"
+        End If
+    End Sub
+    Private Sub AddingCol(colName As String, colValue As String)
+        If colValue <> Nothing Then
+            If Q_Where = "Where" Then
+                Q_Where &= $" {colName} = '{colValue}'"
+            Else
+                Q_Where &= $" and {colName} = '{colValue}'"
             End If
-            reader.Read()
-            Me.ID = reader.GetInt32(0)
-            Me.CreationDate = reader.GetDateTime(1)
-            Me.Name = reader.GetString(2)
-            Me.ClassID = CChar(reader.GetString(3))
-            Me.LastModifier = reader.GetString(4)
-            Me.Body = reader.GetString(6)
-            Me.Tagged = CChar(reader.GetString(7))
-            Me.Description = reader.GetString(8)
-            connection.Close()
-
-            Return Me.ToString()
-        Catch ex As SqlException
-            Return "Failed"
-        End Try
+        End If
+    End Sub
+    Private Sub ResetProperties()
+        ID = Nothing
+        C_CreationDate = Nothing
+        C_Name = Nothing
+        C_ClassID = Nothing
+        C_LastModifier = Nothing
+        C_Body = Nothing
+        C_Tagged = Nothing
+        C_Description = Nothing
+    End Sub
+    Public Overrides Function ToString() As String
+        Dim Info As String = $"^_^{Me.C_Body}^_^{Me.C_Tagged}^_^{Me.C_Description}"
+        Return MyBase.ToString() & Info
     End Function
+
+    Public Property C_Body As String = Nothing
+    Public Property C_Tagged As String = Nothing
+    Public Property C_Description As String = Nothing
 End Class

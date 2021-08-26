@@ -1,4 +1,5 @@
 Imports System.IO
+Imports System.Security.Cryptography
 
 Public Class LoginScreen
     Private privValue As Boolean
@@ -9,32 +10,6 @@ Public Class LoginScreen
     ' where CustomPrincipal is the IPrincipal implementation used to perform authentication. 
     ' Subsequently, My.User will return identity information encapsulated in the CustomPrincipal object
     ' such as the username, display name, etc.
-
-    Private Sub OK_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK.Click
-
-        Dim curUser As FileWorksObject.UserQuery = New FileWorksObject.UserQuery()
-        curUser.Name = UsernameTextBox.Text
-        curUser.Password = PasswordTextBox.Text
-        Dim result = curUser.ValidatingUser()
-
-        If result = 1 Then
-            curUser.Read()
-            privValue = curUser.PrivilegeLevel
-            Me.DialogResult = DialogResult.OK
-            Me.Close()
-            Exit Sub
-        ElseIf result = -1 Then
-            MessageBox.Show("Failed to access DB", "Invalid DB Access", MessageBoxButtons.OK, MessageBoxIcon.Stop)
-            Exit Sub
-        End If
-        MessageBox.Show("Wrong name or password", "Invalid Login", MessageBoxButtons.OK, MessageBoxIcon.Stop)
-    End Sub
-
-    Private Sub Cancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel.Click
-        Me.DialogResult = DialogResult.Cancel
-        Me.Close()
-    End Sub
-
     Public ReadOnly Property UserName As String
         Get
             Return UsernameTextBox.Text
@@ -46,5 +21,53 @@ Public Class LoginScreen
             Return privValue
         End Get
     End Property
+
+    Private Function HashingPassword(Password As String)
+        Dim hashingOb As New SHA1CryptoServiceProvider
+        Dim bytesToHash() As Byte = System.Text.Encoding.ASCII.GetBytes(Password)
+        bytesToHash = hashingOb.ComputeHash(bytesToHash)
+        Dim strResult As String = ""
+        For Each item In bytesToHash
+            strResult += item.ToString("x2")
+        Next
+
+        Return strResult
+    End Function
+    Private Sub OK_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK.Click
+
+        If UsernameTextBox.Text = Nothing Then
+            MessageBox.Show("You must enter a User!", "Not valid value", MessageBoxButtons.OK, MessageBoxIcon.Stop)
+            UsernameTextBox.Select()
+            Exit Sub
+        ElseIf PasswordTextBox.Text = Nothing Then
+            MessageBox.Show("You must enter a Password!", "Empty Password", MessageBoxButtons.OK, MessageBoxIcon.Stop)
+            PasswordTextBox.Select()
+            Exit Sub
+        End If
+
+        Dim curUser As FileWorksObject.UserQuery = New FileWorksObject.UserQuery()
+        curUser.C_Name = UsernameTextBox.Text
+        curUser.C_Password = HashingPassword(PasswordTextBox.Text)
+        Dim result = curUser.Run()
+
+        If result IsNot Nothing Then
+            Dim info = Strings.Split(result(0), "^_^")
+            privValue = info(7)
+            Me.DialogResult = DialogResult.OK
+            Me.Close()
+            Exit Sub
+        ElseIf result Is Nothing Then
+            MessageBox.Show("Wrong name or password", "Invalid Login", MessageBoxButtons.OK, MessageBoxIcon.Stop)
+            Exit Sub
+        End If
+        MessageBox.Show("Wrong name or password", "Invalid Login", MessageBoxButtons.OK, MessageBoxIcon.Stop)
+    End Sub
+
+    Private Sub Cancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel.Click
+        Me.DialogResult = DialogResult.Cancel
+        Me.Close()
+    End Sub
+
+
 
 End Class

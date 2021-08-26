@@ -29,17 +29,14 @@ Public Class UserEdit
         'End Using
 
         Dim query As FileWorksObject.UserQuery = New FileWorksObject.UserQuery()
-        Dim result = query.Search(nameTextBox.Text)
+        query.C_Name = nameTextBox.Text
+        Dim result = query.Run()
         If nameTextBox.Text = String.Empty Then
             MessageBox.Show("You must enter a Valid Name!", "Not valid value", MessageBoxButtons.OK, MessageBoxIcon.Stop)
             nameTextBox.Select()
             Exit Sub
-        ElseIf oldUser.Name <> nameTextBox.Text AndAlso result = 1 Then
+        ElseIf oldUser.Name <> nameTextBox.Text AndAlso result IsNot Nothing Then
             MessageBox.Show("The name is already used!", "Not valid value", MessageBoxButtons.OK, MessageBoxIcon.Stop)
-            nameTextBox.Select()
-            Exit Sub
-        ElseIf result = -1 Then
-            MessageBox.Show("The query is not working correctly!", "Not valid value", MessageBoxButtons.OK, MessageBoxIcon.Stop)
             nameTextBox.Select()
             Exit Sub
         End If

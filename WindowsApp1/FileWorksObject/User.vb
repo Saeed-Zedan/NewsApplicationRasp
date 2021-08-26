@@ -63,7 +63,7 @@ Public Class User
     Public Sub AssignPasswordDirectly(value As String)
         passwordValue = value
     End Sub 'Assign a hashed value directly to password without encrypt it
-    Public Overrides Function Read() As String
+    Public Overrides Function Read() As Boolean
         Try
             Dim connectionString As String = "Data Source=SAEED\MSSQLSERVER01;Initial Catalog=NewsApplicationDB;Integrated Security=True"
             Dim connection As New SqlConnection(connectionString)
@@ -78,7 +78,7 @@ Public Class User
             Dim reader As SqlDataReader
             reader = command.ExecuteReader()
             If Not reader.HasRows Then
-                Return "No Rows"
+                Return False
             End If
             reader.Read()
             Me.ID = reader.GetInt32(0)
@@ -91,17 +91,25 @@ Public Class User
             Me.PrivilegeLevel = reader.GetBoolean(8)
             connection.Close()
 
-            Return Me.ToString()
+            Return True
         Catch ex As SqlException
-            Return "Failed"
+            Throw New Exception("DB Crashed", ex)
         End Try
 
     End Function
     Public Overrides Function Update() As Boolean
+        Dim query As String
+
+        If Me.ID <> 0 Then
+            query = $"update	T_USER
+                                set		C_FULLNAME = '{Me.FullName}', C_PASSWORD = '{Me.Password}', C_PRIVILEGELEVEL = {Convert.ToInt32(Me.PrivilegeLevel)}
+                                where   ID = {Me.ID}"
+        Else
+            query = $"insert into T_USER 
+                       values(IDENT_CURRENT('T_BUSINESSOBJECT'), '{Me.FullName}', '{Me.Password}', {Convert.ToInt32(Me.PrivilegeLevel)})"
+        End If
+
         If MyBase.Update() Then
-            Dim query As String = $"update	T_USER
-                                    set		C_FULLNAME = '{Me.FullName}', C_PASSWORD = '{Me.Password}', C_PRIVILEGELEVEL = {Convert.ToInt32(Me.PrivilegeLevel)}
-                                    where	ID = {Me.ID}"
             Return Exec(query)
         Else
             Return False
@@ -110,17 +118,7 @@ Public Class User
     Public Overrides Function Delete() As Boolean
         Return MyBase.Delete()
     End Function
-    Public Overrides Function Add() As Boolean
-        If MyBase.Add() Then
-            Dim query As String = $"insert into T_USER 
-                                    values( IDENT_CURRENT('T_BUSINESSOBJECT'), '{Me.FullName}', '{Me.Password}', {Convert.ToInt32(Me.PrivilegeLevel)})"
-
-            Return Exec(query)
-        Else
-            Return False
-        End If
-    End Function
-    Public Overrides Function Exec(query As String) As Boolean
+    Private Function Exec(query As String) As Boolean
         Try
             Dim connectionString As String = "Data Source=SAEED\MSSQLSERVER01;Initial Catalog=NewsApplicationDB;Integrated Security=True"
             Dim connection As New SqlConnection(connectionString)
@@ -136,7 +134,7 @@ Public Class User
 
             Return False
         Catch ex As Exception
-            Return False
+            Throw New Exception("DB Crashed", ex)
         End Try
     End Function
     Public Overrides Function ToString() As String

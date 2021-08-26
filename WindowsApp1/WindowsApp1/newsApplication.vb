@@ -20,53 +20,16 @@ Public Class newsApplication
             End If
         End Using
     End Sub
+    Private Sub addingRows(Rows As List(Of String))
 
-    Private Sub addingRows(dirPath As String, ByRef dict As Dictionary(Of String, String))
-        If Not (Directory.Exists(dirPath)) Then
-            FileSystem.MkDir(dirPath)
-        End If
-
-        Dim files = My.Computer.FileSystem.GetFiles(dirPath) 'retrieve all the files' name
-        Dim Info As String()
-
-
-        Try
-            For Each filename As String In files
-                If filename.EndsWith(".txt") Then
-                    Info = dirManipulator.readFile(filename)
-                    dict.Add(Info(1), filename) 'adding new element to the dictionary (creation date -as its the only unique attribute int the News Class-, File name)
-                    newsDataGridView.Rows.Add({Info(0), Info(1), Info(2)}) 'adding a new row to the grid (Title, Creation date, description
-
-                End If
-            Next
-        Catch ex As IOException
-            MessageBox.Show("Process failed", "IO ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)
-        End Try
-    End Sub
-    Private Sub addingRows(Rows As List(Of String()))
         Try
             For Each Row In Rows
-                newsDataGridView.Rows.Add({Row(2), Row(1), Row(7)}) 'adding a new row to the grid (Title, Creation date, description
+                Dim rowInfo = Strings.Split(Row, "^_^")
+                newsDataGridView.Rows.Add({rowInfo(2), rowInfo(1), rowInfo(7)}) 'adding a new row to the grid (Title, Creation date, description
             Next
         Catch ex As IOException
             MessageBox.Show("Process failed", "IO ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
-    End Sub
-    Private Sub addingRow(filePath As String, ByRef dict As Dictionary(Of String, String))
-        If (File.Exists(filePath)) Then
-            Dim Info As String()
-            Try
-                If filePath.EndsWith(".txt") Then
-                    Info = dirManipulator.readFile(filePath)
-                    dict.Add(Info(1), filePath) 'adding new element to the dictionary (creation date -as its the only unique attribute int the News Class-, File name)
-                    newsDataGridView.Rows.Add({Info(0), Info(1), Info(2)}) 'adding a new row to the grid (Title, Creation date, description
-
-                End If
-            Catch ex As IOException
-                MessageBox.Show("Process failed", "IO ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)
-            End Try
-        End If
-
     End Sub
     Private Sub addingRow(name As String, creationDate As DateTime, description As String)
         Try
@@ -82,20 +45,7 @@ Public Class newsApplication
     End Sub
     Private Sub OpenToolStripMenuItem_Click(sender As Object, e As EventArgs) _
         Handles OpenToolStripMenuItem.Click
-        EmptyFields()
-        newsDataGridView.Rows.Clear() 'Clear the table to avoid redundancy
-
-        'a dictionary to keep tracking of every file i display by storing its creation date and name
-        newsDict = New Dictionary(Of String, String)
-        imageDict = New Dictionary(Of String, String)
-
-        Dim dirPath = My.Computer.FileSystem.SpecialDirectories.MyDocuments & "\News" 'get the directory path where the files are saved
-        addingRows(dirPath, newsDict)
-
-        dirPath = My.Computer.FileSystem.SpecialDirectories.MyDocuments & "\Images" 'get the directory path where the files are saved
-        addingRows(dirPath, imageDict)
-
-
+        'EmptyFields()
     End Sub
 
     Private Sub DeleteToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles DeleteToolStripMenuItem.Click
@@ -155,9 +105,15 @@ Public Class newsApplication
 
         If selectedNews.Count = 1 Then
             Dim row = selectedNews(0)
-            Dim fileOb As FileWorksObject.FileQuery = New FileWorksObject.FileQuery()
+            Dim fileOb As FileWorksObject.File = New FileWorksObject.File()
             fileOb.Name = row.Cells(0).Value
-            Dim Tagged = fileOb.RetrieveTag()
+            Dim Tagged As Char
+            If fileOb.Read() Then
+                Tagged = fileOb.Tagged()
+            Else
+                Tagged = "E"
+            End If
+
 
             If Tagged = "N" Then
                 Using newForm = New NewsEdit(currentUser, fileOb.Name)
@@ -196,7 +152,6 @@ Public Class newsApplication
         Dim row = newsDataGridView.SelectedRows
         If row.Count > 0 Then
             displayNewsData(row(0))
-
         End If
 
     End Sub
@@ -216,6 +171,9 @@ Public Class newsApplication
         bodyTextBox.Text = String.Empty
         categoryTextBox.Text = String.Empty
         creationDateTextBox.Text = String.Empty
+        If PictureBox1.Image IsNot Nothing Then
+            PictureBox1.Image.Dispose()
+        End If
         PictureBox1.Image = Nothing
 
     End Sub
@@ -226,43 +184,41 @@ Public Class newsApplication
     End Sub
 
     Private Sub displayNewsData(row As DataGridViewRow)
-        Dim creationDate1 = row.Cells(1).Value
-        If newsDict.ContainsKey(creationDate1) Then
+        EmptyFields()
+        Dim newob As FileWorksObject.File = New FileWorksObject.File()
+        newob.Name = row.Cells(0).Value
+        Dim Tagged As Char
+        If newob.Read() Then
+            Tagged = newob.Tagged
+        End If
+
+        If Tagged = "N" Then
             categoryLabel.Enabled = True
             categoryTextBox.Enabled = True
             categoryLabel.Visible = True
             categoryTextBox.Visible = True
 
-            imageTabPage.Enabled = False
-            imageTabPage.Visible = False
+            Dim displayOb As FileWorksObject.News = New FileWorksObject.News()
+            displayOb.Name = newob.Name
+            displayOb.Read()
+            titleTextBox.Text = displayOb.Name
+            creationDateTextBox.Text = displayOb.CreationDate.ToString
+            categoryTextBox.Text = displayOb.Category
+            bodyTextBox.Text = displayOb.Body
 
-            displayTabControl.TabPages(1).Visible = False
-            displayTabControl.TabPages(1).Enabled = False
-
-            Dim filePath = newsDict(creationDate1)
-            Dim info = dirManipulator.readFile(filePath)
-
-            titleTextBox.Text = info(0)
-            creationDateTextBox.Text = info(1)
-            categoryTextBox.Text = info(3)
-            bodyTextBox.Text = info(4)
-
-        ElseIf imageDict.ContainsKey(creationDate1) Then
+        ElseIf Tagged = "P" Then
             categoryLabel.Enabled = False
             categoryTextBox.Enabled = False
             categoryLabel.Visible = False
             categoryTextBox.Visible = False
 
-            imageTabPage.Enabled = True
-            imageTabPage.Visible = True
-
-            Dim filePath = imageDict(creationDate1)
-            Dim info = dirManipulator.readFile(filePath)
-
-            titleTextBox.Text = info(0)
-            creationDateTextBox.Text = info(1)
-            PictureBox1.Image = Image.FromFile(info(3))
-            bodyTextBox.Text = info(4)
+            Dim displayOb As FileWorksObject.Photo = New FileWorksObject.Photo()
+            displayOb.Name = newob.Name
+            displayOb.Read()
+            titleTextBox.Text = displayOb.Name
+            creationDateTextBox.Text = displayOb.CreationDate.ToString
+            PictureBox1.Image = Image.FromFile(displayOb.PhotoPath)
+            bodyTextBox.Text = displayOb.Body
 
         End If
     End Sub
@@ -288,10 +244,10 @@ Public Class newsApplication
 
     Private Sub TryNewUserToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles TryNewUserToolStripMenuItem.Click
         Dim newUser As FileWorksObject.User = New FileWorksObject.User("saeed hell", "123456", True, DateTime.Now, "Ahmed", "U", "Auto Run")
-        newUser.ID = 1
+        newUser.ID = 0
 
         If True Then
-            MessageBox.Show("Mission Done Successfully." & newUser.Add())
+            MessageBox.Show("Mission Done Successfully." & newUser.Update())
         Else
             MessageBox.Show("Retreat Retreat Mission Failed.")
         End If

@@ -2,11 +2,11 @@
 
 Public Class ImageEdit
     Private currentUserValue As String
-    Private newObValue As FileWorksObject.PhotoQuery
+    Private newObValue As FileWorksObject.Photo
     Sub New(currentUser As String, name As String)
         InitializeComponent()
 
-        newObValue = New FileWorksObject.PhotoQuery()
+        newObValue = New FileWorksObject.Photo()
         newObValue.Name = name
         newObValue.Read()
         InitializeControls()
@@ -14,7 +14,7 @@ Public Class ImageEdit
         Me.currentUserValue = currentUser
     End Sub
 
-    Public ReadOnly Property newOb As FileWorksObject.PhotoQuery
+    Public ReadOnly Property newOb As FileWorksObject.Photo
         Get
             Return newObValue
         End Get

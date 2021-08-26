@@ -2,8 +2,7 @@
 Imports System.IO
 Public Class ImageAdd
     Public currentUser As String
-    Public newOb As FileWorksObject.PhotoQuery
-
+    Public newOb As FileWorksObject.Photo
     Public Sub New(currentUser As String)
 
         ' This call is required by the designer.
@@ -47,7 +46,7 @@ Public Class ImageAdd
                 Exit Sub
         End Select
 
-        newOb = New FileWorksObject.PhotoQuery()
+        newOb = New FileWorksObject.Photo()
 
         newOb.Name = titleTextBox.Text
         newOb.Body = bodyTextBox.Text
@@ -68,7 +67,7 @@ Public Class ImageAdd
         Dim newPath = Path.Combine(dirPath, newPhotoName)
         File.Copy(imagePathTextBox.Text, newPath)
         newOb.PhotoPath = newPath
-        If newOb.Add() Then
+        If newOb.Update() Then
             Me.DialogResult = DialogResult.OK
         Else
             Me.DialogResult = DialogResult.Cancel

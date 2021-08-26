@@ -29,17 +29,14 @@ Public Class UserAdd
 
         Dim query As FileWorksObject.UserQuery = New FileWorksObject.UserQuery()
 
-
         If nameTextBox.Text = String.Empty Then
             MessageBox.Show("You must enter a Valid Name!", "Not valid value", MessageBoxButtons.OK, MessageBoxIcon.Stop)
             nameTextBox.Select()
             Exit Sub
-        ElseIf query.Search(nameTextBox.Text) = 1 Then
+        End If
+        query.C_Name = nameTextBox.Text
+        If query.Run() IsNot Nothing Then
             MessageBox.Show("The name is already used!", "Not valid value", MessageBoxButtons.OK, MessageBoxIcon.Stop)
-            nameTextBox.Select()
-            Exit Sub
-        ElseIf query.Search(nameTextBox.Text) = -1 Then
-            MessageBox.Show("The query is not working correctly!", "Not valid value", MessageBoxButtons.OK, MessageBoxIcon.Stop)
             nameTextBox.Select()
             Exit Sub
         End If
@@ -52,7 +49,7 @@ Public Class UserAdd
 
         If passwordTextBox.Text = String.Empty Then
             MessageBox.Show("You must enter a Password!", "Empty Password", MessageBoxButtons.OK, MessageBoxIcon.Stop)
-            longNameTextBox.Select()
+            passwordTextBox.Select()
             Exit Sub
         End If
 
@@ -62,7 +59,7 @@ Public Class UserAdd
         userOb.PrivilegeLevel = adminCheckBox.Checked
         userOb.LastModifier = curUser
         userOb.ClassID = "U"
-        If userOb.Add() Then
+        If userOb.Update() Then
             MessageBox.Show("YaaaaaaaaaaaaaY")
         Else
             MessageBox.Show("Bad Luck :(")

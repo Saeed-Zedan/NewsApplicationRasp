@@ -43,7 +43,7 @@ Public Class File
         End Set
     End Property
     'Methods Implementation
-    Public Overrides Function Read() As String
+    Public Overrides Function Read() As Boolean
         Try
             Dim connectionString As String = "Data Source=SAEED\MSSQLSERVER01;Initial Catalog=NewsApplicationDB;Integrated Security=True"
             Dim connection As New SqlConnection(connectionString)
@@ -58,7 +58,7 @@ Public Class File
             Dim reader As SqlDataReader
             reader = command.ExecuteReader()
             If Not reader.HasRows Then
-                Return "No Rows"
+                Return False
             End If
             reader.Read()
             Me.ID = reader.GetInt32(0)
@@ -71,35 +71,33 @@ Public Class File
             Me.Description = reader.GetString(8)
             connection.Close()
 
-            Return Me.ToString()
+            Return True
         Catch ex As SqlException
-            Return "Failed"
+            Throw New Exception("DB Crashed", ex)
         End Try
-    End Function
-    Public Overrides Function Add() As Boolean
-        If MyBase.Add() Then
-            Dim query As String = $"insert into T_FILE 
-                                    values( IDENT_CURRENT('T_BUSINESSOBJECT'), '{Me.Body}', '{Me.Tagged}', '{Me.Description}')"
-
-            Return Exec(query)
-        Else
-            Return False
-        End If
     End Function
     Public Overrides Function Delete() As Boolean
         Return MyBase.Delete()
     End Function
     Public Overrides Function Update() As Boolean
+        Dim query As String
+        If Me.ID <> 0 Then
+            query = $"update	T_FILE
+                                set		C_BODY = '{Me.Body}', C_TAGGED = '{Me.Tagged}', C_Description = '{Me.Description}'
+                                where	ID = {Me.ID}"
+        Else
+            query = $"insert into T_FILE 
+                       values( IDENT_CURRENT('T_BUSINESSOBJECT'), '{Me.Body}', '{Me.Tagged}', '{Me.Description}')"
+        End If
+
         If MyBase.Update() Then
-            Dim query As String = $"update	T_FILE
-                                    set		C_BODY = '{Me.Body}', C_TAGGED = '{Me.Tagged}', C_Description = '{Me.Description}'
-                                    where	ID = {Me.ID}"
             Return Exec(query)
         Else
             Return False
         End If
+
     End Function
-    Public Overrides Function Exec(query As String) As Boolean
+    Private Function Exec(query As String) As Boolean
         Try
             Dim connectionString As String = "Data Source=SAEED\MSSQLSERVER01;Initial Catalog=NewsApplicationDB;Integrated Security=True"
             Dim connection As New SqlConnection(connectionString)
@@ -114,8 +112,8 @@ Public Class File
             End If
 
             Return False
-        Catch ex As Exception
-            Return False
+        Catch ex As SqlException
+            Throw New Exception("DB Crashed", ex)
         End Try
     End Function
     Public Overrides Function ToString() As String

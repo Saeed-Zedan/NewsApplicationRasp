@@ -36,7 +36,7 @@ Public Class NewsAdd
             newsObValue.Description = " "
         End If
 
-        If newsObValue.Add() Then
+        If newsObValue.Update() Then
             Me.DialogResult = DialogResult.OK
         End If
 
