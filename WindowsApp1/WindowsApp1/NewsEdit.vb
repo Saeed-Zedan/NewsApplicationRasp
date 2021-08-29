@@ -45,10 +45,11 @@ Public Class NewsEdit
         Me.Close()
     End Sub
 
-    Sub New(currentUser As String, Title As String)
+    Sub New(currentUser As String, Title As String, ID As Integer)
         InitializeComponent()
         newsOB = New FileWorksObject.News()
         newsOB.Name = Title
+        newsOB.ID = ID
         Dim allInfo As String
         If newsOB.Read() Then
             allInfo = newsOB.ToString()

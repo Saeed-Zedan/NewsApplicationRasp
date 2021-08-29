@@ -21,7 +21,7 @@ Public Class Photo
 
             Dim query As String = $"select *
                                     from T_BUSINESSOBJECT, T_FILE, T_PHOTO
-                                    where T_BUSINESSOBJECT.ID = T_FILE.ID and T_FILE.ID = T_PHOTO.ID and C_NAME = '{Me.Name}'"
+                                    where T_BUSINESSOBJECT.ID = T_FILE.ID and T_FILE.ID = T_PHOTO.ID and T_PHOTO.ID = {Me.ID}"
 
             Dim command As SqlCommand = New SqlCommand(query, connection)
 

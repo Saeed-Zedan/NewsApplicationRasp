@@ -45,9 +45,12 @@ Public Class LoginScreen
             Exit Sub
         End If
 
-        Dim curUser As FileWorksObject.UserQuery = New FileWorksObject.UserQuery()
-        curUser.C_Name = UsernameTextBox.Text
-        curUser.C_Password = HashingPassword(PasswordTextBox.Text)
+        Dim curUser As FileWorksObject.UserQuery = New FileWorksObject.UserQuery _
+            With {.C_Name = UsernameTextBox.Text,
+                  .C_Password = HashingPassword(PasswordTextBox.Text),
+                  .C_ClassID = "U"}
+
+
         Dim result = curUser.Run()
 
         If result IsNot Nothing Then

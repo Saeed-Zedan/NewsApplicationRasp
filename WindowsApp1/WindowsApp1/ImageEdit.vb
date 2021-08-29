@@ -3,17 +3,17 @@
 Public Class ImageEdit
     Private currentUserValue As String
     Private newObValue As FileWorksObject.Photo
-    Sub New(currentUser As String, name As String)
+    Sub New(currentUser As String, name As String, ID As Integer)
         InitializeComponent()
 
         newObValue = New FileWorksObject.Photo()
         newObValue.Name = name
+        newObValue.ID = ID
         newObValue.Read()
         InitializeControls()
 
         Me.currentUserValue = currentUser
     End Sub
-
     Public ReadOnly Property newOb As FileWorksObject.Photo
         Get
             Return newObValue
@@ -83,17 +83,19 @@ Public Class ImageEdit
         Me.Close()
     End Sub
     Private Function CopyImage(oldPath As String) As String
-        Dim newPath As String
+        Dim newPath As String = oldPath
+        If oldPath <> imagePathTextBox.Text Then
+            Dim newPhotoName = Guid.NewGuid.ToString() & Path.GetExtension(imagePathTextBox.Text)
+            Dim dirPath = My.Computer.FileSystem.SpecialDirectories.Desktop & "\Photos"
+            If Not Directory.Exists(dirPath) Then
+                Directory.CreateDirectory(dirPath)
+            End If
 
-        Dim newPhotoName = Guid.NewGuid.ToString() & Path.GetExtension(imagePathTextBox.Text)
-        Dim dirPath = My.Computer.FileSystem.SpecialDirectories.Desktop & "\Photos"
-        If Not Directory.Exists(dirPath) Then
-            Directory.CreateDirectory(dirPath)
+            newPath = Path.Combine(dirPath, newPhotoName)
+            File.Copy(imagePathTextBox.Text, newPath)
+            File.Delete(oldPath)
         End If
 
-        newPath = Path.Combine(dirPath, newPhotoName)
-        File.Copy(imagePathTextBox.Text, newPath)
-        File.Delete(oldPath)
         Return newPath
     End Function
     Private Sub InitializeControls()

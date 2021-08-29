@@ -19,22 +19,15 @@ Public Class UserAdd
         Dim longNameFormat As String = "[a-zA-Z]+(\s[a-zA-Z]+)+"
         Dim userOb As FileWorksObject.User = New FileWorksObject.User()
 
-        'Using allRecords As New FileWorksObject.NewsApplicationDBDataContext()
-        '    For Each record In allRecords.T_BUSINESSOBJECTs
-        '        If record.C_CLASSID = "U" Then
-        '            allUsersName.Add(record.C_NAME)
-        '        End If
-        '    Next
-        'End Using
-
-        Dim query As FileWorksObject.UserQuery = New FileWorksObject.UserQuery()
+        Dim query As FileWorksObject.UserQuery = New FileWorksObject.UserQuery _
+        With {.C_Name = nameTextBox.Text,
+                .C_ClassID = "U"}
 
         If nameTextBox.Text = String.Empty Or Not Regex.IsMatch(nameTextBox.Text, userNameFormat) Then
             MessageBox.Show("You must enter a Valid Name!", "Not valid value", MessageBoxButtons.OK, MessageBoxIcon.Stop)
             nameTextBox.Select()
             Exit Sub
         End If
-        query.C_Name = nameTextBox.Text
         If query.Run() IsNot Nothing Then
             MessageBox.Show("The name is already used!", "Not valid value", MessageBoxButtons.OK, MessageBoxIcon.Stop)
             nameTextBox.Select()

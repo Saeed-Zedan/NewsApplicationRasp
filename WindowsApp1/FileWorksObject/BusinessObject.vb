@@ -1,21 +1,21 @@
 ﻿Imports System.Data.SqlClient
 
 Public Class BusinessObject
-    Private idValue As Integer
+    Private mId As Integer
     Private creationDateValue As DateTime
     Private nameValue As String
     Private classIDValue As Char 'U: User, F: File 
     Private lastModifierValue As String
 
     Public Sub New(creationDate As DateTime, Name As String, classID As Char, lastModifier As String, Optional ID As Integer = 0)
-        idValue = ID
+        [mId] = ID
         creationDateValue = creationDate
         nameValue = Name
         classIDValue = classID
         lastModifierValue = lastModifier
     End Sub
     Public Sub New()
-        idValue = 0
+        [mId] = 0
     End Sub
     Public Sub New(Obj As BusinessObject)
         Me.ID = Obj.ID
@@ -26,10 +26,10 @@ Public Class BusinessObject
     End Sub
     Public Property ID As Integer
         Get
-            Return idValue
+            Return mId
         End Get
         Set(value As Integer)
-            idValue = value
+            [mId] = value
         End Set
     End Property
     Public Property CreationDate As DateTime
@@ -97,7 +97,7 @@ Public Class BusinessObject
     End Function
     Public Overridable Function Delete() As Boolean
         Dim query As String = $"delete from	T_BUSINESSOBJECT
-                                    where	C_NAME = '{Me.Name}'"
+                                    where	ID = {Me.ID}"
         Return Exec(query)
     End Function
     Public Overridable Function Update() As Boolean

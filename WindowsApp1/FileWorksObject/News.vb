@@ -21,7 +21,7 @@ Public Class News
 
             Dim query As String = $"select *
                                     from T_BUSINESSOBJECT, T_FILE, T_NEWS
-                                    where T_BUSINESSOBJECT.ID = T_FILE.ID and T_FILE.ID = T_NEWS.ID and C_NAME = '{Me.Name}'"
+                                    where T_BUSINESSOBJECT.ID = T_FILE.ID and T_FILE.ID = T_NEWS.ID and T_NEWS.ID = {Me.ID}"
 
             Dim command As SqlCommand = New SqlCommand(query, connection)
 

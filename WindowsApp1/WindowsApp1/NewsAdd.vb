@@ -37,6 +37,17 @@ Public Class NewsAdd
         End If
 
         If newsObValue.Update() Then
+            Dim query = New FileWorksObject.NewsQuery _
+                With {.C_Name = newsObValue.Name}
+            Dim result = query.Run()
+            newsObValue.ID = 0
+            For Each item In result
+                Dim allinfo = item.Split("^_^")
+                If Convert.ToInt32(allinfo(0)) > newsObValue.ID Then
+                    newsObValue.ID = Convert.ToInt32(allinfo(0))
+                End If
+
+            Next
             Me.DialogResult = DialogResult.OK
         End If
 

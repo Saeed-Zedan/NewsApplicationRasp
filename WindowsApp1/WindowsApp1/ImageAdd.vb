@@ -68,6 +68,17 @@ Public Class ImageAdd
         File.Copy(imagePathTextBox.Text, newPath)
         newOb.PhotoPath = newPath
         If newOb.Update() Then
+            Dim query = New FileWorksObject.PhotoQuery _
+                With {.C_Name = newOb.Name}
+            Dim result = query.Run()
+            newOb.ID = 0
+            For Each item In result
+                Dim allinfo = item.Split("^_^")
+                If Convert.ToInt32(allinfo(0)) > newOb.ID Then
+                    newOb.ID = Convert.ToInt32(allinfo(0))
+                End If
+
+            Next
             Me.DialogResult = DialogResult.OK
         Else
             Me.DialogResult = DialogResult.Cancel

@@ -50,7 +50,7 @@ Public Class File
 
             Dim query As String = $"select * 
                                     from  T_BUSINESSOBJECT, T_FILE
-                                    where T_BUSINESSOBJECT.ID = T_FILE.ID and C_NAME = '{Me.Name}'"
+                                    where T_BUSINESSOBJECT.ID = T_FILE.ID and T_FILE.ID = {Me.ID}"
 
             Dim command As SqlCommand = New SqlCommand(query, connection)
 
