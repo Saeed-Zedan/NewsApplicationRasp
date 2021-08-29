@@ -194,13 +194,13 @@ Partial Class ImageEdit
         Me.browseButton.Text = "Browse"
         Me.browseButton.UseVisualStyleBackColor = True
         '
-        'editImage
+        'ImageEdit
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(421, 395)
         Me.Controls.Add(Me.editImageTabControl)
-        Me.Name = "editImage"
+        Me.Name = "ImageEdit"
         Me.Text = "Edit Image"
         Me.editImageTabControl.ResumeLayout(False)
         Me.fileDescriptionTabPage.ResumeLayout(False)

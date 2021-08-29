@@ -1,7 +1,7 @@
 ﻿Imports System.Data.SqlClient
 
 Public Class BusinessQuery
-    Private Q_Select As String = "Select *"
+    Private Q_Select As String = "Select ID, C_CREATIONDATE, C_NAME, C_CLASSID, C_LASTMODIFIER"
     Private Q_From As String = "From T_BUSINESSOBJECT"
     Private Q_Where As String = "Where"
     Public Overridable Function Run() As List(Of String)

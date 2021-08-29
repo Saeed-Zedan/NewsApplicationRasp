@@ -2,7 +2,7 @@
 
 Public Class PhotoQuery
     Inherits FileQuery
-    Private Q_Select As String = "Select *"
+    Private Q_Select As String = "Select T_PHOTO.ID, C_CREATIONDATE, C_NAME, C_CLASSID, C_LASTMODIFIER, C_BODY, C_TAGGED, C_Description, C_LOCATION"
     Private Q_From As String = "From T_BUSINESSOBJECT, T_FILE, T_PHOTO"
     Private Q_Where As String = "Where T_BUSINESSOBJECT.ID = T_FILE.ID and T_FILE.ID = T_PHOTO.ID"
     Public Overrides Function Run() As List(Of String)
@@ -27,10 +27,10 @@ Public Class PhotoQuery
                         Me.C_Name = reader.GetString(2)
                         Me.C_ClassID = CChar(reader.GetString(3))
                         Me.C_LastModifier = reader.GetString(4)
-                        Me.C_Body = reader.GetString(6)
-                        Me.C_Tagged = reader.GetString(7)
-                        Me.C_Description = If((reader.GetString(8) = Nothing), " ", reader.GetString(8))
-                        Me.C_Location = reader.GetString(10)
+                        Me.C_Body = reader.GetString(5)
+                        Me.C_Tagged = reader.GetString(6)
+                        Me.C_Description = If((reader.GetString(7) = Nothing), " ", reader.GetString(7))
+                        Me.C_Location = reader.GetString(8)
                         record = Me.ToString()
                         result.Add(record)
                     Loop

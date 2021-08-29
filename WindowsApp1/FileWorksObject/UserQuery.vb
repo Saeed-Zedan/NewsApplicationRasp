@@ -2,7 +2,7 @@
 
 Public Class UserQuery
     Inherits BusinessQuery
-    Private Q_Select As String = "Select *"
+    Private Q_Select As String = "Select T_USER.ID, C_CREATIONDATE, C_NAME, C_CLASSID, C_LASTMODIFIER, C_FULLNAME, C_PASSWORD, C_PRIVILEGELEVEL"
     Private Q_From As String = "From T_BUSINESSOBJECT, T_USER"
     Private Q_Where As String = "Where T_BUSINESSOBJECT.ID = T_USER.ID"
     Public Overrides Function Run() As List(Of String)
@@ -27,9 +27,9 @@ Public Class UserQuery
                         Me.C_Name = reader.GetString(2)
                         Me.C_ClassID = CChar(reader.GetString(3))
                         Me.C_LastModifier = reader.GetString(4)
-                        Me.C_FullName = reader.GetString(6)
-                        Me.C_Password = reader.GetString(7)
-                        Me.C_PrivilegeLevel = reader.GetBoolean(8)
+                        Me.C_FullName = reader.GetString(5)
+                        Me.C_Password = reader.GetString(6)
+                        Me.C_PrivilegeLevel = reader.GetBoolean(7)
                         record = Me.ToString()
                         result.Add(record)
                     Loop

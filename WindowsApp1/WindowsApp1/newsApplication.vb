@@ -43,10 +43,6 @@ Public Class newsApplication
         Me.WindowState = FormWindowState.Maximized
         addingRows((New FileWorksObject.FileQuery()).Run())
     End Sub
-    Private Sub OpenToolStripMenuItem_Click(sender As Object, e As EventArgs) _
-        Handles OpenToolStripMenuItem.Click
-        'EmptyFields()
-    End Sub
 
     Private Sub DeleteToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles DeleteToolStripMenuItem.Click
         EmptyFields()
@@ -65,11 +61,27 @@ Public Class newsApplication
             If result = DialogResult.Yes Then
                 newOb = New FileWorksObject.File()
                 newOb.Name = name
-                If newOb.Delete() Then
-                    newsDataGridView.Rows.Remove(item) 'remove the file from the gridview
+                If newOb.Read() Then
+                    Dim Tagged = newOb.Tagged
+                    If Char.ToUpper(Tagged) = "P" Then
+                        RemovePhoto(newOb.Name)
+                    End If
+                    If newOb.Delete() Then
+                        newsDataGridView.Rows.Remove(item) 'remove the file from the gridview
+                    End If
                 End If
             End If
         Next
+    End Sub
+
+    Private Sub RemovePhoto(name As String)
+        Dim newob As FileWorksObject.Photo = New FileWorksObject.Photo()
+        newob.Name = name
+        newob.Read()
+        Dim photoPath = newOb.PhotoPath
+        If File.Exists(photoPath) Then
+            File.Delete(photoPath)
+        End If
     End Sub
 
     Private Sub UserToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles UserToolStripMenuItem.Click
@@ -127,6 +139,9 @@ Public Class newsApplication
                 End Using
 
             ElseIf Tagged = "P" Then
+                If PictureBox1.Image IsNot Nothing Then
+                    MessageBox.Show("HEre is the problem")
+                End If
                 Using newForm = New ImageEdit(currentUser, fileOb.Name)
                     If newForm.ShowDialog() = DialogResult.OK Then
                         newsDataGridView.Rows.Remove(row)

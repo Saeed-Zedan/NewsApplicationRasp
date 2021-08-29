@@ -32,9 +32,16 @@ Public Class ImageEdit
             End If
         End Using
 
+
+
         If result <> DialogResult.Cancel Then
+            If PictureBox1.Image IsNot Nothing Then
+                PictureBox1.Image.Dispose()
+            End If
+            PictureBox1.Image = Nothing
             imagePathTextBox.Text = filename
             PictureBox1.Image = Image.FromFile(filename)
+
         End If
     End Sub
 
@@ -56,7 +63,7 @@ Public Class ImageEdit
 
         newObValue.Name = titleTextBox.Text
         newObValue.Body = bodyTextBox.Text
-        newObValue.PhotoPath = CopyImage(imagePathTextBox.Text)
+        newObValue.PhotoPath = CopyImage(newObValue.PhotoPath)
         If descriptionTextBox.Text <> String.Empty Then
             newObValue.Description = descriptionTextBox.Text
         Else
@@ -78,15 +85,14 @@ Public Class ImageEdit
     Private Function CopyImage(oldPath As String) As String
         Dim newPath As String
 
-        Dim newPhotoName = Guid.NewGuid.ToString() & Path.GetExtension(oldPath)
+        Dim newPhotoName = Guid.NewGuid.ToString() & Path.GetExtension(imagePathTextBox.Text)
         Dim dirPath = My.Computer.FileSystem.SpecialDirectories.Desktop & "\Photos"
         If Not Directory.Exists(dirPath) Then
             Directory.CreateDirectory(dirPath)
         End If
 
         newPath = Path.Combine(dirPath, newPhotoName)
-        File.Copy(oldPath, newPath)
-        PictureBox1.Image.Dispose()
+        File.Copy(imagePathTextBox.Text, newPath)
         File.Delete(oldPath)
         Return newPath
     End Function
@@ -96,5 +102,12 @@ Public Class ImageEdit
         imagePathTextBox.Text = newObValue.PhotoPath
         bodyTextBox.Text = newObValue.Body
         PictureBox1.Image = Image.FromFile(newObValue.PhotoPath)
+    End Sub
+
+    Private Sub ImageEdit_FormClosed(sender As Object, e As FormClosedEventArgs) Handles MyBase.FormClosed
+        If PictureBox1.Image IsNot Nothing Then
+            PictureBox1.Image.Dispose()
+        End If
+        PictureBox1.Image = Nothing
     End Sub
 End Class

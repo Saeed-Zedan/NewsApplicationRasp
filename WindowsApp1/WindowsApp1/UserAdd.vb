@@ -15,7 +15,7 @@ Public Class UserAdd
         Me.userPriv = userPriv
     End Sub
     Private Sub saveButton_Click(sender As Object, e As EventArgs) Handles saveButton.Click
-
+        Dim userNameFormat = "^[-\w\.\$@\*\!]{1,255}$"
         Dim longNameFormat As String = "[a-zA-Z]+(\s[a-zA-Z]+)+"
         Dim userOb As FileWorksObject.User = New FileWorksObject.User()
 
@@ -29,7 +29,7 @@ Public Class UserAdd
 
         Dim query As FileWorksObject.UserQuery = New FileWorksObject.UserQuery()
 
-        If nameTextBox.Text = String.Empty Then
+        If nameTextBox.Text = String.Empty Or Not Regex.IsMatch(nameTextBox.Text, userNameFormat) Then
             MessageBox.Show("You must enter a Valid Name!", "Not valid value", MessageBoxButtons.OK, MessageBoxIcon.Stop)
             nameTextBox.Select()
             Exit Sub

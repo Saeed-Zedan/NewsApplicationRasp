@@ -29,11 +29,11 @@ Partial Class newsApplication
         Me.UserToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.NewsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ImageToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.OpenToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.toolStripSeparator2 = New System.Windows.Forms.ToolStripSeparator()
         Me.ExitToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.EditToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.displayUsersToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.TryNewUserToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.logoutToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.CurrentUserToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
@@ -57,7 +57,6 @@ Partial Class newsApplication
         Me.categoryTextBox = New System.Windows.Forms.TextBox()
         Me.Splitter1 = New System.Windows.Forms.Splitter()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
-        Me.TryNewUserToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.MenuStrip1.SuspendLayout()
         CType(Me.newsDataGridView, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.ContextMenuStrip1.SuspendLayout()
@@ -79,7 +78,7 @@ Partial Class newsApplication
         '
         'FileToolStripMenuItem
         '
-        Me.FileToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.NewToolStripMenuItem, Me.OpenToolStripMenuItem, Me.toolStripSeparator2, Me.ExitToolStripMenuItem})
+        Me.FileToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.NewToolStripMenuItem, Me.toolStripSeparator2, Me.ExitToolStripMenuItem})
         Me.FileToolStripMenuItem.Name = "FileToolStripMenuItem"
         Me.FileToolStripMenuItem.Size = New System.Drawing.Size(37, 20)
         Me.FileToolStripMenuItem.Text = "&File"
@@ -114,15 +113,6 @@ Partial Class newsApplication
         Me.ImageToolStripMenuItem.Size = New System.Drawing.Size(146, 22)
         Me.ImageToolStripMenuItem.Text = "Image"
         '
-        'OpenToolStripMenuItem
-        '
-        Me.OpenToolStripMenuItem.Image = CType(resources.GetObject("OpenToolStripMenuItem.Image"), System.Drawing.Image)
-        Me.OpenToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.OpenToolStripMenuItem.Name = "OpenToolStripMenuItem"
-        Me.OpenToolStripMenuItem.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.O), System.Windows.Forms.Keys)
-        Me.OpenToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
-        Me.OpenToolStripMenuItem.Text = "&Open"
-        '
         'toolStripSeparator2
         '
         Me.toolStripSeparator2.Name = "toolStripSeparator2"
@@ -147,6 +137,12 @@ Partial Class newsApplication
         Me.displayUsersToolStripMenuItem.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.D), System.Windows.Forms.Keys)
         Me.displayUsersToolStripMenuItem.Size = New System.Drawing.Size(185, 22)
         Me.displayUsersToolStripMenuItem.Text = "&Display Users"
+        '
+        'TryNewUserToolStripMenuItem
+        '
+        Me.TryNewUserToolStripMenuItem.Name = "TryNewUserToolStripMenuItem"
+        Me.TryNewUserToolStripMenuItem.Size = New System.Drawing.Size(185, 22)
+        Me.TryNewUserToolStripMenuItem.Text = "Try New User"
         '
         'ToolsToolStripMenuItem
         '
@@ -364,12 +360,6 @@ Partial Class newsApplication
         Me.GroupBox1.TabIndex = 9
         Me.GroupBox1.TabStop = False
         '
-        'TryNewUserToolStripMenuItem
-        '
-        Me.TryNewUserToolStripMenuItem.Name = "TryNewUserToolStripMenuItem"
-        Me.TryNewUserToolStripMenuItem.Size = New System.Drawing.Size(185, 22)
-        Me.TryNewUserToolStripMenuItem.Text = "Try New User"
-        '
         'newsApplication
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -405,7 +395,6 @@ Partial Class newsApplication
     Friend WithEvents MenuStrip1 As MenuStrip
     Friend WithEvents FileToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents NewToolStripMenuItem As ToolStripMenuItem
-    Friend WithEvents OpenToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents toolStripSeparator2 As ToolStripSeparator
     Friend WithEvents ExitToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents EditToolStripMenuItem As ToolStripMenuItem
