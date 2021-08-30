@@ -109,15 +109,6 @@ Public Class Photo
 
         Return newPath
     End Function
-
-    Public Function Load() As MemoryStream
-        Dim b As New Bitmap(Me.PhotoPath)
-        Dim photoMemory As New MemoryStream
-        b.Save(photoMemory, Imaging.ImageFormat.Bmp)
-        b.Dispose()
-        Return photoMemory
-    End Function
-
     Private Function GetOldPath() As String
         Dim query = $"select C_LOCATION
                     from T_PHOTO
