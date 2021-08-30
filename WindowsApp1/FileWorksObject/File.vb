@@ -4,14 +4,12 @@ Public Class File
     Inherits BusinessObject
     'Feilds
     Private bodyValue As String
-    Private taggedValue As Char
     Private descriptionValue As String
 
-    Public Sub New(Body As String, Tagged As Char, Description As String,
-                  CreationDate As DateTime, Name As String, ClassID As Char, LastModifier As String, Optional ID As Integer = 0)
+    Public Sub New(Body As String, Description As String,
+                  CreationDate As DateTime, Name As String, ClassID As Integer, LastModifier As String, Optional ID As Integer = 0)
         MyBase.New(CreationDate, Name, ClassID, LastModifier, ID)
         bodyValue = Body
-        taggedValue = Tagged
         descriptionValue = Description
     End Sub
     Public Sub New()
@@ -26,14 +24,6 @@ Public Class File
             bodyValue = value
         End Set
     End Property
-    Public Property Tagged As Char
-        Get
-            Return taggedValue
-        End Get
-        Set(value As Char)
-            taggedValue = value
-        End Set
-    End Property
     Public Property Description As String
         Get
             Return descriptionValue
@@ -45,69 +35,27 @@ Public Class File
     'Methods Implementation
     Public Overrides Function Read() As Boolean
         Try
-            Dim connectionString As String = "Data Source=SAEED\MSSQLSERVER01;Initial Catalog=NewsApplicationDB;Integrated Security=True"
-            Dim connection As New SqlConnection(connectionString)
-
-            Dim query As String = $"select * 
+            Dim query As String = $"select C_BODY, C_Description 
                                     from  T_BUSINESSOBJECT, T_FILE
                                     where T_BUSINESSOBJECT.ID = T_FILE.ID and T_FILE.ID = {Me.ID}"
-
-            Dim command As SqlCommand = New SqlCommand(query, connection)
-
-            connection.Open()
             Dim reader As SqlDataReader
-            reader = command.ExecuteReader()
-            If Not reader.HasRows Then
-                Return False
-            End If
-            reader.Read()
-            Me.ID = reader.GetInt32(0)
-            Me.CreationDate = reader.GetDateTime(1)
-            Me.Name = reader.GetString(2)
-            Me.ClassID = CChar(reader.GetString(3))
-            Me.LastModifier = reader.GetString(4)
-            Me.Body = reader.GetString(6)
-            Me.Tagged = CChar(reader.GetString(7))
-            Me.Description = reader.GetString(8)
-            connection.Close()
 
-            Return True
-        Catch ex As SqlException
-            Throw New Exception("DB Crashed", ex)
-        End Try
-    End Function
-    Public Overrides Function Delete() As Boolean
-        Return MyBase.Delete()
-    End Function
-    Public Overrides Function Update() As Boolean
-        Dim query As String
-        If Me.ID <> 0 Then
-            query = $"update	T_FILE
-                                set		C_BODY = '{Me.Body}', C_TAGGED = '{Me.Tagged}', C_Description = '{Me.Description}'
-                                where	ID = {Me.ID}"
-        Else
-            query = $"insert into T_FILE 
-                       values( IDENT_CURRENT('T_BUSINESSOBJECT'), '{Me.Body}', '{Me.Tagged}', '{Me.Description}')"
-        End If
+            If MyBase.Read() Then
 
-        If MyBase.Update() Then
-            Return Exec(query)
-        Else
-            Return False
-        End If
+                dbManipulator.OpenConnection()
+                dbManipulator.Query = query
+                reader = dbManipulator.ExecReader()
 
-    End Function
-    Private Function Exec(query As String) As Boolean
-        Try
-            Dim connectionString As String = "Data Source=SAEED\MSSQLSERVER01;Initial Catalog=NewsApplicationDB;Integrated Security=True"
-            Dim connection As New SqlConnection(connectionString)
-            Dim command As SqlCommand = New SqlCommand(query, connection)
+                If Not reader.HasRows Then
+                    Return False
+                End If
 
-            connection.Open()
-            Dim effectedRows = command.ExecuteNonQuery()
-            connection.Close()
+                reader.Read()
+                Me.Body = reader.GetString(0)
+                Me.Description = reader.GetString(1)
 
-            If effectedRows > 0 Then
+                dbManipulator.CloseConnection()
+
                 Return True
             End If
 
@@ -116,8 +64,33 @@ Public Class File
             Throw New Exception("DB Crashed", ex)
         End Try
     End Function
+    Public Overrides Function Update() As Integer
+        Dim query As String
+        Dim id = MyBase.Update()
+
+        If id > 0 Then
+
+            If Me.ID <> 0 Then
+                query = $"update	T_FILE
+                                set		C_BODY = N'{Me.Body}', C_Description = N'{Me.Description}'
+                                where	ID = {Me.ID}"
+            Else
+                query = $"insert into T_FILE 
+                       values({id}, N'{Me.Body}', N'{Me.Description}')"
+            End If
+
+            If ExecNonQuery(query) Then
+                Return id
+            End If
+
+            Return 0
+        Else
+            Return 0
+        End If
+
+    End Function
     Public Overrides Function ToString() As String
-        Dim Info As String = $"^_^{Me.Body}^_^{Me.Tagged}^_^{Me.Description}"
+        Dim Info As String = $"^_^{Me.Body}^_^{Me.Description}"
         Return MyBase.ToString() & Info
     End Function
 End Class

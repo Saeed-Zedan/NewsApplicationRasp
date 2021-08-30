@@ -11,10 +11,10 @@ Public Class ImageAdd
         ' Add any initialization after the InitializeComponent() call.
         Me.currentUser = currentUser
     End Sub
-    Private Sub browseButton_Click(sender As Object, e As EventArgs) Handles browseButton.Click
+    Private Sub BrowseButton_Click(sender As Object, e As EventArgs) Handles browseButton.Click
         Dim result As DialogResult
         Dim filename As String
-        Dim ImageExtensions = {".JPG", ".JPE", ".BMP", ".GIF", ".PNG"}
+        Dim ImageExtensions = {".JPG", ".JPE", ".BMP", ".GIF", ".PNG", ".JPEG"}
         Using fileChooser As New OpenFileDialog()
             result = fileChooser.ShowDialog()
             filename = fileChooser.FileName
@@ -31,11 +31,11 @@ Public Class ImageAdd
 
     End Sub
 
-    Private Sub cancelButton_Click(sender As Object, e As EventArgs) Handles cancelButton.Click
+    Private Sub CancelButton_Click(sender As Object, e As EventArgs) Handles cancelButton.Click
         Me.Close()
     End Sub
 
-    Private Sub saveButton_Click(sender As Object, e As EventArgs) Handles saveButton.Click
+    Private Sub SaveButton_Click(sender As Object, e As EventArgs) Handles saveButton.Click
         Select Case String.Empty
             Case titleTextBox.Text
                 MessageBox.Show("You must enter a title!", "Empty Title", MessageBoxButtons.OK, MessageBoxIcon.Stop)
@@ -47,10 +47,9 @@ Public Class ImageAdd
         End Select
 
         newOb = New FileWorksObject.Photo()
-
         newOb.Name = titleTextBox.Text
         newOb.Body = bodyTextBox.Text
-        newOb.ClassID = "F"
+        newOb.ClassID = 4
         newOb.LastModifier = currentUser
         newOb.CreationDate = DateTime.Now
         If descriptionTextBox.Text <> String.Empty Then
@@ -58,27 +57,10 @@ Public Class ImageAdd
         Else
             newOb.Description = " "
         End If
-        newOb.Tagged = "P"
-        Dim newPhotoName = Guid.NewGuid.ToString() & Path.GetExtension(imagePathTextBox.Text)
-        Dim dirPath = My.Computer.FileSystem.SpecialDirectories.Desktop & "\Photos"
-        If Not Directory.Exists(dirPath) Then
-            Directory.CreateDirectory(dirPath)
-        End If
-        Dim newPath = Path.Combine(dirPath, newPhotoName)
-        File.Copy(imagePathTextBox.Text, newPath)
-        newOb.PhotoPath = newPath
-        If newOb.Update() Then
-            Dim query = New FileWorksObject.PhotoQuery _
-                With {.C_Name = newOb.Name}
-            Dim result = query.Run()
-            newOb.ID = 0
-            For Each item In result
-                Dim allinfo = item.Split("^_^")
-                If Convert.ToInt32(allinfo(0)) > newOb.ID Then
-                    newOb.ID = Convert.ToInt32(allinfo(0))
-                End If
+        newOb.PhotoPath = imagePathTextBox.Text
 
-            Next
+
+        If newOb.Update() Then
             Me.DialogResult = DialogResult.OK
         Else
             Me.DialogResult = DialogResult.Cancel

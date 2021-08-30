@@ -48,7 +48,7 @@ Public Class LoginScreen
         Dim curUser As FileWorksObject.UserQuery = New FileWorksObject.UserQuery _
             With {.C_Name = UsernameTextBox.Text,
                   .C_Password = HashingPassword(PasswordTextBox.Text),
-                  .C_ClassID = "U"}
+                  .C_ClassID = 1}
 
 
         Dim result = curUser.Run()

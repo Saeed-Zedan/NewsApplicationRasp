@@ -30,7 +30,7 @@ Public Class UserEdit
 
         Dim query As FileWorksObject.UserQuery = New FileWorksObject.UserQuery _
             With {.C_Name = nameTextBox.Text,
-                  .C_ClassID = "U"}
+                  .C_ClassID = 1}
         Dim result = query.Run()
         If nameTextBox.Text = String.Empty Or Not Regex.IsMatch(nameTextBox.Text, userNameFormat) Then
             MessageBox.Show("You must enter a Valid Name!", "Not valid value", MessageBoxButtons.OK, MessageBoxIcon.Stop)

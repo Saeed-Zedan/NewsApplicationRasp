@@ -14,14 +14,14 @@ Public Class UserAdd
         Me.curUser = curUser
         Me.userPriv = userPriv
     End Sub
-    Private Sub saveButton_Click(sender As Object, e As EventArgs) Handles saveButton.Click
+    Private Sub SaveButton_Click(sender As Object, e As EventArgs) Handles saveButton.Click
         Dim userNameFormat = "^[-\w\.\$@\*\!]{1,255}$"
         Dim longNameFormat As String = "[a-zA-Z]+(\s[a-zA-Z]+)+"
         Dim userOb As FileWorksObject.User = New FileWorksObject.User()
 
         Dim query As FileWorksObject.UserQuery = New FileWorksObject.UserQuery _
         With {.C_Name = nameTextBox.Text,
-                .C_ClassID = "U"}
+                .C_ClassID = 1}
 
         If nameTextBox.Text = String.Empty Or Not Regex.IsMatch(nameTextBox.Text, userNameFormat) Then
             MessageBox.Show("You must enter a Valid Name!", "Not valid value", MessageBoxButtons.OK, MessageBoxIcon.Stop)
@@ -48,10 +48,10 @@ Public Class UserAdd
 
         userOb.FullName = longNameTextBox.Text
         userOb.Name = nameTextBox.Text
-        userOb.Password = passwordTextBox.Text
+        userOb.Password = HashingPassword(passwordTextBox.Text)
         userOb.PrivilegeLevel = adminCheckBox.Checked
         userOb.LastModifier = curUser
-        userOb.ClassID = "U"
+        userOb.ClassID = 1
         If userOb.Update() Then
             MessageBox.Show("YaaaaaaaaaaaaaY")
         Else
@@ -61,7 +61,7 @@ Public Class UserAdd
         Me.Dispose()
     End Sub
 
-    Private Sub exitButton2_Click(sender As Object, e As EventArgs) Handles exitButton2.Click
+    Private Sub ExitButton2_Click(sender As Object, e As EventArgs) Handles exitButton2.Click
         Me.Dispose()
     End Sub
     Private Sub UserAdd_Load(sender As Object, e As EventArgs) Handles MyBase.Load
@@ -70,4 +70,15 @@ Public Class UserAdd
             adminCheckBox.Enabled = False
         End If
     End Sub
+    Private Function HashingPassword(Password As String)
+        Dim hashingOb As New SHA1CryptoServiceProvider
+        Dim bytesToHash() As Byte = System.Text.Encoding.ASCII.GetBytes(Password)
+        bytesToHash = hashingOb.ComputeHash(bytesToHash)
+        Dim strResult As String = ""
+        For Each item In bytesToHash
+            strResult += item.ToString("x2")
+        Next
+
+        Return strResult
+    End Function
 End Class

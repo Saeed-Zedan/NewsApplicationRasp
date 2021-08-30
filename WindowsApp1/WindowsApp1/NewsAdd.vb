@@ -9,7 +9,7 @@ Public Class NewsAdd
         ' Add any initialization after the InitializeComponent() call.
         Me.currentUser = curUser
     End Sub
-    Private Sub saveButton_Click(sender As Object, e As EventArgs) Handles saveButton.Click
+    Private Sub SaveButton_Click(sender As Object, e As EventArgs) Handles saveButton.Click
         Select Case String.Empty
             Case titleTextBox.Text
                 MessageBox.Show("You must enter a title!", "Empty Title", MessageBoxButtons.OK, MessageBoxIcon.Stop)
@@ -26,8 +26,7 @@ Public Class NewsAdd
         newsObValue.Name = titleTextBox.Text
         newsObValue.Body = bodyTextBox.Text
         newsObValue.Category = categoryComboBox1.Text
-        newsObValue.ClassID = "F"
-        newsObValue.Tagged = "N"
+        newsObValue.ClassID = 3
         newsObValue.LastModifier = currentUser
         newsObValue.CreationDate = DateTime.Now
         If descriptionTextBox.Text <> String.Empty Then
@@ -37,23 +36,24 @@ Public Class NewsAdd
         End If
 
         If newsObValue.Update() Then
-            Dim query = New FileWorksObject.NewsQuery _
-                With {.C_Name = newsObValue.Name}
-            Dim result = query.Run()
-            newsObValue.ID = 0
-            For Each item In result
-                Dim allinfo = item.Split("^_^")
-                If Convert.ToInt32(allinfo(0)) > newsObValue.ID Then
-                    newsObValue.ID = Convert.ToInt32(allinfo(0))
-                End If
 
-            Next
+            'Dim query = New FileWorksObject.NewsQuery _
+            '    With {.C_Name = newsObValue.Name}
+            'Dim result = query.Run()
+            'newsObValue.ID = 0
+            'For Each item In result
+            '    Dim allinfo = item.Split("^_^")
+            '    If Convert.ToInt32(allinfo(0)) > newsObValue.ID Then
+            '        newsObValue.ID = Convert.ToInt32(allinfo(0))
+            '    End If
+
+            'Next
             Me.DialogResult = DialogResult.OK
         End If
 
     End Sub
 
-    Private Sub cancelButton_Click(sender As Object, e As EventArgs) Handles exitButton.Click
+    Private Sub CancelButton_Click(sender As Object, e As EventArgs) Handles exitButton.Click
         Me.DialogResult = DialogResult.Cancel
         Me.Dispose()
     End Sub

@@ -20,18 +20,18 @@ Public Class newsApplication
             End If
         End Using
     End Sub
-    Private Sub addingRows(Rows As List(Of String))
+    Private Sub AddingRows(Rows As List(Of String))
 
         Try
             For Each Row In Rows
                 Dim rowInfo = Strings.Split(Row, "^_^")
-                newsDataGridView.Rows.Add({rowInfo(2), rowInfo(1), rowInfo(7), rowInfo(0)}) 'adding a new row to the grid (Title, Creation date, description
+                newsDataGridView.Rows.Add({rowInfo(2), rowInfo(1), rowInfo(6), rowInfo(0)}) 'adding a new row to the grid (Title, Creation date, description
             Next
         Catch ex As IOException
             MessageBox.Show("Process failed", "IO ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
     End Sub
-    Private Sub addingRow(name As String, creationDate As DateTime, description As String, ID As Integer)
+    Private Sub AddingRow(name As String, creationDate As DateTime, description As String, ID As Integer)
         Try
             newsDataGridView.Rows.Add({name, creationDate.ToString(), description, ID}) 'adding a new row to the grid (Title, Creation date, description
         Catch ex As IOException
@@ -54,38 +54,50 @@ Public Class newsApplication
             MessageBox.Show("There is no selected file/s", "Duck", MessageBoxButtons.OK, MessageBoxIcon.Warning)
             Exit Sub
         End If
-        Dim newOb As FileWorksObject.File
-        For Each item As DataGridViewRow In rows
-            Dim name = item.Cells(0).Value
-            Dim id = Convert.ToInt32(item.Cells(3).Value)
-            Dim result = MessageBox.Show("Aru u sure u want to delete the user : " & name, "Warning msg", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
-            If result = DialogResult.Yes Then
-                newOb = New FileWorksObject.File()
-                newOb.Name = name
-                newOb.ID = id
 
-                If newOb.Read() Then
-                    Dim Tagged = newOb.Tagged
-                    If Char.ToUpper(Tagged) = "P" Then
-                        RemovePhoto(newOb.Name, newOb.ID)
-                    End If
-                    If newOb.Delete() Then
-                        newsDataGridView.Rows.Remove(item) 'remove the file from the gridview
-                    End If
+        Dim query As FileWorksObject.BusinessQuery
+
+        For Each item As DataGridViewRow In rows
+            Dim id = Convert.ToInt32(item.Cells(3).Value)
+            Dim name = item.Cells(0).Value
+            Dim result = MessageBox.Show("Aru u sure u want to delete the user : " & name, "Warning msg", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
+
+            If result = DialogResult.Yes Then
+                query = New FileWorksObject.BusinessQuery With {.ID = id}
+                Dim queryResult = query.Run()
+                Dim tagged As Integer
+                Dim allInfo As String()
+
+                If queryResult.Count = 1 Then
+                    allInfo = Strings.Split(queryResult(0), "^_^")
+                    tagged = Convert.ToInt32(allInfo(3))
+                Else
+                    MessageBox.Show("Item Doesn't Exist")
+                    Exit Sub
                 End If
+
+                If tagged = 4 Then
+
+                    Dim newOb As FileWorksObject.Photo = New FileWorksObject.Photo With {.ID = allInfo(0)}
+                    If newOb.Read() Then
+                        If newOb.Delete() Then
+                            newsDataGridView.Rows.Remove(item)
+                        End If
+                    End If
+
+                ElseIf tagged = 3 Then
+
+                    Dim newOb As FileWorksObject.BusinessObject = New FileWorksObject.BusinessObject With {.ID = allInfo(0)}
+                    If newOb.Read() Then
+                        If newOb.Delete() Then
+                            newsDataGridView.Rows.Remove(item)
+                        End If
+                    End If
+
+                End If
+
             End If
         Next
-    End Sub
-
-    Private Sub RemovePhoto(name As String, ID As Integer)
-        Dim newob As FileWorksObject.Photo = New FileWorksObject.Photo()
-        newob.Name = name
-        newob.ID = ID
-        newob.Read()
-        Dim photoPath = newob.PhotoPath
-        If File.Exists(photoPath) Then
-            File.Delete(photoPath)
-        End If
     End Sub
 
     Private Sub UserToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles UserToolStripMenuItem.Click
@@ -111,11 +123,11 @@ Public Class newsApplication
         Me.Dispose()
     End Sub
 
-    Private Sub displayUsersToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles displayUsersToolStripMenuItem.Click
+    Private Sub DisplayUsersToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles displayUsersToolStripMenuItem.Click
         Dim newForm As UsersView = New UsersView(currentUser, userPriv)
         newForm.ShowDialog()
     End Sub
-    Private Sub newsDataGridView_DoubleClick(sender As Object, e As EventArgs) Handles newsDataGridView.DoubleClick
+    Private Sub NewsDataGridView_DoubleClick(sender As Object, e As EventArgs) Handles newsDataGridView.DoubleClick
         EmptyFields()
         Dim selectedNews = newsDataGridView.SelectedRows
 
@@ -123,15 +135,15 @@ Public Class newsApplication
             Dim row = selectedNews(0)
             Dim fileOb As FileWorksObject.File = New FileWorksObject.File()
             fileOb.ID = Convert.ToInt32(row.Cells(3).Value)
-            Dim Tagged As Char
+            Dim tagged As Integer
             If fileOb.Read() Then
-                Tagged = fileOb.Tagged()
+                tagged = fileOb.ClassID
             Else
-                Tagged = "E"
+                tagged = 0
             End If
 
 
-            If Tagged = "N" Then
+            If tagged = 3 Then
                 Using newForm = New NewsEdit(currentUser, fileOb.Name, fileOb.ID)
                     If newForm.ShowDialog() = DialogResult.OK Then
                         newsDataGridView.Rows.Remove(row)
@@ -140,7 +152,7 @@ Public Class newsApplication
                     End If
                 End Using
 
-            ElseIf Tagged = "P" Then
+            ElseIf tagged = 4 Then
                 If PictureBox1.Image IsNot Nothing Then
                     MessageBox.Show("HEre is the problem")
                 End If
@@ -152,9 +164,9 @@ Public Class newsApplication
                     End If
                 End Using
 
-            ElseIf Tagged = "X" Then
+            ElseIf tagged = -1 Then
                 MessageBox.Show("Couldn't Access DB")
-            ElseIf Tagged = "E" Then
+            ElseIf tagged = 0 Then
                 MessageBox.Show("No Match In DB")
             End If
         End If
@@ -163,7 +175,7 @@ Public Class newsApplication
     Private Sub Form1_Resize(sender As Object, e As EventArgs) Handles MyBase.Resize
         displayTabControl.Height = Me.Height \ 3
     End Sub
-    Private Sub newsDataGridView_SelectionChanged(sender As Object, e As EventArgs) Handles newsDataGridView.SelectionChanged
+    Private Sub NewsDataGridView_SelectionChanged(sender As Object, e As EventArgs) Handles newsDataGridView.SelectionChanged
         EmptyFields()
 
         Dim row = newsDataGridView.SelectedRows
@@ -195,22 +207,22 @@ Public Class newsApplication
 
     End Sub
 
-    Private Sub newsDataGridView_RowsAdded(sender As Object, e As DataGridViewRowsAddedEventArgs) Handles newsDataGridView.RowsAdded
+    Private Sub NewsDataGridView_RowsAdded(sender As Object, e As DataGridViewRowsAddedEventArgs) Handles newsDataGridView.RowsAdded
         Dim row = newsDataGridView.Rows(0)
         displayNewsData(row)
     End Sub
 
-    Private Sub displayNewsData(row As DataGridViewRow)
+    Private Sub DisplayNewsData(row As DataGridViewRow)
         EmptyFields()
+
         Dim newob As FileWorksObject.File = New FileWorksObject.File()
-        newob.Name = row.Cells(0).Value
         newob.ID = Convert.ToInt32(row.Cells(3).Value)
-        Dim Tagged As Char
+        Dim tagged As Integer
         If newob.Read() Then
-            Tagged = newob.Tagged
+            tagged = newob.ClassID
         End If
 
-        If Tagged = "N" Then
+        If tagged = 3 Then
             categoryLabel.Enabled = True
             categoryTextBox.Enabled = True
             categoryLabel.Visible = True
@@ -225,7 +237,7 @@ Public Class newsApplication
             categoryTextBox.Text = displayOb.Category
             bodyTextBox.Text = displayOb.Body
 
-        ElseIf Tagged = "P" Then
+        ElseIf tagged = 4 Then
             categoryLabel.Enabled = False
             categoryTextBox.Enabled = False
             categoryLabel.Visible = False
@@ -243,9 +255,10 @@ Public Class newsApplication
         End If
     End Sub
 
-    Private Sub logoutToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles logoutToolStripMenuItem.Click
+    Private Sub LogoutToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles logoutToolStripMenuItem.Click
         currentUser = String.Empty
         Me.Hide()
+
         Using newForm = New LoginScreen()
             If newForm.ShowDialog = DialogResult.OK Then
                 currentUser = newForm.UserName
@@ -260,16 +273,5 @@ Public Class newsApplication
     End Sub
     Private Sub CurrentUserToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles CurrentUserToolStripMenuItem.Click
         MessageBox.Show(currentUser)
-    End Sub
-
-    Private Sub TryNewUserToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles TryNewUserToolStripMenuItem.Click
-        Dim newUser As FileWorksObject.User = New FileWorksObject.User("saeed hell", "123456", True, DateTime.Now, "Ahmed", "U", "Auto Run")
-        newUser.ID = 0
-
-        If True Then
-            MessageBox.Show("Mission Done Successfully." & newUser.Update())
-        Else
-            MessageBox.Show("Retreat Retreat Mission Failed.")
-        End If
     End Sub
 End Class

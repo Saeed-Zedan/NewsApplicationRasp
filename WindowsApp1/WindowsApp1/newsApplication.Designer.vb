@@ -33,11 +33,14 @@ Partial Class newsApplication
         Me.ExitToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.EditToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.displayUsersToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.TryNewUserToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.logoutToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.CurrentUserToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.newsDataGridView = New System.Windows.Forms.DataGridView()
+        Me.Title = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.creationDate = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.Description = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.ID = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.ContextMenuStrip1 = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.DeleteToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.displayTabControl = New System.Windows.Forms.TabControl()
@@ -54,10 +57,6 @@ Partial Class newsApplication
         Me.categoryTextBox = New System.Windows.Forms.TextBox()
         Me.Splitter1 = New System.Windows.Forms.Splitter()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
-        Me.Title = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.creationDate = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.Description = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.ID = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.MenuStrip1.SuspendLayout()
         CType(Me.newsDataGridView, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.ContextMenuStrip1.SuspendLayout()
@@ -127,7 +126,7 @@ Partial Class newsApplication
         '
         'EditToolStripMenuItem
         '
-        Me.EditToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.displayUsersToolStripMenuItem, Me.TryNewUserToolStripMenuItem})
+        Me.EditToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.displayUsersToolStripMenuItem})
         Me.EditToolStripMenuItem.Name = "EditToolStripMenuItem"
         Me.EditToolStripMenuItem.Size = New System.Drawing.Size(48, 20)
         Me.EditToolStripMenuItem.Text = "Show"
@@ -138,12 +137,6 @@ Partial Class newsApplication
         Me.displayUsersToolStripMenuItem.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.D), System.Windows.Forms.Keys)
         Me.displayUsersToolStripMenuItem.Size = New System.Drawing.Size(185, 22)
         Me.displayUsersToolStripMenuItem.Text = "&Display Users"
-        '
-        'TryNewUserToolStripMenuItem
-        '
-        Me.TryNewUserToolStripMenuItem.Name = "TryNewUserToolStripMenuItem"
-        Me.TryNewUserToolStripMenuItem.Size = New System.Drawing.Size(185, 22)
-        Me.TryNewUserToolStripMenuItem.Text = "Try New User"
         '
         'ToolsToolStripMenuItem
         '
@@ -184,6 +177,30 @@ Partial Class newsApplication
         Me.newsDataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
         Me.newsDataGridView.Size = New System.Drawing.Size(800, 138)
         Me.newsDataGridView.TabIndex = 1
+        '
+        'Title
+        '
+        Me.Title.HeaderText = "Title"
+        Me.Title.Name = "Title"
+        Me.Title.ReadOnly = True
+        '
+        'creationDate
+        '
+        Me.creationDate.HeaderText = "Creation Date"
+        Me.creationDate.Name = "creationDate"
+        Me.creationDate.ReadOnly = True
+        '
+        'Description
+        '
+        Me.Description.HeaderText = "Description "
+        Me.Description.Name = "Description"
+        Me.Description.ReadOnly = True
+        '
+        'ID
+        '
+        Me.ID.HeaderText = "ID"
+        Me.ID.Name = "ID"
+        Me.ID.ReadOnly = True
         '
         'ContextMenuStrip1
         '
@@ -343,31 +360,6 @@ Partial Class newsApplication
         Me.GroupBox1.TabIndex = 9
         Me.GroupBox1.TabStop = False
         '
-        'Title
-        '
-        Me.Title.HeaderText = "Title"
-        Me.Title.Name = "Title"
-        Me.Title.ReadOnly = True
-        '
-        'creationDate
-        '
-        Me.creationDate.HeaderText = "Creation Date"
-        Me.creationDate.Name = "creationDate"
-        Me.creationDate.ReadOnly = True
-        '
-        'Description
-        '
-        Me.Description.HeaderText = "Description "
-        Me.Description.Name = "Description"
-        Me.Description.ReadOnly = True
-        '
-        'ID
-        '
-        Me.ID.HeaderText = "ID"
-        Me.ID.Name = "ID"
-        Me.ID.ReadOnly = True
-        Me.ID.Visible = False
-        '
         'newsApplication
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -430,7 +422,6 @@ Partial Class newsApplication
     Friend WithEvents categoryTextBox As TextBox
     Friend WithEvents Splitter1 As Splitter
     Friend WithEvents GroupBox1 As GroupBox
-    Friend WithEvents TryNewUserToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents Title As DataGridViewTextBoxColumn
     Friend WithEvents creationDate As DataGridViewTextBoxColumn
     Friend WithEvents Description As DataGridViewTextBoxColumn

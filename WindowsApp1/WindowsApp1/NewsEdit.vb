@@ -28,7 +28,7 @@ Public Class NewsEdit
 
         Dim result = MessageBox.Show("Aru u sure u want to commit ur edits", "Warning msg", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
         If result = DialogResult.Yes Then
-            If newsOB.Update() Then
+            If newsOB.Update() > 0 Then
                 Me.DialogResult = System.Windows.Forms.DialogResult.OK
                 Me.Close()
             Else
@@ -50,29 +50,22 @@ Public Class NewsEdit
         newsOB = New FileWorksObject.News()
         newsOB.Name = Title
         newsOB.ID = ID
-        Dim allInfo As String
-        If newsOB.Read() Then
-            allInfo = newsOB.ToString()
-        Else
-            allInfo = "No Rows"
-        End If
 
-        If allInfo = "Failed" Then
+        If Not newsOB.Read() Then
+            MessageBox.Show("No matching Row")
             Me.DialogResult = System.Windows.Forms.DialogResult.Abort
             Me.Close()
-        ElseIf allInfo = "No Rows" Then
-            Me.DialogResult = System.Windows.Forms.DialogResult.None
-            Me.Close()
-        Else
-            Dim infos = Strings.Split(allInfo, "^_^")
-            titleTextBox.Text = infos(2)
-            descriptionTextBox.Text = infos(7)
-            categoryComboBox.DropDownStyle = ComboBoxStyle.DropDown
-            categoryComboBox.Text = infos(8)
-            categoryComboBox.DropDownStyle = ComboBoxStyle.DropDownList
-            bodyTextBox.Text = infos(5)
-            Me.currentUser = currentUser
+
         End If
+
+        Dim infos = Strings.Split(newsOB.ToString(), "^_^")
+        titleTextBox.Text = infos(2)
+        descriptionTextBox.Text = infos(6)
+        categoryComboBox.DropDownStyle = ComboBoxStyle.DropDown
+        categoryComboBox.Text = infos(7)
+        categoryComboBox.DropDownStyle = ComboBoxStyle.DropDownList
+        bodyTextBox.Text = infos(5)
+        Me.currentUser = currentUser
 
     End Sub
 

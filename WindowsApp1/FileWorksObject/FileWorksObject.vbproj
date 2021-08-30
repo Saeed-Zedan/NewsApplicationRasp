@@ -47,6 +47,7 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -67,6 +68,7 @@
   <ItemGroup>
     <Compile Include="BusinessObject.vb" />
     <Compile Include="BusinessQuery.vb" />
+    <Compile Include="DBAccess.vb" />
     <Compile Include="FileQuery.vb" />
     <Compile Include="NewsApplicationDB.designer.vb">
       <AutoGen>True</AutoGen>

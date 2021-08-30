@@ -16,77 +16,58 @@ Public Class News
     'Methods
     Public Overrides Function Read() As Boolean
         Try
-            Dim connectionString As String = "Data Source=SAEED\MSSQLSERVER01;Initial Catalog=NewsApplicationDB;Integrated Security=True"
-            Dim connection As New SqlConnection(connectionString)
-
-            Dim query As String = $"select *
+            Dim query As String = $"select C_CATEGORY
                                     from T_BUSINESSOBJECT, T_FILE, T_NEWS
                                     where T_BUSINESSOBJECT.ID = T_FILE.ID and T_FILE.ID = T_NEWS.ID and T_NEWS.ID = {Me.ID}"
-
-            Dim command As SqlCommand = New SqlCommand(query, connection)
-
-            connection.Open()
             Dim reader As SqlDataReader
-            reader = command.ExecuteReader()
-            If Not reader.HasRows Then
-                Return False
-            End If
-            reader.Read()
-            Me.ID = reader.GetInt32(0)
-            Me.CreationDate = reader.GetDateTime(1)
-            Me.Name = reader.GetString(2)
-            Me.ClassID = CChar(reader.GetString(3))
-            Me.LastModifier = reader.GetString(4)
-            Me.Body = reader.GetString(6)
-            Me.Tagged = CChar(reader.GetString(7))
-            Me.Description = reader.GetString(8)
-            Me.Category = reader.GetString(10)
-            connection.Close()
 
-            Return True
-        Catch ex As SqlException
-            Throw New Exception("DB Crashed", ex)
-        End Try
-    End Function
-    Public Overrides Function Delete() As Boolean
-        Return MyBase.Delete()
-    End Function
-    Public Overrides Function Update() As Boolean
-        Dim query As String
-        If Me.ID <> 0 Then
-            query = $"update	T_NEWS
-                                set		C_CATEGORY = '{Me.Category}'
-                                where	ID = {Me.ID}"
-        Else
-            query = $"insert into T_NEWS 
-                       values( IDENT_CURRENT('T_BUSINESSOBJECT'), '{Me.Category}')"
-        End If
+            If MyBase.Read() Then
 
-        If MyBase.Update() Then
-            Return Exec(query)
-        Else
-            Return False
-        End If
-    End Function
-    Private Function Exec(query As String) As Boolean
-        Try
-            Dim connectionString As String = "Data Source=SAEED\MSSQLSERVER01;Initial Catalog=NewsApplicationDB;Integrated Security=True"
-            Dim connection As New SqlConnection(connectionString)
-            Dim command As SqlCommand = New SqlCommand(query, connection)
+                dbManipulator.OpenConnection()
+                dbManipulator.Query = query
+                reader = dbManipulator.ExecReader()
 
-            connection.Open()
-            Dim effectedRows = command.ExecuteNonQuery()
-            connection.Close()
+                If Not reader.HasRows Then
+                    Return False
+                End If
 
-            If effectedRows > 0 Then
+                reader.Read()
+                Me.Category = reader.GetString(0)
+
+                dbManipulator.CloseConnection()
+
                 Return True
             End If
 
             Return False
-        Catch ex As Exception
+        Catch ex As SqlException
             Throw New Exception("DB Crashed", ex)
         End Try
     End Function
+    Public Overrides Function Update() As Integer
+        Dim query As String
+        Dim id = MyBase.Update()
+        If id > 0 Then
+            If Me.ID <> 0 Then
+                query = $"update	T_NEWS
+                                set		C_CATEGORY = '{Me.Category}'
+                                where	ID = {Me.ID}"
+            Else
+                Me.ID = id
+                query = $"insert into T_NEWS 
+                       values( {id}, '{Me.Category}')"
+            End If
+
+
+            If ExecNonQuery(query) Then
+                Return id
+            End If
+            Return 0
+        Else
+            Return 0
+        End If
+    End Function
+
     Public Overrides Function ToString() As String
         Dim Info As String = $"^_^{Me.Category}"
         Return MyBase.ToString() & Info
