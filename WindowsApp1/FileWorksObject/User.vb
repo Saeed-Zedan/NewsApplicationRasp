@@ -6,50 +6,32 @@ Public Class User
     Inherits BusinessObject
     'Feilds
     'Private Shared connectionString As String = "Data Source=SAEED\MSSQLSERVER01;Initial Catalog=NewsApplicationDB;Integrated Security=True"
-    Private mFullName As String
-    Private mPassword As String
-    Private mPrivilegeLevel As Boolean
-    Public Sub New(fullName As String, Password As String, privilegeLevel As Boolean,
-              CreationDate As DateTime, Name As String, ClassID As Integer, LastModifier As String, Optional ID As Integer = 0)
-        MyBase.New(CreationDate, Name, ClassID, LastModifier, ID)
-        Me.mFullName = fullName
-        Me.Password = Password
-        Me.mPrivilegeLevel = privilegeLevel
+    'Private mFullName As String
+    'Private mPassword As String
+    'Private mPrivilegeLevel As Boolean
+    Public Sub New(fullName As String, password As String, privilegeLevel As Boolean,
+              creationDate As DateTime, name As String, classID As Integer, lastModifier As String, Optional ID As Integer = 0)
+        MyBase.New(creationDate, name, classID, lastModifier, ID)
+        Me.FullName = fullName
+        Me.Password = password
+        Me.PrivilegeLevel = privilegeLevel
     End Sub
-    Public Sub New(Obj As User)
-        MyBase.New(Obj)
-        Me.mFullName = Obj.mFullName
-        Me.mPassword = Obj.mPassword
-        Me.mPrivilegeLevel = Obj.mPrivilegeLevel
+    Public Sub New(obj As User)
+        MyBase.New(obj)
+        Me.FullName = obj.FullName
+        Me.Password = obj.Password
+        Me.PrivilegeLevel = obj.PrivilegeLevel
     End Sub
     Public Sub New()
         MyBase.New()
     End Sub
     'Properties Implementation
     Public Property FullName As String
-        Get
-            Return mFullName
-        End Get
-        Set(value As String)
-            mFullName = value
-        End Set
-    End Property
+
     Public Property Password As String
-        Get
-            Return mPassword
-        End Get
-        Set(value As String)
-            mPassword = value
-        End Set
-    End Property
+
     Public Property PrivilegeLevel As Boolean
-        Get
-            Return mPrivilegeLevel
-        End Get
-        Set(value As Boolean)
-            mPrivilegeLevel = value
-        End Set
-    End Property
+
 
     'Methods Implementation
     Public Overrides Function Read() As Boolean
@@ -70,7 +52,7 @@ Public Class User
 
                 reader.Read()
                 Me.FullName = reader.GetString(0)
-                Me.mPassword = reader.GetString(1)
+                Me.Password = reader.GetString(1)
                 Me.PrivilegeLevel = reader.GetBoolean(2)
 
                 dbManipulator.CloseConnection()
@@ -95,11 +77,11 @@ Public Class User
                 query = $"insert into T_USER 
                        values({id}, N'{Me.FullName}', '{Me.Password}', {Convert.ToInt32(Me.PrivilegeLevel)})"
             End If
-            'IDENT_CURRENT('T_BUSINESSOBJECT')
 
             If ExecNonQuery(query) Then
                 Return id
             End If
+
             Return 0
         Else
             Return 0

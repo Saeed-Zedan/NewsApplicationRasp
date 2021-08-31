@@ -20,14 +20,6 @@ Public Class UserEdit
         Dim longNameFormat As String = "[a-zA-Z]+(\s[a-zA-Z]+)+"
         Dim userOb As FileWorksObject.User = New FileWorksObject.User()
 
-        'Using allRecords As New FileWorksObject.NewsApplicationDBDataContext()
-        '    For Each record In allRecords.T_BUSINESSOBJECTs
-        '        If record.C_CLASSID = "U" Then
-        '            allUsersName.Add(record.C_NAME)
-        '        End If
-        '    Next
-        'End Using
-
         Dim query As FileWorksObject.UserQuery = New FileWorksObject.UserQuery _
             With {.C_Name = nameTextBox.Text,
                   .C_ClassID = 1}
@@ -54,9 +46,15 @@ Public Class UserEdit
             Me.Close()
         Else
             Dim msgBoxResult = MessageBox.Show("Aru u sure u want to commit ur edits", "Warning msg", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
+
+            If oldUser.Name = curUser Then
+                curUser = nameTextBox.Text
+            End If
+
             oldUser.Name = nameTextBox.Text
             oldUser.FullName = longNameTextBox.Text
             oldUser.LastModifier = curUser
+
             If msgBoxResult = DialogResult.Yes AndAlso oldUser.Update() Then
                 Me.DialogResult = System.Windows.Forms.DialogResult.OK
                 MessageBox.Show("OPERATION DONE")

@@ -1,72 +1,31 @@
 ﻿Imports System.Data.SqlClient
 
 Public Class BusinessObject
-    Private mId As Integer
-    Private mCreationDate As DateTime
-    Private mName As String
-    Private mClassID As Integer
-    Private mLastModifier As String
-    'Protected connectionString As String = "Data Source=SAEED\MSSQLSERVER01;Initial Catalog=NewsApplicationDB;Integrated Security=True"
     Protected dbManipulator As DBAccess = New DBAccess()
 
     Public Sub New()
-        mId = 0
+        ID = 0
     End Sub
     Public Sub New(creationDate As DateTime, name As String, classID As Integer, lastModifier As String, Optional ID As Integer = 0)
-        mId = ID
-        mCreationDate = creationDate
-        mName = name
-        mClassID = classID
-        mLastModifier = lastModifier
+        Me.ID = ID
+        Me.CreationDate = creationDate
+        Me.Name = name
+        Me.ClassID = classID
+        Me.LastModifier = lastModifier
     End Sub
     Public Sub New(Obj As BusinessObject)
         Me.ID = Obj.ID
         Me.CreationDate = Obj.CreationDate
-        Me.mName = Obj.mName
-        Me.mClassID = Obj.mClassID
-        Me.mLastModifier = Obj.mLastModifier
+        Me.Name = Obj.Name
+        Me.ClassID = Obj.ClassID
+        Me.LastModifier = Obj.LastModifier
     End Sub
 
     Public Property ID As Integer
-        Get
-            Return mId
-        End Get
-        Set(value As Integer)
-            mId = value
-        End Set
-    End Property
     Public Property CreationDate As DateTime
-        Get
-            Return mCreationDate
-        End Get
-        Set(value As DateTime)
-            mCreationDate = value
-        End Set
-    End Property
     Public Property Name As String
-        Get
-            Return mName
-        End Get
-        Set(value As String)
-            mName = value
-        End Set
-    End Property
     Public Property ClassID As Integer
-        Get
-            Return mClassID
-        End Get
-        Set(value As Integer)
-            mClassID = value
-        End Set
-    End Property
     Public Property LastModifier As String
-        Get
-            Return mLastModifier
-        End Get
-        Set(value As String)
-            mLastModifier = value
-        End Set
-    End Property
 
     'Methods Implementation
     Public Overridable Function Read() As Boolean

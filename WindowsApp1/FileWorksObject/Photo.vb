@@ -4,17 +4,8 @@ Imports System.IO
 
 Public Class Photo
     Inherits File
-    'Fields
-    Private photoPathValue As String
     'Properties
     Public Property PhotoPath As String
-        Get
-            Return photoPathValue
-        End Get
-        Set(value As String)
-            photoPathValue = value
-        End Set
-    End Property
     'Methods
     Public Overrides Function Read() As Boolean
         Try

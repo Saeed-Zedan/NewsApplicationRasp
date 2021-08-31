@@ -7,9 +7,7 @@ Public Class newsApplication
 
         ' This call is required by the designer.
         InitializeComponent()
-        ' Add any initialization after the InitializeComponent() call.
-        'Dim newForm As LoginScreen = New LoginScreen()
-        'Dim result = LoginScreen.ShowDialog()
+
         Using newForm = New LoginScreen()
             If newForm.ShowDialog = DialogResult.OK Then
                 currentUser = newForm.UserName
@@ -106,15 +104,12 @@ Public Class newsApplication
     End Sub
 
     Private Sub NewsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles NewsToolStripMenuItem.Click
-        'Dim newForm As addNews = New addNews()
-        'newForm.ShowDialog()
 
         Using newForm = New NewsAdd(currentUser)
             If newForm.ShowDialog() = DialogResult.OK Then
-                addingRow(newForm.newsOb.Name, newForm.newsOb.CreationDate, newForm.newsOb.Description, newForm.newsOb.ID)
+                AddingRow(newForm.newsOb.Name, newForm.newsOb.CreationDate, newForm.newsOb.Description, newForm.newsOb.ID)
                 MessageBox.Show("Done SUCCESSFULLY")
             End If
-
         End Using
 
     End Sub
@@ -126,6 +121,7 @@ Public Class newsApplication
     Private Sub DisplayUsersToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles displayUsersToolStripMenuItem.Click
         Dim newForm As UsersView = New UsersView(currentUser, userPriv)
         newForm.ShowDialog()
+        currentUser = newForm.curUser
     End Sub
     Private Sub NewsDataGridView_DoubleClick(sender As Object, e As EventArgs) Handles newsDataGridView.DoubleClick
         EmptyFields()
@@ -156,6 +152,7 @@ Public Class newsApplication
                 If PictureBox1.Image IsNot Nothing Then
                     MessageBox.Show("HEre is the problem")
                 End If
+
                 Using newForm = New ImageEdit(currentUser, fileOb.Name, fileOb.ID)
                     If newForm.ShowDialog() = DialogResult.OK Then
                         newsDataGridView.Rows.Remove(row)

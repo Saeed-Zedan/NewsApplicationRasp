@@ -2,36 +2,22 @@
 
 Public Class File
     Inherits BusinessObject
-    'Feilds
-    Private bodyValue As String
-    Private descriptionValue As String
+    'Properties implementation
+    Public Property Body As String
+    Public Property Description As String
 
-    Public Sub New(Body As String, Description As String,
-                  CreationDate As DateTime, Name As String, ClassID As Integer, LastModifier As String, Optional ID As Integer = 0)
-        MyBase.New(CreationDate, Name, ClassID, LastModifier, ID)
-        bodyValue = Body
-        descriptionValue = Description
+
+    Public Sub New(body As String, description As String,
+                  creationDate As DateTime, name As String, classID As Integer, lastModifier As String, Optional ID As Integer = 0)
+        MyBase.New(creationDate, name, classID, lastModifier, ID)
+        Me.Body = body
+        Me.Description = description
     End Sub
     Public Sub New()
         MyBase.New()
     End Sub
-    'Properties implementation
-    Public Property Body As String
-        Get
-            Return bodyValue
-        End Get
-        Set(value As String)
-            bodyValue = value
-        End Set
-    End Property
-    Public Property Description As String
-        Get
-            Return descriptionValue
-        End Get
-        Set(value As String)
-            descriptionValue = value
-        End Set
-    End Property
+
+
     'Methods Implementation
     Public Overrides Function Read() As Boolean
         Try

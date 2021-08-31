@@ -2,8 +2,8 @@
 Imports System.IO
 Public Class UsersView
 
-    Dim curUser As String
-    Dim Priv As Boolean
+    Public curUser As String
+    Public Priv As Boolean
 
     Public Sub New(curUser As String, priv As Boolean)
 
@@ -66,6 +66,7 @@ Public Class UsersView
             newUser.Read()
             usersListBox.Items.Remove(rowCopy)
             usersListBox.Items.Add(String.Format(strDeatail, newUser.ID, newUser.Name, newUser.FullName, newUser.LastModifier))
+            curUser = newUser.LastModifier
         End If
     End Sub
 

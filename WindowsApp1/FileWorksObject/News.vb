@@ -2,17 +2,8 @@
 
 Public Class News
     Inherits File
-    'Fields
-    Private categoryValue As String
     'Properties
     Public Property Category As String
-        Get
-            Return categoryValue
-        End Get
-        Set(value As String)
-            categoryValue = value
-        End Set
-    End Property
     'Methods
     Public Overrides Function Read() As Boolean
         Try
