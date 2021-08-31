@@ -13,6 +13,7 @@ Public Class BusinessObject
         Me.ClassID = classID
         Me.LastModifier = lastModifier
     End Sub
+
     Public Sub New(Obj As BusinessObject)
         Me.ID = Obj.ID
         Me.CreationDate = Obj.CreationDate

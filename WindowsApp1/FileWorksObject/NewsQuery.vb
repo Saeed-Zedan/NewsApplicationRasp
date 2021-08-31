@@ -2,10 +2,8 @@
 
 Public Class NewsQuery
     Inherits FileQuery
-    'Private Q_Select As String = "Select T_NEWS.ID, C_CREATIONDATE, C_NAME, C_CLASSID, C_LASTMODIFIER, C_BODY, C_Description, C_CATEGORY"
-    'Private Q_From As String = "From T_BUSINESSOBJECT, T_FILE, T_NEWS"
-    'Private Q_Where As String = "Where T_BUSINESSOBJECT.ID = T_FILE.ID and T_FILE.ID = T_NEWS.ID"
     Private mTableName As String = "T_NEWS"
+
     Public Overrides Function Run() As List(Of String)
         Dim result As List(Of String) = New List(Of String)
         BuildingQuery()
@@ -60,24 +58,6 @@ Public Class NewsQuery
     Protected Overrides Function GetTableName() As String
         Return mTableName
     End Function
-    'Private Sub AddingCol(colName As String, colValue As Integer)
-    '    If colValue <> Nothing Then
-    '        If Q_Where = "Where" Then
-    '            Q_Where &= $" {colName} = {colValue}"
-    '        Else
-    '            Q_Where &= $" and {colName} = {colValue}"
-    '        End If
-    '    End If
-    'End Sub
-    'Private Sub AddingCol(colName As String, colValue As String)
-    '    If colValue <> Nothing Then
-    '        If Q_Where = "Where" Then
-    '            Q_Where &= $" {colName} = N'{colValue}'"
-    '        Else
-    '            Q_Where &= $" and {colName} = N'{colValue}'"
-    '        End If
-    '    End If
-    'End Sub
     Protected Overrides Sub ResetProperties()
         MyBase.ResetProperties()
         C_Category = Nothing

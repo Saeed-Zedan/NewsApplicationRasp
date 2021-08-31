@@ -3,7 +3,7 @@ Imports System.IO
 Public Class UsersView
 
     Public curUser As String
-    Public Priv As Boolean
+    Public priv As Boolean
 
     Public Sub New(curUser As String, priv As Boolean)
 
@@ -12,7 +12,7 @@ Public Class UsersView
 
         ' Add any initialization after the InitializeComponent() call.
         Me.curUser = curUser
-        Me.Priv = priv
+        Me.priv = priv
 
     End Sub
     Private Sub veiwUsers_Load(sender As Object, e As EventArgs) Handles MyBase.Load
@@ -23,7 +23,7 @@ Public Class UsersView
         If allUsers.Count = 0 Then
             MessageBox.Show("There is no users in the system", "That's Impossible", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
         Else
-            Dim w = Me.Width
+            'Dim w = Me.Width
             Dim strDeatail = "{0,-5}{1,-29}{2,-60}{3,-29}"
             usersListBox.Items.Add(String.Format(strDeatail, "ID", "Name", "Long Name", "Last Modifier"))
             For Each user In allUsers
@@ -48,7 +48,7 @@ Public Class UsersView
             Exit Sub
         ElseIf row = String.Format(strDeatail, "ID", "Name", "Long Name", "Last Modifier") Then 'Can't remove the header
             Exit Sub
-        ElseIf Not Priv And curUser <> row.ToString().Split()(1) Then 'only admins and user himself can delete his account
+        ElseIf Not priv And curUser <> row.ToString().Split()(1) Then 'only admins and user himself can delete his account
             MessageBox.Show("You are not allowed to modify users information", "Privilage Violation", MessageBoxButtons.OK, MessageBoxIcon.Warning)
             Exit Sub
         End If
@@ -68,6 +68,7 @@ Public Class UsersView
             usersListBox.Items.Add(String.Format(strDeatail, newUser.ID, newUser.Name, newUser.FullName, newUser.LastModifier))
             curUser = newUser.LastModifier
         End If
+
     End Sub
 
     Private Sub deleteToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles deleteToolStripMenuItem.Click
@@ -79,7 +80,7 @@ Public Class UsersView
             Exit Sub
         ElseIf row = String.Format(strDeatail, "ID", "Name", "Long Name", "Last Modifier") Then 'Can't remove the header
             Exit Sub
-        ElseIf Not Priv And curUser <> row.ToString().Split()(1) Then 'only admins and user himself can delete his account
+        ElseIf Not priv And curUser <> row.ToString().Split()(1) Then 'only admins and user himself can delete his account
             MessageBox.Show("You are not allowed to modify users information", "Privilage Violation", MessageBoxButtons.OK, MessageBoxIcon.Warning)
             Exit Sub
         End If

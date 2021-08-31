@@ -72,7 +72,7 @@ Partial Class newsApplication
         Me.MenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.FileToolStripMenuItem, Me.EditToolStripMenuItem, Me.ToolsToolStripMenuItem})
         Me.MenuStrip1.Location = New System.Drawing.Point(0, 0)
         Me.MenuStrip1.Name = "MenuStrip1"
-        Me.MenuStrip1.Size = New System.Drawing.Size(800, 24)
+        Me.MenuStrip1.Size = New System.Drawing.Size(1008, 24)
         Me.MenuStrip1.TabIndex = 0
         Me.MenuStrip1.Text = "MenuStrip1"
         '
@@ -89,7 +89,7 @@ Partial Class newsApplication
         Me.NewToolStripMenuItem.Image = CType(resources.GetObject("NewToolStripMenuItem.Image"), System.Drawing.Image)
         Me.NewToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.NewToolStripMenuItem.Name = "NewToolStripMenuItem"
-        Me.NewToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
+        Me.NewToolStripMenuItem.Size = New System.Drawing.Size(98, 22)
         Me.NewToolStripMenuItem.Text = "&New"
         '
         'UserToolStripMenuItem
@@ -116,12 +116,12 @@ Partial Class newsApplication
         'toolStripSeparator2
         '
         Me.toolStripSeparator2.Name = "toolStripSeparator2"
-        Me.toolStripSeparator2.Size = New System.Drawing.Size(177, 6)
+        Me.toolStripSeparator2.Size = New System.Drawing.Size(95, 6)
         '
         'ExitToolStripMenuItem
         '
         Me.ExitToolStripMenuItem.Name = "ExitToolStripMenuItem"
-        Me.ExitToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
+        Me.ExitToolStripMenuItem.Size = New System.Drawing.Size(98, 22)
         Me.ExitToolStripMenuItem.Text = "E&xit"
         '
         'EditToolStripMenuItem
@@ -148,13 +148,13 @@ Partial Class newsApplication
         'logoutToolStripMenuItem
         '
         Me.logoutToolStripMenuItem.Name = "logoutToolStripMenuItem"
-        Me.logoutToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
+        Me.logoutToolStripMenuItem.Size = New System.Drawing.Size(140, 22)
         Me.logoutToolStripMenuItem.Text = "&Logout"
         '
         'CurrentUserToolStripMenuItem
         '
         Me.CurrentUserToolStripMenuItem.Name = "CurrentUserToolStripMenuItem"
-        Me.CurrentUserToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
+        Me.CurrentUserToolStripMenuItem.Size = New System.Drawing.Size(140, 22)
         Me.CurrentUserToolStripMenuItem.Text = "Current User"
         '
         'newsDataGridView
@@ -175,7 +175,7 @@ Partial Class newsApplication
         Me.newsDataGridView.RowHeadersVisible = False
         Me.newsDataGridView.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToFirstHeader
         Me.newsDataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
-        Me.newsDataGridView.Size = New System.Drawing.Size(800, 138)
+        Me.newsDataGridView.Size = New System.Drawing.Size(1008, 226)
         Me.newsDataGridView.TabIndex = 1
         '
         'Title
@@ -219,10 +219,10 @@ Partial Class newsApplication
         Me.displayTabControl.Controls.Add(Me.previewTabPage)
         Me.displayTabControl.Controls.Add(Me.imageTabPage)
         Me.displayTabControl.Dock = System.Windows.Forms.DockStyle.Bottom
-        Me.displayTabControl.Location = New System.Drawing.Point(0, 261)
+        Me.displayTabControl.Location = New System.Drawing.Point(0, 349)
         Me.displayTabControl.Name = "displayTabControl"
         Me.displayTabControl.SelectedIndex = 0
-        Me.displayTabControl.Size = New System.Drawing.Size(800, 189)
+        Me.displayTabControl.Size = New System.Drawing.Size(1008, 189)
         Me.displayTabControl.TabIndex = 4
         '
         'previewTabPage
@@ -233,7 +233,7 @@ Partial Class newsApplication
         Me.previewTabPage.Location = New System.Drawing.Point(4, 22)
         Me.previewTabPage.Name = "previewTabPage"
         Me.previewTabPage.Padding = New System.Windows.Forms.Padding(3)
-        Me.previewTabPage.Size = New System.Drawing.Size(792, 163)
+        Me.previewTabPage.Size = New System.Drawing.Size(1000, 163)
         Me.previewTabPage.TabIndex = 0
         Me.previewTabPage.Text = "Preview"
         '
@@ -246,7 +246,7 @@ Partial Class newsApplication
         Me.bodyTextBox.Multiline = True
         Me.bodyTextBox.Name = "bodyTextBox"
         Me.bodyTextBox.ReadOnly = True
-        Me.bodyTextBox.Size = New System.Drawing.Size(782, 153)
+        Me.bodyTextBox.Size = New System.Drawing.Size(990, 153)
         Me.bodyTextBox.TabIndex = 0
         '
         'imageTabPage
@@ -277,7 +277,7 @@ Partial Class newsApplication
         Me.titleLabel.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.titleLabel.AutoSize = True
         Me.titleLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.titleLabel.Location = New System.Drawing.Point(12, 150)
+        Me.titleLabel.Location = New System.Drawing.Point(12, 238)
         Me.titleLabel.Name = "titleLabel"
         Me.titleLabel.Size = New System.Drawing.Size(40, 17)
         Me.titleLabel.TabIndex = 2
@@ -288,7 +288,7 @@ Partial Class newsApplication
         Me.creationDateLabel.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.creationDateLabel.AutoSize = True
         Me.creationDateLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.creationDateLabel.Location = New System.Drawing.Point(12, 181)
+        Me.creationDateLabel.Location = New System.Drawing.Point(12, 269)
         Me.creationDateLabel.Name = "creationDateLabel"
         Me.creationDateLabel.Size = New System.Drawing.Size(108, 17)
         Me.creationDateLabel.TabIndex = 3
@@ -299,7 +299,7 @@ Partial Class newsApplication
         Me.categoryLabel.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.categoryLabel.AutoSize = True
         Me.categoryLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.categoryLabel.Location = New System.Drawing.Point(9, 211)
+        Me.categoryLabel.Location = New System.Drawing.Point(9, 299)
         Me.categoryLabel.Name = "categoryLabel"
         Me.categoryLabel.Size = New System.Drawing.Size(73, 17)
         Me.categoryLabel.TabIndex = 4
@@ -309,38 +309,38 @@ Partial Class newsApplication
         '
         Me.titleTextBox.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.titleTextBox.Location = New System.Drawing.Point(139, 147)
+        Me.titleTextBox.Location = New System.Drawing.Point(139, 235)
         Me.titleTextBox.Name = "titleTextBox"
         Me.titleTextBox.ReadOnly = True
-        Me.titleTextBox.Size = New System.Drawing.Size(649, 20)
+        Me.titleTextBox.Size = New System.Drawing.Size(857, 20)
         Me.titleTextBox.TabIndex = 5
         '
         'creationDateTextBox
         '
         Me.creationDateTextBox.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.creationDateTextBox.Location = New System.Drawing.Point(139, 178)
+        Me.creationDateTextBox.Location = New System.Drawing.Point(139, 266)
         Me.creationDateTextBox.Name = "creationDateTextBox"
         Me.creationDateTextBox.ReadOnly = True
-        Me.creationDateTextBox.Size = New System.Drawing.Size(649, 20)
+        Me.creationDateTextBox.Size = New System.Drawing.Size(857, 20)
         Me.creationDateTextBox.TabIndex = 6
         '
         'categoryTextBox
         '
         Me.categoryTextBox.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.categoryTextBox.Location = New System.Drawing.Point(139, 208)
+        Me.categoryTextBox.Location = New System.Drawing.Point(139, 296)
         Me.categoryTextBox.Name = "categoryTextBox"
         Me.categoryTextBox.ReadOnly = True
-        Me.categoryTextBox.Size = New System.Drawing.Size(649, 20)
+        Me.categoryTextBox.Size = New System.Drawing.Size(857, 20)
         Me.categoryTextBox.TabIndex = 7
         '
         'Splitter1
         '
         Me.Splitter1.Dock = System.Windows.Forms.DockStyle.Bottom
-        Me.Splitter1.Location = New System.Drawing.Point(0, 258)
+        Me.Splitter1.Location = New System.Drawing.Point(0, 346)
         Me.Splitter1.Name = "Splitter1"
-        Me.Splitter1.Size = New System.Drawing.Size(800, 3)
+        Me.Splitter1.Size = New System.Drawing.Size(1008, 3)
         Me.Splitter1.TabIndex = 8
         Me.Splitter1.TabStop = False
         '
@@ -356,7 +356,7 @@ Partial Class newsApplication
         Me.GroupBox1.Dock = System.Windows.Forms.DockStyle.Fill
         Me.GroupBox1.Location = New System.Drawing.Point(0, 24)
         Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(800, 234)
+        Me.GroupBox1.Size = New System.Drawing.Size(1008, 322)
         Me.GroupBox1.TabIndex = 9
         Me.GroupBox1.TabStop = False
         '
@@ -364,7 +364,7 @@ Partial Class newsApplication
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(800, 450)
+        Me.ClientSize = New System.Drawing.Size(1008, 538)
         Me.Controls.Add(Me.GroupBox1)
         Me.Controls.Add(Me.Splitter1)
         Me.Controls.Add(Me.displayTabControl)

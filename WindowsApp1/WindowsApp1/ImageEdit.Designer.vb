@@ -47,6 +47,7 @@ Partial Class ImageEdit
         Me.titleTextBox.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.titleTextBox.Location = New System.Drawing.Point(104, 13)
+        Me.titleTextBox.MaxLength = 255
         Me.titleTextBox.Name = "titleTextBox"
         Me.titleTextBox.Size = New System.Drawing.Size(301, 20)
         Me.titleTextBox.TabIndex = 0
@@ -56,6 +57,7 @@ Partial Class ImageEdit
         Me.descriptionTextBox.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.descriptionTextBox.Location = New System.Drawing.Point(104, 39)
+        Me.descriptionTextBox.MaxLength = 255
         Me.descriptionTextBox.Name = "descriptionTextBox"
         Me.descriptionTextBox.Size = New System.Drawing.Size(301, 20)
         Me.descriptionTextBox.TabIndex = 1
@@ -66,6 +68,7 @@ Partial Class ImageEdit
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.bodyTextBox.Location = New System.Drawing.Point(104, 65)
+        Me.bodyTextBox.MaxLength = 10000
         Me.bodyTextBox.Multiline = True
         Me.bodyTextBox.Name = "bodyTextBox"
         Me.bodyTextBox.Size = New System.Drawing.Size(301, 267)

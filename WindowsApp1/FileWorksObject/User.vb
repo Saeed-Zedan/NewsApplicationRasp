@@ -4,11 +4,6 @@ Imports System.Security.Cryptography
 
 Public Class User
     Inherits BusinessObject
-    'Feilds
-    'Private Shared connectionString As String = "Data Source=SAEED\MSSQLSERVER01;Initial Catalog=NewsApplicationDB;Integrated Security=True"
-    'Private mFullName As String
-    'Private mPassword As String
-    'Private mPrivilegeLevel As Boolean
     Public Sub New(fullName As String, password As String, privilegeLevel As Boolean,
               creationDate As DateTime, name As String, classID As Integer, lastModifier As String, Optional ID As Integer = 0)
         MyBase.New(creationDate, name, classID, lastModifier, ID)

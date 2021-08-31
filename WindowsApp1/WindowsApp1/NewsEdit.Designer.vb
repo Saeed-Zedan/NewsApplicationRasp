@@ -113,6 +113,7 @@ Partial Class NewsEdit
         'titleTextBox
         '
         Me.titleTextBox.Location = New System.Drawing.Point(108, 21)
+        Me.titleTextBox.MaxLength = 255
         Me.titleTextBox.Name = "titleTextBox"
         Me.titleTextBox.Size = New System.Drawing.Size(151, 20)
         Me.titleTextBox.TabIndex = 0
@@ -120,6 +121,7 @@ Partial Class NewsEdit
         'descriptionTextBox
         '
         Me.descriptionTextBox.Location = New System.Drawing.Point(108, 49)
+        Me.descriptionTextBox.MaxLength = 255
         Me.descriptionTextBox.Name = "descriptionTextBox"
         Me.descriptionTextBox.Size = New System.Drawing.Size(151, 20)
         Me.descriptionTextBox.TabIndex = 1
@@ -127,6 +129,7 @@ Partial Class NewsEdit
         'bodyTextBox
         '
         Me.bodyTextBox.Location = New System.Drawing.Point(108, 106)
+        Me.bodyTextBox.MaxLength = 10000
         Me.bodyTextBox.Multiline = True
         Me.bodyTextBox.Name = "bodyTextBox"
         Me.bodyTextBox.Size = New System.Drawing.Size(151, 141)
@@ -142,9 +145,8 @@ Partial Class NewsEdit
         Me.categoryComboBox.Size = New System.Drawing.Size(151, 21)
         Me.categoryComboBox.TabIndex = 2
         '
-        'editNews
+        'NewsEdit
         '
-        Me.AcceptButton = Me.OK_Button
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.Cancel_Button
@@ -161,7 +163,7 @@ Partial Class NewsEdit
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.MaximizeBox = False
         Me.MinimizeBox = False
-        Me.Name = "editNews"
+        Me.Name = "NewsEdit"
         Me.ShowInTaskbar = False
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Edit news"
