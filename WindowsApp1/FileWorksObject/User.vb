@@ -32,8 +32,8 @@ Public Class User
     Public Overrides Function Read() As Boolean
         Try
             Dim query As String = $"select C_FULLNAME, C_PASSWORD, C_PRIVILEGELEVEL 
-                                    from T_BUSINESSOBJECT, T_USER
-                                    where T_BUSINESSOBJECT.ID = T_USER.ID and T_USER.ID = {Me.ID}"
+                                    from T_USER
+                                    where T_USER.ID = {Me.ID}"
             Dim reader As SqlDataReader
 
             If MyBase.Read() Then

@@ -10,8 +10,8 @@ Public Class Photo
     Public Overrides Function Read() As Boolean
         Try
             Dim query As String = $"select C_LOCATION
-                                    from T_BUSINESSOBJECT, T_FILE, T_PHOTO
-                                    where T_BUSINESSOBJECT.ID = T_FILE.ID and T_FILE.ID = T_PHOTO.ID and T_PHOTO.ID = {Me.ID}"
+                                    from T_PHOTO
+                                    where T_PHOTO.ID = {Me.ID}"
             Dim reader As SqlDataReader
 
             If MyBase.Read() Then

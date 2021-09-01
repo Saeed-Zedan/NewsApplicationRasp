@@ -22,8 +22,8 @@ Public Class File
     Public Overrides Function Read() As Boolean
         Try
             Dim query As String = $"select C_BODY, C_Description 
-                                    from  T_BUSINESSOBJECT, T_FILE
-                                    where T_BUSINESSOBJECT.ID = T_FILE.ID and T_FILE.ID = {Me.ID}"
+                                    from  T_FILE
+                                    where T_FILE.ID = {Me.ID}"
             Dim reader As SqlDataReader
 
             If MyBase.Read() Then

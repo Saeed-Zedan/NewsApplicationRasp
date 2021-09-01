@@ -68,6 +68,7 @@
   <ItemGroup>
     <Compile Include="BusinessObject.vb" />
     <Compile Include="BusinessQuery.vb" />
+    <Compile Include="ColumnInformation.vb" />
     <Compile Include="DBAccess.vb" />
     <Compile Include="FileQuery.vb" />
     <Compile Include="NewsApplicationDB.designer.vb">

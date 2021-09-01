@@ -61,7 +61,8 @@ Public Class newsApplication
             Dim result = MessageBox.Show("Aru u sure u want to delete the user : " & name, "Warning msg", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
 
             If result = DialogResult.Yes Then
-                query = New FileWorksObject.BusinessQuery With {.ID = id}
+                query = New FileWorksObject.BusinessQuery()
+                query.mID.ColumnValue = id
                 Dim queryResult = query.Run()
                 Dim tagged As Integer
                 Dim allInfo As String()
@@ -271,4 +272,276 @@ Public Class newsApplication
     Private Sub CurrentUserToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles CurrentUserToolStripMenuItem.Click
         MessageBox.Show(currentUser)
     End Sub
+
+    Private Sub IDConditionComboBox_SelectedIndexChanged(sender As Object, e As EventArgs) Handles IDConditionComboBox.SelectedIndexChanged
+        If IDConditionComboBox.SelectedItem = "Between" Then
+            IDSearchTextBox2.Enabled = True
+        ElseIf IDSearchTextBox2.Enabled Then
+            IDSearchTextBox2.Enabled = False
+            IDSearchTextBox2.Clear()
+        End If
+    End Sub
+
+    Private Sub IDFilterCheckBox_CheckedChanged(sender As Object, e As EventArgs) Handles IDFilterCheckBox.CheckedChanged
+        If Not IDFilterCheckBox.Checked Then
+            IDSearchTextBox.Enabled = False
+            IDConditionComboBox.Enabled = False
+            IDSearchTextBox2.Enabled = False
+        Else
+            IDSearchTextBox.Enabled = True
+            IDConditionComboBox.Enabled = True
+            If IDConditionComboBox.SelectedItem = "Between" Then
+                IDSearchTextBox2.Enabled = True
+            End If
+        End If
+    End Sub
+
+    Private Sub CreationDateConditionComboBox_SelectedIndexChanged(sender As Object, e As EventArgs) Handles CreationDateConditionComboBox.SelectedIndexChanged
+        If CreationDateConditionComboBox.SelectedItem = "Between" Then
+            DateTimePickerSearch2.Enabled = True
+        ElseIf DateTimePickerSearch2.Enabled Then
+            DateTimePickerSearch2.Enabled = False
+            DateTimePickerSearch2.ResetText()
+        End If
+    End Sub
+
+    Private Sub CreationDateFilterCheckBox_CheckedChanged(sender As Object, e As EventArgs) Handles CreationDateFilterCheckBox.CheckedChanged
+        If Not CreationDateFilterCheckBox.Checked Then
+            DateTimePickerSearch.Enabled = False
+            CreationDateConditionComboBox.Enabled = False
+            DateTimePickerSearch2.Enabled = False
+        Else
+            DateTimePickerSearch.Enabled = True
+            CreationDateConditionComboBox.Enabled = True
+            If CreationDateConditionComboBox.SelectedItem = "Between" Then
+                DateTimePickerSearch2.Enabled = True
+            End If
+        End If
+    End Sub
+
+    Private Sub TitleFilterCheckBox_CheckedChanged(sender As Object, e As EventArgs) Handles TitleFilterCheckBox.CheckedChanged
+        If Not TitleFilterCheckBox.Checked Then
+            TitleSearchTextBox.Enabled = False
+            TitleConditionComboBox.Enabled = False
+        Else
+            TitleSearchTextBox.Enabled = True
+            TitleConditionComboBox.Enabled = True
+        End If
+    End Sub
+
+    Private Sub DescriptionFilterCheckBox_CheckedChanged(sender As Object, e As EventArgs) Handles DescriptionFilterCheckBox.CheckedChanged
+        If Not DescriptionFilterCheckBox.Checked Then
+            DescriptionSearchTextBox.Enabled = False
+            DescriptionConditionComboBox.Enabled = False
+        Else
+            DescriptionSearchTextBox.Enabled = True
+            DescriptionConditionComboBox.Enabled = True
+        End If
+    End Sub
+
+    Private Sub ClassIDSearchComboBox_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ClassIDSearchComboBox.SelectedIndexChanged
+        If ClassIDSearchComboBox.SelectedItem = "News" Then
+            CategoryFilterCheckBox.Enabled = True
+            CategoryFilterCheckBox.Checked = False
+        Else
+            CategoryFilterCheckBox.Checked = False
+            CategoryFilterCheckBox.Enabled = False
+        End If
+    End Sub
+
+    Private Sub ClassIDFilterCheckBox_CheckedChanged(sender As Object, e As EventArgs) Handles ClassIDFilterCheckBox.CheckedChanged
+        If Not ClassIDFilterCheckBox.Checked Then
+            ClassIDSearchComboBox.Enabled = False
+            CategoryFilterCheckBox.Checked = False
+            CategoryFilterCheckBox.Enabled = False
+        Else
+            ClassIDSearchComboBox.Enabled = True
+
+            If ClassIDSearchComboBox.SelectedItem = "News" Then
+                CategoryFilterCheckBox.Enabled = True
+            End If
+
+        End If
+
+    End Sub
+
+    Private Sub CategoryFilterCheckBox_CheckedChanged(sender As Object, e As EventArgs) Handles CategoryFilterCheckBox.CheckedChanged
+        If Not CategoryFilterCheckBox.Checked Then
+            CategorySearchComboBox.Enabled = False
+        Else
+            CategorySearchComboBox.Enabled = True
+        End If
+    End Sub
+
+    Private Sub LastModifierFilterCheckBox_CheckedChanged(sender As Object, e As EventArgs) Handles LastModifierFilterCheckBox.CheckedChanged
+        If Not LastModifierFilterCheckBox.Checked Then
+            LastModifierConditionComboBox.Enabled = False
+            LastModifierSearchTextBox.Enabled = False
+        Else
+            LastModifierConditionComboBox.Enabled = True
+            LastModifierSearchTextBox.Enabled = True
+        End If
+    End Sub
+
+    Private Sub BodyFilterCheckBox_CheckedChanged(sender As Object, e As EventArgs) Handles BodyFilterCheckBox.CheckedChanged
+        If Not BodyFilterCheckBox.Checked Then
+            BodyConditionComboBox.Enabled = False
+            BodySearchTextBox.Enabled = False
+        Else
+            BodyConditionComboBox.Enabled = True
+            BodySearchTextBox.Enabled = True
+        End If
+    End Sub
+
+    Private Sub ResetButton_Click(sender As Object, e As EventArgs) Handles ResetButton.Click
+        IDFilterCheckBox.Checked = False
+        CreationDateFilterCheckBox.Checked = False
+        TitleFilterCheckBox.Checked = False
+        DescriptionFilterCheckBox.Checked = False
+        ClassIDFilterCheckBox.Checked = False
+        CategoryFilterCheckBox.Checked = False
+        LastModifierFilterCheckBox.Checked = False
+        BodyFilterCheckBox.Checked = False
+    End Sub
+
+    Private Sub SearchButton_Click(sender As Object, e As EventArgs) Handles SearchButton.Click
+        newsDataGridView.Rows.Clear()
+
+        Dim query As FileWorksObject.FileQuery = New FileWorksObject.FileQuery()
+
+        If ClassIDFilterCheckBox.Checked Then
+            If ClassIDSearchComboBox.SelectedItem = String.Empty Then
+                MessageBox.Show("Please Fill File Type Filter Feilds")
+                Exit Sub
+            End If
+            query.ClassID.ConditionType = 1
+
+            Dim classID = ClassIDSearchComboBox.SelectedItem
+            If classID = "All" Then
+
+                query.ClassID.ConditionType = 0
+            ElseIf classID = "News" Then
+                query.ClassID.ConditionType = 1
+                query.ClassID.ColumnValue = 3
+            ElseIf classID = "Photo" Then
+                query.ClassID.ColumnValue = 4
+            End If
+
+
+        End If
+
+        If IDFilterCheckBox.Checked Then
+            If IDSearchTextBox.Text = String.Empty Or IDConditionComboBox.SelectedItem = String.Empty Then
+                MessageBox.Show("Please Fill The ID Filter Feilds")
+                Exit Sub
+            End If
+
+            query.mID.ColumnValue = IDSearchTextBox.Text
+            query.mID.ConditionType = SelectCondition(IDConditionComboBox.SelectedItem)
+
+            If query.mID.ConditionType = 4 Then
+                If IDSearchTextBox2.Text = String.Empty Then
+                    MessageBox.Show("Please Fill The Second ID Value")
+                    Exit Sub
+                End If
+
+                query.mID.ColumnValue2 = IDSearchTextBox2.Text
+            End If
+
+        End If
+
+        If CreationDateFilterCheckBox.Checked Then
+            query.CreationDate.ColumnValue = DateTimePickerSearch.Value
+            query.CreationDate.ConditionType = SelectCondition(CreationDateConditionComboBox.SelectedItem)
+
+            If query.CreationDate.ConditionType = 4 Then
+                query.CreationDate.ColumnValue2 = DateTimePickerSearch2.Value
+            End If
+
+        End If
+
+        If TitleFilterCheckBox.Checked Then
+
+            If TitleSearchTextBox.Text = String.Empty Or TitleConditionComboBox.SelectedItem = String.Empty Then
+                MessageBox.Show("Please Fill The Name-Title Filter Feilds")
+                Exit Sub
+            End If
+
+            query.Name.ColumnValue = TitleSearchTextBox.Text
+            query.Name.ConditionType = SelectCondition(TitleConditionComboBox.SelectedItem)
+        End If
+
+        If DescriptionFilterCheckBox.Checked Then
+            If DescriptionSearchTextBox.Text = String.Empty Or DescriptionConditionComboBox.SelectedItem = String.Empty Then
+                MessageBox.Show("Please Fill Name-Description Filter Feilds")
+                Exit Sub
+            End If
+
+            query.Description.ColumnValue = DescriptionSearchTextBox.Text
+            query.Description.ConditionType = SelectCondition(DescriptionConditionComboBox.SelectedItem)
+        End If
+
+        If LastModifierFilterCheckBox.Checked Then
+            If LastModifierSearchTextBox.Text = String.Empty Or LastModifierConditionComboBox.SelectedItem = String.Empty Then
+                MessageBox.Show("Please Fill Last Modifier Filter Feilds")
+                Exit Sub
+            End If
+
+            query.LastModifier.ColumnValue = LastModifierSearchTextBox.Text
+            query.LastModifier.ConditionType = SelectCondition(LastModifierConditionComboBox.SelectedItem)
+
+        End If
+
+        If BodyFilterCheckBox.Checked Then
+            If BodySearchTextBox.Text = String.Empty Or BodyConditionComboBox.SelectedItem = String.Empty Then
+                MessageBox.Show("Please Fill Last Modifier Filter Feilds")
+                Exit Sub
+            End If
+
+            query.Body.ColumnValue = BodySearchTextBox.Text
+            query.Body.ConditionType = SelectCondition(BodyConditionComboBox.SelectedItem)
+
+        End If
+
+        If CategoryFilterCheckBox.Checked Then
+
+        End If
+
+        Dim result = query.Run()
+
+        If result IsNot Nothing AndAlso result.Count > 0 Then
+            AddingRows(result)
+        Else
+            MessageBox.Show("There is no rows that match ur order")
+        End If
+
+    End Sub
+
+    'Exactly
+    'Start With
+    'End With
+    'Contain
+
+    'After
+    'Before
+    'Between
+
+    'Exactly
+    'Greater
+    'Smaller
+    'Between
+    Private Function SelectCondition(condition As String) As Integer
+        Select Case condition
+            Case "Exactly"
+                Return 1
+            Case "Start With", "After", "Greater"
+                Return 2
+            Case "End With", "Before", "Smaller"
+                Return 3
+            Case "Contain", "Between"
+                Return 4
+        End Select
+
+        Return 0
+    End Function
 End Class

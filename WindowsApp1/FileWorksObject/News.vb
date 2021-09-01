@@ -8,8 +8,8 @@ Public Class News
     Public Overrides Function Read() As Boolean
         Try
             Dim query As String = $"select C_CATEGORY
-                                    from T_BUSINESSOBJECT, T_FILE, T_NEWS
-                                    where T_BUSINESSOBJECT.ID = T_FILE.ID and T_FILE.ID = T_NEWS.ID and T_NEWS.ID = {Me.ID}"
+                                    from   T_NEWS
+                                    where  T_NEWS.ID = {Me.ID}"
             Dim reader As SqlDataReader
 
             If MyBase.Read() Then

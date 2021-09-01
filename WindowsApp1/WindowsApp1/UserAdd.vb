@@ -19,9 +19,12 @@ Public Class UserAdd
         Dim longNameFormat As String = "[a-zA-Z]+(\s[a-zA-Z]+)+"
         Dim userOb As FileWorksObject.User = New FileWorksObject.User()
 
-        Dim query As FileWorksObject.UserQuery = New FileWorksObject.UserQuery _
-        With {.C_Name = nameTextBox.Text,
-                .C_ClassID = 1}
+        Dim query As FileWorksObject.UserQuery = New FileWorksObject.UserQuery()
+
+        query.Name.ColumnValue = nameTextBox.Text
+        query.Name.ConditionType = 1
+        query.ClassID.ColumnValue = 1
+        query.ClassID.ConditionType = 1
 
         If nameTextBox.Text = String.Empty Or Not Regex.IsMatch(nameTextBox.Text, userNameFormat) Then
             MessageBox.Show("You must enter a Valid Name!", "Not valid value", MessageBoxButtons.OK, MessageBoxIcon.Stop)
