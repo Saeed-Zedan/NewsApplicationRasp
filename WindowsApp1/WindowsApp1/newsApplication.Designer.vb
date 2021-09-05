@@ -421,6 +421,8 @@ Partial Class newsApplication
         '
         'SearchTabControl
         '
+        Me.SearchTabControl.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.SearchTabControl.Controls.Add(Me.IDTabPage)
         Me.SearchTabControl.Controls.Add(Me.CreationDateTabPage)
         Me.SearchTabControl.Controls.Add(Me.NameTabPage)
@@ -430,7 +432,7 @@ Partial Class newsApplication
         Me.SearchTabControl.Location = New System.Drawing.Point(0, 3)
         Me.SearchTabControl.Name = "SearchTabControl"
         Me.SearchTabControl.SelectedIndex = 0
-        Me.SearchTabControl.Size = New System.Drawing.Size(716, 112)
+        Me.SearchTabControl.Size = New System.Drawing.Size(915, 112)
         Me.SearchTabControl.TabIndex = 8
         '
         'IDTabPage
@@ -445,7 +447,7 @@ Partial Class newsApplication
         Me.IDTabPage.Location = New System.Drawing.Point(4, 22)
         Me.IDTabPage.Name = "IDTabPage"
         Me.IDTabPage.Padding = New System.Windows.Forms.Padding(3)
-        Me.IDTabPage.Size = New System.Drawing.Size(708, 86)
+        Me.IDTabPage.Size = New System.Drawing.Size(907, 86)
         Me.IDTabPage.TabIndex = 0
         Me.IDTabPage.Text = "ID Filter"
         Me.IDTabPage.UseVisualStyleBackColor = True
@@ -530,7 +532,7 @@ Partial Class newsApplication
         Me.CreationDateTabPage.Location = New System.Drawing.Point(4, 22)
         Me.CreationDateTabPage.Name = "CreationDateTabPage"
         Me.CreationDateTabPage.Padding = New System.Windows.Forms.Padding(3)
-        Me.CreationDateTabPage.Size = New System.Drawing.Size(708, 86)
+        Me.CreationDateTabPage.Size = New System.Drawing.Size(907, 86)
         Me.CreationDateTabPage.TabIndex = 1
         Me.CreationDateTabPage.Text = "Creation Date Filter"
         Me.CreationDateTabPage.UseVisualStyleBackColor = True
@@ -618,7 +620,7 @@ Partial Class newsApplication
         Me.NameTabPage.Location = New System.Drawing.Point(4, 22)
         Me.NameTabPage.Name = "NameTabPage"
         Me.NameTabPage.Padding = New System.Windows.Forms.Padding(3)
-        Me.NameTabPage.Size = New System.Drawing.Size(708, 86)
+        Me.NameTabPage.Size = New System.Drawing.Size(907, 86)
         Me.NameTabPage.TabIndex = 2
         Me.NameTabPage.Text = "Name Filter"
         Me.NameTabPage.UseVisualStyleBackColor = True
@@ -734,7 +736,7 @@ Partial Class newsApplication
         Me.ClassIDTabPage.Location = New System.Drawing.Point(4, 22)
         Me.ClassIDTabPage.Name = "ClassIDTabPage"
         Me.ClassIDTabPage.Padding = New System.Windows.Forms.Padding(3)
-        Me.ClassIDTabPage.Size = New System.Drawing.Size(708, 86)
+        Me.ClassIDTabPage.Size = New System.Drawing.Size(907, 86)
         Me.ClassIDTabPage.TabIndex = 3
         Me.ClassIDTabPage.Text = "File Type Filter"
         Me.ClassIDTabPage.UseVisualStyleBackColor = True
@@ -749,7 +751,7 @@ Partial Class newsApplication
         Me.LastModifierTabPage.Location = New System.Drawing.Point(4, 22)
         Me.LastModifierTabPage.Name = "LastModifierTabPage"
         Me.LastModifierTabPage.Padding = New System.Windows.Forms.Padding(3)
-        Me.LastModifierTabPage.Size = New System.Drawing.Size(708, 86)
+        Me.LastModifierTabPage.Size = New System.Drawing.Size(907, 86)
         Me.LastModifierTabPage.TabIndex = 4
         Me.LastModifierTabPage.Text = "Last Modifier Filter"
         Me.LastModifierTabPage.UseVisualStyleBackColor = True
@@ -764,7 +766,7 @@ Partial Class newsApplication
         Me.BodyTabPage.Location = New System.Drawing.Point(4, 22)
         Me.BodyTabPage.Name = "BodyTabPage"
         Me.BodyTabPage.Padding = New System.Windows.Forms.Padding(3)
-        Me.BodyTabPage.Size = New System.Drawing.Size(708, 86)
+        Me.BodyTabPage.Size = New System.Drawing.Size(907, 86)
         Me.BodyTabPage.TabIndex = 5
         Me.BodyTabPage.Text = "Body Filter"
         Me.BodyTabPage.UseVisualStyleBackColor = True
@@ -937,7 +939,8 @@ Partial Class newsApplication
         '
         'SearchButton
         '
-        Me.SearchButton.Location = New System.Drawing.Point(722, 60)
+        Me.SearchButton.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.SearchButton.Location = New System.Drawing.Point(921, 56)
         Me.SearchButton.Name = "SearchButton"
         Me.SearchButton.Size = New System.Drawing.Size(75, 23)
         Me.SearchButton.TabIndex = 9
@@ -946,7 +949,8 @@ Partial Class newsApplication
         '
         'ResetButton
         '
-        Me.ResetButton.Location = New System.Drawing.Point(722, 88)
+        Me.ResetButton.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.ResetButton.Location = New System.Drawing.Point(921, 85)
         Me.ResetButton.Name = "ResetButton"
         Me.ResetButton.Size = New System.Drawing.Size(75, 23)
         Me.ResetButton.TabIndex = 9
