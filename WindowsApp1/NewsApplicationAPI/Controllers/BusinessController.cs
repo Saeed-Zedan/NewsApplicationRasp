@@ -22,7 +22,7 @@ namespace NewsApplicationAPI.Controllers
             _configuration = configuration;
         }
 
-        // GET: api/<BusinessController>
+        // GET: api/<BusinessController>/Get
         [HttpPost("Get")]
         public ActionResult<IEnumerable<string>> Get([FromBody] FileWorxObject.BusinessQuery query)
         {

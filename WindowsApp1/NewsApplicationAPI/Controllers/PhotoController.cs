@@ -17,11 +17,11 @@ namespace NewsApplicationAPI.Controllers
         {
             _configuration = configuration;
         }
-        // GET: api/<BusinessController>
-        [HttpGet]
-        public ActionResult<IEnumerable<string>> Get()
+        // GET: api/<BusinessController>/Get
+        [HttpPost("Get")]
+        public ActionResult<IEnumerable<string>> Get([FromBody] FileWorxObject.PhotoQuery query)
         {
-            FileWorxObject.PhotoQuery query = new FileWorxObject.PhotoQuery();
+            //FileWorxObject.BusinessQuery query = new FileWorxObject.BusinessQuery();
             var result = query.Run();
             if (result is null)
                 return NotFound();

@@ -200,6 +200,10 @@
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DataLayer\DataLayer.csproj">
+      <Project>{7b6ede96-07db-0217-212a-3c25540fcf19}</Project>
+      <Name>DataLayer</Name>
+    </ProjectReference>
     <ProjectReference Include="..\FileWorksObject\FileWorksObject.vbproj">
       <Project>{ae7e52f4-31f0-4d83-91fa-b7f1fad2ec7b}</Project>
       <Name>FileWorksObject</Name>

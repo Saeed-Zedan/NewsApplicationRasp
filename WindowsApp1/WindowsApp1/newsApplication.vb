@@ -1,10 +1,10 @@
 ﻿Imports System.IO
 Imports WindowsApp1
+Imports 
 Public Class newsApplication
     Private currentUser As String = String.Empty
     Private userPriv As Boolean
     Public Sub New()
-
         ' This call is required by the designer.
         InitializeComponent()
 
@@ -39,7 +39,8 @@ Public Class newsApplication
 
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Me.WindowState = FormWindowState.Maximized
-        addingRows((New FileWorksObject.FileQuery()).Run())
+        AddingRows((New FileWorksObject.FileQuery()).Run())
+        'AddingRows((New ))
     End Sub
 
     Private Sub DeleteToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles DeleteToolStripMenuItem.Click

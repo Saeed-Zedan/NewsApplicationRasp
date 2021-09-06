@@ -3,9 +3,12 @@
   <PropertyGroup>
     <RootNamespace>DataLayer</RootNamespace>
     <TargetFramework>net5.0</TargetFramework>
+    <DefaultItemExcludes>$(DefaultItemExcludes);$(ProjectDir)**\*.vb</DefaultItemExcludes>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
+    <Reference Include="Microsoft.VisualBasic" />
     <PackageReference Include="Nancy" Version="2.0.0" />
   </ItemGroup>
 
