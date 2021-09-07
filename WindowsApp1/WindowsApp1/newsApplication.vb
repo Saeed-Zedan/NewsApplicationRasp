@@ -1,13 +1,12 @@
 ﻿Imports System.IO
 Imports WindowsApp1
-Imports 
+Imports DataLayer
 Public Class newsApplication
     Private currentUser As String = String.Empty
     Private userPriv As Boolean
     Public Sub New()
         ' This call is required by the designer.
         InitializeComponent()
-
         Using newForm = New LoginScreen()
             If newForm.ShowDialog = DialogResult.OK Then
                 currentUser = newForm.UserName
