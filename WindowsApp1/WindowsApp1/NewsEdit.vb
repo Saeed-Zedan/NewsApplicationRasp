@@ -2,7 +2,7 @@
 
 Public Class NewsEdit
     Private currentUser As String
-    Public newsOB As FileWorksObject.News
+    Public newsOB As FileWorxObject.News
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
 
         Select Case String.Empty
@@ -16,19 +16,15 @@ Public Class NewsEdit
                 Exit Sub
         End Select
 
-        newsOB.Name = titleTextBox.Text
-        newsOB.Body = bodyTextBox.Text
-        newsOB.Category = categoryComboBox.Text
-        If descriptionTextBox.Text <> String.Empty Then
-            newsOb.Description = descriptionTextBox.Text
-        Else
-            newsOB.Description = " "
-        End If
-        newsOB.LastModifier = currentUser
+        FillInfo()
+
+        Dim service = New DataLayer.NewsService()
 
         Dim result = MessageBox.Show("Aru u sure u want to commit ur edits", "Warning msg", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
         If result = DialogResult.Yes Then
-            If newsOB.Update() > 0 Then
+            Dim serviceResult = service.Update(newsOB)
+
+            If serviceResult <> String.Empty Then
                 Me.DialogResult = System.Windows.Forms.DialogResult.OK
                 Me.Close()
             Else
@@ -36,8 +32,21 @@ Public Class NewsEdit
                 MessageBox.Show("NO")
                 Me.Close()
             End If
+
         End If
 
+    End Sub
+
+    Private Sub FillInfo()
+        newsOB.Name = titleTextBox.Text
+        newsOB.Body = bodyTextBox.Text
+        newsOB.Category = categoryComboBox.Text
+        If descriptionTextBox.Text <> String.Empty Then
+            newsOB.Description = descriptionTextBox.Text
+        Else
+            newsOB.Description = " "
+        End If
+        newsOB.LastModifier = currentUser
     End Sub
 
     Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
@@ -47,7 +56,7 @@ Public Class NewsEdit
 
     Sub New(currentUser As String, Title As String, ID As Integer)
         InitializeComponent()
-        newsOB = New FileWorksObject.News()
+        newsOB = New FileWorxObject.News()
         newsOB.Name = Title
         newsOB.ID = ID
 

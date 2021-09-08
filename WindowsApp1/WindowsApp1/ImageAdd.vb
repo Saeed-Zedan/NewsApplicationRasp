@@ -2,7 +2,7 @@
 Imports System.IO
 Public Class ImageAdd
     Public currentUser As String
-    Public newOb As FileWorksObject.Photo
+    Public newOb As FileWorxObject.Photo
     Public Sub New(currentUser As String)
 
         ' This call is required by the designer.
@@ -15,6 +15,7 @@ Public Class ImageAdd
         Dim result As DialogResult
         Dim filename As String
         Dim ImageExtensions = {".JPG", ".JPE", ".BMP", ".GIF", ".PNG", ".JPEG"}
+
         Using fileChooser As New OpenFileDialog()
             result = fileChooser.ShowDialog()
             filename = fileChooser.FileName
@@ -36,6 +37,7 @@ Public Class ImageAdd
     End Sub
 
     Private Sub SaveButton_Click(sender As Object, e As EventArgs) Handles saveButton.Click
+
         Select Case String.Empty
             Case titleTextBox.Text
                 MessageBox.Show("You must enter a title!", "Empty Title", MessageBoxButtons.OK, MessageBoxIcon.Stop)
@@ -46,7 +48,20 @@ Public Class ImageAdd
                 Exit Sub
         End Select
 
-        newOb = New FileWorksObject.Photo()
+        newOb = New FileWorxObject.Photo()
+        FillValue(newOb)
+
+        Dim newService As DataLayer.PhotoService = New DataLayer.PhotoService()
+        Dim result = newService.Update(newOb)
+
+        If result = "Not Found" Or result = "Error" Then
+            Me.DialogResult = DialogResult.Cancel
+        Else
+            Me.DialogResult = DialogResult.OK
+        End If
+
+    End Sub
+    Private Sub FillValue(ByRef newOb As FileWorxObject.Photo)
         newOb.Name = titleTextBox.Text
         newOb.Body = bodyTextBox.Text
         newOb.ClassID = 4
@@ -58,13 +73,5 @@ Public Class ImageAdd
             newOb.Description = " "
         End If
         newOb.PhotoPath = imagePathTextBox.Text
-
-
-        If newOb.Update() Then
-            Me.DialogResult = DialogResult.OK
-        Else
-            Me.DialogResult = DialogResult.Cancel
-        End If
-
     End Sub
 End Class

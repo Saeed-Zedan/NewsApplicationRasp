@@ -2,19 +2,27 @@
 
 Public Class ImageEdit
     Private currentUserValue As String
-    Private newObValue As FileWorksObject.Photo
+    Private newObValue As FileWorxObject.Photo
     Sub New(currentUser As String, name As String, ID As Integer)
         InitializeComponent()
+        'newObValue.Name = name
+        'newObValue.ID = ID
+        'newObValue.Read()
+        Dim service = New DataLayer.PhotoService()
+        Dim result = service.Read(ID)
+        If result <> "Not Found" Or result <> "Error" Then
+            newObValue = New FileWorxObject.Photo()
+            newObValue.FillData(result.Split("^_^"))
+        Else
+            MessageBox.Show("Conflict with DB", "Item Not Found")
+            Me.Close()
+        End If
 
-        newObValue = New FileWorksObject.Photo()
-        newObValue.Name = name
-        newObValue.ID = ID
-        newObValue.Read()
         InitializeControls()
 
         Me.currentUserValue = currentUser
     End Sub
-    Public ReadOnly Property newOb As FileWorksObject.Photo
+    Public ReadOnly Property newOb As FileWorxObject.Photo
         Get
             Return newObValue
         End Get
@@ -58,23 +66,15 @@ Public Class ImageEdit
             Exit Sub
         End If
 
-        newObValue.Name = titleTextBox.Text
-        newObValue.Body = bodyTextBox.Text
-        newObValue.PhotoPath = imagePathTextBox.Text
-
-        If descriptionTextBox.Text <> String.Empty Then
-            newObValue.Description = descriptionTextBox.Text
-        Else
-            newObValue.Description = " "
-        End If
-        newObValue.LastModifier = currentUserValue
+        FillInfo()
 
         Dim result = MessageBox.Show("Aru u sure u want to commit ur edits", "Warning msg", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
         If result = DialogResult.Yes Then
 
             FreeImageResources()
-
-            If newObValue.Update() Then
+            Dim service As DataLayer.PhotoService = New DataLayer.PhotoService()
+            Dim serviceResult = service.Update(newObValue)
+            If serviceResult <> String.Empty Then
                 Me.DialogResult = DialogResult.OK
             Else
                 Me.DialogResult = DialogResult.No
@@ -101,5 +101,18 @@ Public Class ImageEdit
             PictureBox1.Image.Dispose()
         End If
         PictureBox1.Image = Nothing
+    End Sub
+
+    Private Sub FillInfo()
+        newObValue.Name = titleTextBox.Text
+        newObValue.Body = bodyTextBox.Text
+        newObValue.PhotoPath = imagePathTextBox.Text
+
+        If descriptionTextBox.Text <> String.Empty Then
+            newObValue.Description = descriptionTextBox.Text
+        Else
+            newObValue.Description = " "
+        End If
+        newObValue.LastModifier = currentUserValue
     End Sub
 End Class

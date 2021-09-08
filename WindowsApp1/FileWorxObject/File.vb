@@ -79,4 +79,10 @@ Public Class File
         Dim Info As String = $"^_^{Me.Body}^_^{Me.Description}"
         Return MyBase.ToString() & Info
     End Function
+
+    Public Overrides Sub FillData(data() As String)
+        MyBase.FillData({data(0), data(1), data(2), data(3), data(4)})
+        Me.Body = data(5)
+        Me.Description = data(6)
+    End Sub
 End Class

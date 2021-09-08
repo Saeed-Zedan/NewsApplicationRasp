@@ -4,7 +4,7 @@ Public Class UsersView
 
     Public curUser As String
     Public priv As Boolean
-
+    Private strDeatail = "{0,-5}{1,-29}{2,-60}{3,-29}"
     Public Sub New(curUser As String, priv As Boolean)
 
         ' This call is required by the designer.
@@ -16,27 +16,24 @@ Public Class UsersView
 
     End Sub
     Private Sub veiwUsers_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        Dim service = New DataLayer.UserQueryService()
+        Dim result = service.Run(New FileWorxObject.UserQuery())
 
-
-        Dim query As FileWorksObject.UserQuery = New FileWorksObject.UserQuery()
-        Dim allUsers = query.Run()
-        If allUsers.Count = 0 Then
+        If result Is Nothing Then
             MessageBox.Show("There is no users in the system", "That's Impossible", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
         Else
-            'Dim w = Me.Width
-            Dim strDeatail = "{0,-5}{1,-29}{2,-60}{3,-29}"
             usersListBox.Items.Add(String.Format(strDeatail, "ID", "Name", "Long Name", "Last Modifier"))
-            For Each user In allUsers
+
+            For Each user In result
                 Dim userInfo = Strings.Split(user, "^_^")
                 usersListBox.Items.Add(String.Format(strDeatail, userInfo(0), userInfo(2), userInfo(5), userInfo(4)))
             Next
 
-
         End If
+
     End Sub
     Private Sub usersListBox_DoubleClick(sender As Object, e As EventArgs) Handles usersListBox.DoubleClick
         Dim row = usersListBox.SelectedItem
-        Dim strDeatail = "{0,-5}{1,-29}{2,-60}{3,-29}"
 
         Dim rowCopy As String = row
         Do Until InStr(row, "  ") = 0       ' Loop until there are no more double spaces
@@ -54,26 +51,28 @@ Public Class UsersView
         End If
 
         Dim info = row.ToString().Split()
-        Dim userOb As FileWorksObject.User = New FileWorksObject.User()
+        Dim userOb As FileWorxObject.User = New FileWorxObject.User()
         userOb.ID = info(0)
-        userOb.Read()
-        Dim newUser As FileWorksObject.User = New FileWorksObject.User(userOb)
 
-        Dim newForm As UserEdit = New UserEdit(newUser, curUser)
+        'userOb.Read()
+        'Dim newUser As FileWorxObject.User = New FileWorxObject.User(userOb)
+
+        Dim newForm As UserEdit = New UserEdit(userOb.ID, curUser)
         Dim result = newForm.ShowDialog()
 
         If result = DialogResult.OK Then
-            newUser.Read()
+            Dim service = New DataLayer.UserService()
+            Dim serviceResult = service.Read(userOb.ID)
+            userOb.FillData(serviceResult.Split("^_^"))
             usersListBox.Items.Remove(rowCopy)
-            usersListBox.Items.Add(String.Format(strDeatail, newUser.ID, newUser.Name, newUser.FullName, newUser.LastModifier))
-            curUser = newUser.LastModifier
+            usersListBox.Items.Add(String.Format(strDeatail, userOb.ID, userOb.Name, userOb.FullName, userOb.LastModifier))
+            curUser = userOb.LastModifier
         End If
 
     End Sub
 
     Private Sub deleteToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles deleteToolStripMenuItem.Click
         Dim row = usersListBox.SelectedItem
-        Dim strDeatail = "{0,-5}{1,-29}{2,-60}{3,-29}"
 
         If row = String.Empty Then 'no selected file
             MessageBox.Show("There is no selected user/s", "Duck", MessageBoxButtons.OK, MessageBoxIcon.Warning)
@@ -89,10 +88,14 @@ Public Class UsersView
         Dim result = MessageBox.Show("Aru u sure u want to delete the user : " & row.ToString.Split(" ")(1), "Warning msg", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
         If result = DialogResult.Yes Then
             row = CType(row, String)
+
             Dim columns As String() = Split(row)
-            Dim userOb As FileWorksObject.User = New FileWorksObject.User()
-            userOb.ID = columns(0)
-            If userOb.Delete() Then
+            'Dim userOb As FileWorxObject.User = New FileWorxObject.User()
+            'userOb.ID = columns(0)
+
+            Dim service = New DataLayer.UserService()
+            Dim serviceResult = service.Delete(columns(0))
+            If serviceResult <> "Not Found" And serviceResult <> "Error" Then
                 usersListBox.Items.Remove(row) 'remove the file from the gridview
                 MessageBox.Show("User has been deleted", "POOR USER")
             Else

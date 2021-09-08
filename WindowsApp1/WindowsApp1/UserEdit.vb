@@ -4,12 +4,17 @@ Imports System.Windows.Forms
 
 Public Class UserEdit
     Private curUser As String
-    Private oldUser As FileWorksObject.User
+    Private oldUser As FileWorxObject.User
 
-    Sub New(newUser As FileWorksObject.User, curUser As String)
+    Sub New(id As Integer, curUser As String)
         InitializeComponent()
 
-        oldUser = newUser
+        Dim service = New DataLayer.UserService()
+        Dim result = service.Read(id)
+
+        oldUser = New FileWorxObject.User
+        oldUser.FillData(result.Split("^_^"))
+
         Me.curUser = curUser
 
         nameTextBox.Text = oldUser.Name
@@ -18,23 +23,16 @@ Public Class UserEdit
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles edit_Button.Click
         Dim userNameFormat = "^[-\w\.\$@\*\!]{1,255}$"
         Dim longNameFormat As String = "[a-zA-Z]+(\s[a-zA-Z]+)+"
-        Dim userOb As FileWorksObject.User = New FileWorksObject.User()
+        Dim userOb As FileWorxObject.User = New FileWorxObject.User()
 
-        Dim query As FileWorksObject.UserQuery = New FileWorksObject.UserQuery()
 
-        query.Name.ColumnValue = nameTextBox.Text
-        query.Name.ConditionType = 1
-        query.ClassID.ColumnValue = 1
-        query.ClassID.ConditionType = 1
-
-        Dim result = query.Run()
         If nameTextBox.Text = String.Empty Or Not Regex.IsMatch(nameTextBox.Text, userNameFormat) Then
             MessageBox.Show("You must enter a Valid Name!", "Not valid value", MessageBoxButtons.OK, MessageBoxIcon.Stop)
             nameTextBox.Select()
             Exit Sub
-        ElseIf oldUser.Name <> nameTextBox.Text AndAlso result IsNot Nothing Then
-            MessageBox.Show("The name is already used!", "Not valid value", MessageBoxButtons.OK, MessageBoxIcon.Stop)
-            nameTextBox.Select()
+        End If
+
+        If CheckName() Then
             Exit Sub
         End If
 
@@ -59,8 +57,10 @@ Public Class UserEdit
             oldUser.FullName = longNameTextBox.Text
             oldUser.LastModifier = curUser
 
-            If msgBoxResult = DialogResult.Yes AndAlso oldUser.Update() Then
-                Me.DialogResult = System.Windows.Forms.DialogResult.OK
+            Dim service = New DataLayer.UserService()
+            Dim result = service.Update(oldUser)
+            If msgBoxResult = DialogResult.Yes AndAlso result IsNot Nothing Then
+                Me.DialogResult = DialogResult.OK
                 MessageBox.Show("OPERATION DONE")
                 Me.Close()
             End If
@@ -69,6 +69,25 @@ Public Class UserEdit
 
 
     End Sub
+
+    Private Function CheckName() As Boolean
+        Dim query As FileWorxObject.UserQuery = New FileWorxObject.UserQuery()
+
+        query.Name.ColumnValue = nameTextBox.Text
+        query.Name.ConditionType = 1
+        query.ClassID.ColumnValue = 1
+        query.ClassID.ConditionType = 1
+
+        Dim service = New DataLayer.UserQueryService()
+        Dim result = service.Run(query)
+        'Dim result = query.Run()
+        If oldUser.Name <> nameTextBox.Text AndAlso result IsNot Nothing Then
+            MessageBox.Show("The name is already used!", "Not valid value", MessageBoxButtons.OK, MessageBoxIcon.Stop)
+            nameTextBox.Select()
+            Return True
+        End If
+        Return False
+    End Function
 
     Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
         Me.DialogResult = System.Windows.Forms.DialogResult.Cancel

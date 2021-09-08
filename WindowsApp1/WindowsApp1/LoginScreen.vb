@@ -27,6 +27,7 @@ Public Class LoginScreen
         Dim bytesToHash() As Byte = System.Text.Encoding.ASCII.GetBytes(Password)
         bytesToHash = hashingOb.ComputeHash(bytesToHash)
         Dim strResult As String = ""
+
         For Each item In bytesToHash
             strResult += item.ToString("x2")
         Next
@@ -45,12 +46,7 @@ Public Class LoginScreen
             Exit Sub
         End If
 
-        'Dim curUser As FileWorksObject.UserQuery = New FileWorksObject.UserQuery _
-        '    With {.C_Name = UsernameTextBox.Text,
-        '          .C_Password = HashingPassword(PasswordTextBox.Text),
-        '          .C_ClassID = 1}
-
-        Dim curUser As FileWorksObject.UserQuery = New FileWorksObject.UserQuery()
+        Dim curUser As FileWorxObject.UserQuery = New FileWorxObject.UserQuery()
 
         curUser.Name.ColumnValue = UsernameTextBox.Text
         curUser.Name.ConditionType = 1
@@ -59,7 +55,8 @@ Public Class LoginScreen
         curUser.ClassID.ColumnValue = 1
         curUser.ClassID.ConditionType = 1
 
-        Dim result = curUser.Run()
+        Dim service As DataLayer.UserQueryService = New DataLayer.UserQueryService()
+        Dim result = service.Run(curUser)
 
         If result IsNot Nothing Then
             Dim info = Strings.Split(result(0), "^_^")
@@ -67,11 +64,11 @@ Public Class LoginScreen
             Me.DialogResult = DialogResult.OK
             Me.Close()
             Exit Sub
-        ElseIf result Is Nothing Then
+        Else
             MessageBox.Show("Wrong name or password", "Invalid Login", MessageBoxButtons.OK, MessageBoxIcon.Stop)
             Exit Sub
         End If
-        MessageBox.Show("Wrong name or password", "Invalid Login", MessageBoxButtons.OK, MessageBoxIcon.Stop)
+
     End Sub
 
     Private Sub Cancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel.Click

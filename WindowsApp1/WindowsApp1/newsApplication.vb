@@ -1,6 +1,5 @@
 ﻿Imports System.IO
 Imports WindowsApp1
-Imports DataLayer
 Public Class newsApplication
     Private currentUser As String = String.Empty
     Private userPriv As Boolean
@@ -13,7 +12,9 @@ Public Class newsApplication
                 userPriv = newForm.Priv
                 MessageBox.Show($"Welcome {currentUser}")
             Else
-                Me.Dispose()
+                Me.Close()
+                'Me.Dispose()
+                Exit Sub
             End If
         End Using
     End Sub
@@ -38,7 +39,7 @@ Public Class newsApplication
 
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Me.WindowState = FormWindowState.Maximized
-        AddingRows((New FileWorksObject.FileQuery()).Run())
+        AddingRows((New FileWorxObject.FileQuery()).Run())
         'AddingRows((New ))
     End Sub
 
@@ -53,7 +54,7 @@ Public Class newsApplication
             Exit Sub
         End If
 
-        Dim query As FileWorksObject.BusinessQuery
+        Dim query As FileWorxObject.BusinessQuery
 
         For Each item As DataGridViewRow In rows
             Dim id = Convert.ToInt32(item.Cells(3).Value)
@@ -61,7 +62,7 @@ Public Class newsApplication
             Dim result = MessageBox.Show("Aru u sure u want to delete the user : " & name, "Warning msg", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
 
             If result = DialogResult.Yes Then
-                query = New FileWorksObject.BusinessQuery()
+                query = New FileWorxObject.BusinessQuery()
                 query.mID.ColumnValue = id
                 Dim queryResult = query.Run()
                 Dim tagged As Integer
@@ -77,7 +78,7 @@ Public Class newsApplication
 
                 If tagged = 4 Then
 
-                    Dim newOb As FileWorksObject.Photo = New FileWorksObject.Photo With {.ID = allInfo(0)}
+                    Dim newOb As FileWorxObject.Photo = New FileWorxObject.Photo With {.ID = allInfo(0)}
                     If newOb.Read() Then
                         If newOb.Delete() Then
                             newsDataGridView.Rows.Remove(item)
@@ -86,7 +87,7 @@ Public Class newsApplication
 
                 ElseIf tagged = 3 Then
 
-                    Dim newOb As FileWorksObject.BusinessObject = New FileWorksObject.BusinessObject With {.ID = allInfo(0)}
+                    Dim newOb As FileWorxObject.BusinessObject = New FileWorxObject.BusinessObject With {.ID = allInfo(0)}
                     If newOb.Read() Then
                         If newOb.Delete() Then
                             newsDataGridView.Rows.Remove(item)
@@ -130,7 +131,7 @@ Public Class newsApplication
 
         If selectedNews.Count = 1 Then
             Dim row = selectedNews(0)
-            Dim fileOb As FileWorksObject.File = New FileWorksObject.File()
+            Dim fileOb As FileWorxObject.File = New FileWorxObject.File()
             fileOb.ID = Convert.ToInt32(row.Cells(3).Value)
             Dim tagged As Integer
             If fileOb.Read() Then
@@ -178,7 +179,7 @@ Public Class newsApplication
 
         Dim row = newsDataGridView.SelectedRows
         If row.Count > 0 Then
-            displayNewsData(row(0))
+            DisplayNewsData(row(0))
         End If
 
     End Sub
@@ -186,7 +187,7 @@ Public Class newsApplication
     Private Sub ImageToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ImageToolStripMenuItem.Click
         Using newForm = New ImageAdd(currentUser)
             If newForm.ShowDialog() = DialogResult.OK Then
-                addingRow(newForm.newOb.Name, newForm.newOb.CreationDate.ToString(), newForm.newOb.Description, newForm.newOb.ID)
+                AddingRow(newForm.newOb.Name, newForm.newOb.CreationDate.ToString(), newForm.newOb.Description, newForm.newOb.ID)
             Else
                 MessageBox.Show("Not completed.")
             End If
@@ -207,13 +208,13 @@ Public Class newsApplication
 
     Private Sub NewsDataGridView_RowsAdded(sender As Object, e As DataGridViewRowsAddedEventArgs) Handles newsDataGridView.RowsAdded
         Dim row = newsDataGridView.Rows(0)
-        displayNewsData(row)
+        DisplayNewsData(row)
     End Sub
 
     Private Sub DisplayNewsData(row As DataGridViewRow)
         EmptyFields()
 
-        Dim newob As FileWorksObject.File = New FileWorksObject.File()
+        Dim newob As FileWorxObject.File = New FileWorxObject.File()
         newob.ID = Convert.ToInt32(row.Cells(3).Value)
         Dim tagged As Integer
         If newob.Read() Then
@@ -226,7 +227,7 @@ Public Class newsApplication
             categoryLabel.Visible = True
             categoryTextBox.Visible = True
 
-            Dim displayOb As FileWorksObject.News = New FileWorksObject.News()
+            Dim displayOb As FileWorxObject.News = New FileWorxObject.News()
             displayOb.Name = newob.Name
             displayOb.ID = newob.ID
             displayOb.Read()
@@ -241,7 +242,7 @@ Public Class newsApplication
             categoryLabel.Visible = False
             categoryTextBox.Visible = False
 
-            Dim displayOb As FileWorksObject.Photo = New FileWorksObject.Photo()
+            Dim displayOb As FileWorxObject.Photo = New FileWorxObject.Photo()
             displayOb.Name = newob.Name
             displayOb.ID = newob.ID
             displayOb.Read()
@@ -407,7 +408,7 @@ Public Class newsApplication
     Private Sub SearchButton_Click(sender As Object, e As EventArgs) Handles SearchButton.Click
         newsDataGridView.Rows.Clear()
 
-        Dim query As FileWorksObject.FileQuery = New FileWorksObject.FileQuery()
+        Dim query As FileWorxObject.FileQuery = New FileWorxObject.FileQuery()
 
         If ClassIDFilterCheckBox.Checked Then
             If ClassIDSearchComboBox.SelectedItem = String.Empty Then

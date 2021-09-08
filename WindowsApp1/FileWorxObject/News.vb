@@ -63,4 +63,9 @@ Public Class News
         Dim Info As String = $"^_^{Me.Category}"
         Return MyBase.ToString() & Info
     End Function
+
+    Public Overrides Sub FillData(data() As String)
+        MyBase.FillData({data(0), data(1), data(2), data(3), data(4), data(5), data(6)})
+        Me.Category = data(7)
+    End Sub
 End Class

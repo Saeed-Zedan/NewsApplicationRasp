@@ -113,4 +113,11 @@ Public Class BusinessObject
         Return Info
     End Function
 
+    Public Overridable Sub FillData(data As String())
+        Me.ID = Convert.ToInt32(data(0))
+        Me.CreationDate = Convert.ToDateTime(data(1))
+        Me.Name = data(2)
+        Me.ClassID = Convert.ToInt32(data(3))
+        Me.LastModifier = data(4)
+    End Sub
 End Class

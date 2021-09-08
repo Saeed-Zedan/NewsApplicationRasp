@@ -2,6 +2,8 @@
 Imports System.Security.Cryptography
 
 Imports System.Text.RegularExpressions
+Imports FileWorxObject
+
 Public Class UserAdd
     Private curUser As String = String.Empty
     Private userPriv As Boolean
@@ -17,23 +19,17 @@ Public Class UserAdd
     Private Sub SaveButton_Click(sender As Object, e As EventArgs) Handles saveButton.Click
         Dim userNameFormat = "^[-\w\.\$@\*\!]{1,255}$"
         Dim longNameFormat As String = "[a-zA-Z]+(\s[a-zA-Z]+)+"
-        Dim userOb As FileWorksObject.User = New FileWorksObject.User()
+        Dim userOb As FileWorxObject.User = New FileWorxObject.User()
 
-        Dim query As FileWorksObject.UserQuery = New FileWorksObject.UserQuery()
 
-        query.Name.ColumnValue = nameTextBox.Text
-        query.Name.ConditionType = 1
-        query.ClassID.ColumnValue = 1
-        query.ClassID.ConditionType = 1
 
         If nameTextBox.Text = String.Empty Or Not Regex.IsMatch(nameTextBox.Text, userNameFormat) Then
             MessageBox.Show("You must enter a Valid Name!", "Not valid value", MessageBoxButtons.OK, MessageBoxIcon.Stop)
             nameTextBox.Select()
             Exit Sub
         End If
-        If query.Run() IsNot Nothing Then
-            MessageBox.Show("The name is already used!", "Not valid value", MessageBoxButtons.OK, MessageBoxIcon.Stop)
-            nameTextBox.Select()
+
+        If NameCheck() Then
             Exit Sub
         End If
 
@@ -49,13 +45,11 @@ Public Class UserAdd
             Exit Sub
         End If
 
-        userOb.FullName = longNameTextBox.Text
-        userOb.Name = nameTextBox.Text
-        userOb.Password = HashingPassword(passwordTextBox.Text)
-        userOb.PrivilegeLevel = adminCheckBox.Checked
-        userOb.LastModifier = curUser
-        userOb.ClassID = 1
-        If userOb.Update() Then
+        FillInfo(userOb)
+
+        Dim service = New DataLayer.UserService
+        Dim result = service.Update(userOb)
+        If result <> String.Empty Then
             MessageBox.Show("YaaaaaaaaaaaaaY")
         Else
             MessageBox.Show("Bad Luck :(")
@@ -63,6 +57,34 @@ Public Class UserAdd
 
         Me.Dispose()
     End Sub
+
+    Private Sub FillInfo(ByRef userOb As User)
+        userOb.FullName = longNameTextBox.Text
+        userOb.Name = nameTextBox.Text
+        userOb.Password = HashingPassword(passwordTextBox.Text)
+        userOb.PrivilegeLevel = adminCheckBox.Checked
+        userOb.LastModifier = curUser
+        userOb.ClassID = 1
+    End Sub
+
+    Private Function NameCheck() As Boolean
+        Dim query As FileWorxObject.UserQuery = New FileWorxObject.UserQuery()
+
+        query.Name.ColumnValue = nameTextBox.Text
+        query.Name.ConditionType = 1
+        query.ClassID.ColumnValue = 1
+        query.ClassID.ConditionType = 1
+
+        Dim service = New DataLayer.UserQueryService()
+        Dim result = service.Run(query)
+        If result IsNot Nothing Then
+            MessageBox.Show("The name is already used!", "Not valid value", MessageBoxButtons.OK, MessageBoxIcon.Stop)
+            nameTextBox.Select()
+            Return True
+        End If
+
+        Return False
+    End Function
 
     Private Sub ExitButton2_Click(sender As Object, e As EventArgs) Handles exitButton2.Click
         Me.Dispose()

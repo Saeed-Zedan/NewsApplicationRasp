@@ -1,7 +1,7 @@
 ﻿Imports System.IO
 Public Class NewsAdd
     Public currentUser As String
-    Private newsObValue As FileWorksObject.News
+    Private newsObValue As FileWorxObject.News
     Public Sub New(curUser As String)
 
         ' This call is required by the designer.
@@ -21,8 +21,21 @@ Public Class NewsAdd
                 Exit Sub
         End Select
 
+        newsObValue = New FileWorxObject.News()
+        FillInfo()
 
-        newsObValue = New FileWorksObject.News()
+        Dim service As DataLayer.NewsService = New DataLayer.NewsService()
+        Dim result = service.Update(newsObValue)
+
+        If result = "Not Found" Or result = "Error" Then
+            Me.DialogResult = DialogResult.Cancel
+        Else
+            Me.DialogResult = DialogResult.OK
+        End If
+
+    End Sub
+
+    Private Sub FillInfo()
         newsObValue.Name = titleTextBox.Text
         newsObValue.Body = bodyTextBox.Text
         newsObValue.Category = categoryComboBox1.Text
@@ -35,29 +48,13 @@ Public Class NewsAdd
             newsObValue.Description = " "
         End If
 
-        If newsObValue.Update() Then
-
-            'Dim query = New FileWorksObject.NewsQuery _
-            '    With {.C_Name = newsObValue.Name}
-            'Dim result = query.Run()
-            'newsObValue.ID = 0
-            'For Each item In result
-            '    Dim allinfo = item.Split("^_^")
-            '    If Convert.ToInt32(allinfo(0)) > newsObValue.ID Then
-            '        newsObValue.ID = Convert.ToInt32(allinfo(0))
-            '    End If
-
-            'Next
-            Me.DialogResult = DialogResult.OK
-        End If
-
     End Sub
 
     Private Sub CancelButton_Click(sender As Object, e As EventArgs) Handles exitButton.Click
         Me.DialogResult = DialogResult.Cancel
         Me.Dispose()
     End Sub
-    Public ReadOnly Property newsOb As FileWorksObject.News
+    Public ReadOnly Property newsOb As FileWorxObject.News
         Get
             Return newsObValue
         End Get

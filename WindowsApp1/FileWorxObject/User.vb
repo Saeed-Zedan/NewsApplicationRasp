@@ -23,9 +23,7 @@ Public Class User
     'Properties Implementation
     Public Property FullName As String
     Public Property Password As String
-
     Public Property PrivilegeLevel As Boolean
-
 
     'Methods Implementation
     Public Overrides Function Read() As Boolean
@@ -87,12 +85,21 @@ Public Class User
     End Function
     Public Overrides Function Equals(obj As Object) As Boolean
         Dim userOb = CType(obj, User)
+
         Select Case False
             Case Me.Name = userOb.Name
                 Return False
             Case Me.FullName = userOb.FullName
                 Return False
         End Select
+
         Return True
     End Function
+
+    Public Overrides Sub FillData(data() As String)
+        MyBase.FillData({data(0), data(1), data(2), data(3), data(4)})
+        Me.FullName = data(5)
+        Me.Password = data(6)
+        Me.PrivilegeLevel = Convert.ToBoolean(data(7))
+    End Sub
 End Class

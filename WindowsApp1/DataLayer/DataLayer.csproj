@@ -8,12 +8,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Reference Include="Microsoft.VisualBasic" />
     <PackageReference Include="Nancy" Version="2.0.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\FileWorksObject\FileWorksObject.vbproj" />
+    <ProjectReference Include="..\FileWorxObject\FileWorxObject.vbproj" />
   </ItemGroup>
 
 </Project>

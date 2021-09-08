@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -18,18 +19,7 @@ namespace NewsApplicationAPI.Controllers
         {
             _configuration = configuration;
         }
-        // GET: api/<BusinessController>/Get
-        [HttpPost("Get")]
-        public ActionResult<IEnumerable<string>> Get([FromBody] FileWorxObject.UserQuery query)
-        {
-            //FileWorxObject.UserQuery query = new FileWorxObject.UserQuery();
-            var result = query.Run();
-            if (result is null)
-                return NotFound();
-            return result;
-        }
 
-        // GET api/<BusinessController>/5
         [HttpGet("{id}")]
         public ActionResult<string> Get(int id)
         {
@@ -45,22 +35,39 @@ namespace NewsApplicationAPI.Controllers
         [HttpPost]
         public ActionResult<FileWorxObject.User> Post([FromBody] FileWorxObject.User @object)
         {
-            var result = @object.Update();
-            //if (result != 0)
-            //    return "Record added successfully";
-            return CreatedAtAction(nameof(Get), new { id = @object.ID }, @object);
+            try
+            {
+                var result = @object.Update();
+                @object.ID = result;
+                return CreatedAtAction(nameof(Get), new { id = result }, @object);
+            }
+            catch (Exception e)
+            {
+                if (e.InnerException is SqlException)
+                    return Conflict();
+            }
+            return NoContent();
         }
 
         // DELETE api/<BusinessController>/5
         [HttpDelete("{id}")]
-        public string Delete(int id)
+        public ActionResult<string> Delete(int id)
         {
             FileWorxObject.User @object = new FileWorxObject.User();
             @object.ID = id;
-            var result = @object.Delete();
-            if (result)
-                return "Record deleted successfully";
-            return "Invalid Oberation";
+            try
+            {
+                var result = @object.Delete();
+                if (result)
+                    return "Record deleted successfully";
+
+            }
+            catch (Exception e)
+            {
+                if (e.InnerException is SqlException)
+                    return NotFound();
+            }
+            return NotFound();
         }
     }
 }
