@@ -1,11 +1,21 @@
 ﻿
 Imports System.IO
 Public Class ImageAdd
-    Public filename As String = String.Empty
-    Private Sub browseButton_Click(sender As Object, e As EventArgs) Handles browseButton.Click
+    Public currentUser As String
+    Public newOb As FileWorxObject.Photo
+    Public Sub New(currentUser As String)
+
+        ' This call is required by the designer.
+        InitializeComponent()
+
+        ' Add any initialization after the InitializeComponent() call.
+        Me.currentUser = currentUser
+    End Sub
+    Private Sub BrowseButton_Click(sender As Object, e As EventArgs) Handles browseButton.Click
         Dim result As DialogResult
         Dim filename As String
-        Dim ImageExtensions = {".JPG", ".JPE", ".BMP", ".GIF", ".PNG"}
+        Dim ImageExtensions = {".JPG", ".JPE", ".BMP", ".GIF", ".PNG", ".JPEG"}
+
         Using fileChooser As New OpenFileDialog()
             result = fileChooser.ShowDialog()
             filename = fileChooser.FileName
@@ -22,11 +32,12 @@ Public Class ImageAdd
 
     End Sub
 
-    Private Sub cancelButton_Click(sender As Object, e As EventArgs) Handles cancelButton.Click
+    Private Sub CancelButton_Click(sender As Object, e As EventArgs) Handles cancelButton.Click
         Me.Close()
     End Sub
 
-    Private Sub saveButton_Click(sender As Object, e As EventArgs) Handles saveButton.Click
+    Private Sub SaveButton_Click(sender As Object, e As EventArgs) Handles saveButton.Click
+
         Select Case String.Empty
             Case titleTextBox.Text
                 MessageBox.Show("You must enter a title!", "Empty Title", MessageBoxButtons.OK, MessageBoxIcon.Stop)
@@ -37,20 +48,30 @@ Public Class ImageAdd
                 Exit Sub
         End Select
 
+        newOb = New FileWorxObject.Photo()
+        FillValue(newOb)
 
-        Dim newsOb As Images = New Images()
-        newsOb.Title = titleTextBox.Text
-        newsOb.Body = bodyTextBox.Text
-        newsOb.Image = imagePathTextBox.Text
-        If descriptionTextBox.Text <> String.Empty Then
-            newsOb.Description = descriptionTextBox.Text
+        Dim newService As DataLayer.PhotoService = New DataLayer.PhotoService()
+        Dim result = newService.Update(newOb)
+
+        If result = "Not Found" Or result = "Error" Then
+            Me.DialogResult = DialogResult.Cancel
         Else
-            newsOb.Description = "  "
+            Me.DialogResult = DialogResult.OK
         End If
 
-        Dim dirPath = My.Computer.FileSystem.SpecialDirectories.MyDocuments & "\Images"
-        Dim info = newsOb.Title & "^_^" & newsOb.creationDate & "^_^" & newsOb.Description & "^_^" & newsOb.Image & "^_^" & newsOb.Body
-        filename = dirManipulator.addFile(dirPath, info)
-        Me.DialogResult = DialogResult.OK
+    End Sub
+    Private Sub FillValue(ByRef newOb As FileWorxObject.Photo)
+        newOb.Name = titleTextBox.Text
+        newOb.Body = bodyTextBox.Text
+        newOb.ClassID = 4
+        newOb.LastModifier = currentUser
+        newOb.CreationDate = DateTime.Now
+        If descriptionTextBox.Text <> String.Empty Then
+            newOb.Description = descriptionTextBox.Text
+        Else
+            newOb.Description = " "
+        End If
+        newOb.PhotoPath = imagePathTextBox.Text
     End Sub
 End Class

@@ -1,100 +1,51 @@
 ﻿Imports System.IO
-Imports System.Drawing
-
+Imports WindowsApp1
 Public Class newsApplication
     Private currentUser As String = String.Empty
     Private userPriv As Boolean
     Public Sub New()
-
         ' This call is required by the designer.
         InitializeComponent()
-
-        ' Add any initialization after the InitializeComponent() call.
-        'Dim newForm As LoginScreen = New LoginScreen()
-        'Dim result = LoginScreen.ShowDialog()
         Using newForm = New LoginScreen()
             If newForm.ShowDialog = DialogResult.OK Then
-                currentUser = newForm.getUserName()
-                userPriv = newForm.getPriv()
+                currentUser = newForm.UserName
+                userPriv = newForm.Priv
                 MessageBox.Show($"Welcome {currentUser}")
             Else
-                Me.Dispose()
+                Me.Close()
+                'Me.Dispose()
+                Exit Sub
             End If
         End Using
-
     End Sub
-    Private Sub addingRows(dirPath As String, ByRef dict As Dictionary(Of String, String))
-        If Not (Directory.Exists(dirPath)) Then
-            FileSystem.MkDir(dirPath)
-        End If
-
-        Dim files = My.Computer.FileSystem.GetFiles(dirPath) 'retrieve all the files' name
-        Dim Info As String()
-
+    Private Sub AddingRows(Rows As List(Of String))
 
         Try
-            For Each filename As String In files
-                If filename.EndsWith(".txt") Then
-                    Info = dirManipulator.readFile(filename)
-                    dict.Add(Info(1), filename) 'adding new element to the dictionary (creation date -as its the only unique attribute int the News Class-, File name)
-                    newsDataGridView.Rows.Add({Info(0), Info(1), Info(2)}) 'adding a new row to the grid (Title, Creation date, description
-
-                End If
+            For Each Row In Rows
+                Dim rowInfo = Strings.Split(Row, "^_^")
+                newsDataGridView.Rows.Add({rowInfo(2), rowInfo(1), rowInfo(6), rowInfo(0)}) 'adding a new row to the grid (Title, Creation date, description
             Next
         Catch ex As IOException
             MessageBox.Show("Process failed", "IO ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
     End Sub
-    Private Sub addingRow(filePath As String, ByRef dict As Dictionary(Of String, String))
-        If (File.Exists(filePath)) Then
-            Dim Info As String()
-            Try
-                If filePath.EndsWith(".txt") Then
-                    Info = dirManipulator.readFile(filePath)
-                    dict.Add(Info(1), filePath) 'adding new element to the dictionary (creation date -as its the only unique attribute int the News Class-, File name)
-                    newsDataGridView.Rows.Add({Info(0), Info(1), Info(2)}) 'adding a new row to the grid (Title, Creation date, description
-
-                End If
-            Catch ex As IOException
-                MessageBox.Show("Process failed", "IO ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)
-            End Try
-        End If
-
+    Private Sub AddingRow(name As String, creationDate As DateTime, description As String, ID As Integer)
+        Try
+            newsDataGridView.Rows.Add({name, creationDate.ToString(), description, ID}) 'adding a new row to the grid (Title, Creation date, description
+        Catch ex As IOException
+            MessageBox.Show("Process failed", "IO ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End Try
     End Sub
 
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Me.WindowState = FormWindowState.Maximized
-        newsDict = New Dictionary(Of String, String)
-        imageDict = New Dictionary(Of String, String)
-
-        Dim dirPath = My.Computer.FileSystem.SpecialDirectories.MyDocuments & "\News" 'get the directory path where the files are saved
-        addingRows(dirPath, newsDict)
-
-        dirPath = My.Computer.FileSystem.SpecialDirectories.MyDocuments & "\Images" 'get the directory path where the files are saved
-        addingRows(dirPath, imageDict)
-    End Sub
-    Private Sub OpenToolStripMenuItem_Click(sender As Object, e As EventArgs) _
-        Handles OpenToolStripMenuItem.Click
-        EmptyFields()
-        newsDataGridView.Rows.Clear() 'Clear the table to avoid redundancy
-
-        'a dictionary to keep tracking of every file i display by storing its creation date and name
-        newsDict = New Dictionary(Of String, String)
-        imageDict = New Dictionary(Of String, String)
-
-        Dim dirPath = My.Computer.FileSystem.SpecialDirectories.MyDocuments & "\News" 'get the directory path where the files are saved
-        addingRows(dirPath, newsDict)
-
-        dirPath = My.Computer.FileSystem.SpecialDirectories.MyDocuments & "\Images" 'get the directory path where the files are saved
-        addingRows(dirPath, imageDict)
-
-
+        AddingRows((New FileWorxObject.FileQuery()).Run())
+        'AddingRows((New ))
     End Sub
 
     Private Sub DeleteToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles DeleteToolStripMenuItem.Click
         EmptyFields()
-        Dim dirPathNews = My.Computer.FileSystem.SpecialDirectories.MyDocuments & "\News" 'get the directory path where the file/s are saved
-        Dim dirPathImages = My.Computer.FileSystem.SpecialDirectories.MyDocuments & "\Images" 'get the directory path where the file/s are saved
+
         Dim rows = newsDataGridView.SelectedRows
         Dim files As List(Of String) = New List(Of String)
 
@@ -103,25 +54,48 @@ Public Class newsApplication
             Exit Sub
         End If
 
-
-        If Not (Directory.Exists(dirPathNews)) Then
-            FileSystem.MkDir(dirPathNews)
-        End If
-
-        If Not (Directory.Exists(dirPathImages)) Then
-            FileSystem.MkDir(dirPathImages)
-        End If
+        Dim query As FileWorxObject.BusinessQuery
 
         For Each item As DataGridViewRow In rows
-            Dim creationDate1 = item.Cells(1).Value
-            newsDataGridView.Rows.Remove(item) 'remove the file from the gridview
+            Dim id = Convert.ToInt32(item.Cells(3).Value)
+            Dim name = item.Cells(0).Value
+            Dim result = MessageBox.Show("Aru u sure u want to delete the user : " & name, "Warning msg", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
 
-            If newsDict.ContainsKey(creationDate1) Then
-                File.Delete(newsDict(creationDate1)) 'using the creation date as primary key to retireive the file name from the dictionary and delete it
-                newsDict.Remove(creationDate1) 'remove the file from the dictionaty
-            ElseIf imageDict.ContainsKey(creationDate1) Then
-                File.Delete(imageDict(creationDate1))
-                imageDict.Remove(creationDate1)
+            If result = DialogResult.Yes Then
+                query = New FileWorxObject.BusinessQuery()
+                query.mID.ColumnValue = id
+                Dim queryResult = query.Run()
+                Dim tagged As Integer
+                Dim allInfo As String()
+
+                If queryResult.Count = 1 Then
+                    allInfo = Strings.Split(queryResult(0), "^_^")
+                    tagged = Convert.ToInt32(allInfo(3))
+                Else
+                    MessageBox.Show("Item Doesn't Exist")
+                    Exit Sub
+                End If
+
+                If tagged = 4 Then
+
+                    Dim newOb As FileWorxObject.Photo = New FileWorxObject.Photo With {.ID = allInfo(0)}
+                    If newOb.Read() Then
+                        If newOb.Delete() Then
+                            newsDataGridView.Rows.Remove(item)
+                        End If
+                    End If
+
+                ElseIf tagged = 3 Then
+
+                    Dim newOb As FileWorxObject.BusinessObject = New FileWorxObject.BusinessObject With {.ID = allInfo(0)}
+                    If newOb.Read() Then
+                        If newOb.Delete() Then
+                            newsDataGridView.Rows.Remove(item)
+                        End If
+                    End If
+
+                End If
+
             End If
         Next
     End Sub
@@ -132,14 +106,12 @@ Public Class newsApplication
     End Sub
 
     Private Sub NewsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles NewsToolStripMenuItem.Click
-        'Dim newForm As addNews = New addNews()
-        'newForm.ShowDialog()
 
-        Using newForm = New NewsAdd
+        Using newForm = New NewsAdd(currentUser)
             If newForm.ShowDialog() = DialogResult.OK Then
-                addingRow(newForm.filename, newsDict)
+                AddingRow(newForm.newsOb.Name, newForm.newsOb.CreationDate, newForm.newsOb.Description, newForm.newsOb.ID)
+                MessageBox.Show("Done SUCCESSFULLY")
             End If
-
         End Using
 
     End Sub
@@ -148,41 +120,53 @@ Public Class newsApplication
         Me.Dispose()
     End Sub
 
-    Private Sub displayUsersToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles displayUsersToolStripMenuItem.Click
+    Private Sub DisplayUsersToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles displayUsersToolStripMenuItem.Click
         Dim newForm As UsersView = New UsersView(currentUser, userPriv)
         newForm.ShowDialog()
+        currentUser = newForm.curUser
     End Sub
-
-    Private Sub newsDataGridView_DoubleClick(sender As Object, e As EventArgs) Handles newsDataGridView.DoubleClick
+    Private Sub NewsDataGridView_DoubleClick(sender As Object, e As EventArgs) Handles newsDataGridView.DoubleClick
         EmptyFields()
-        Dim editNews = newsDataGridView.SelectedRows
+        Dim selectedNews = newsDataGridView.SelectedRows
 
-        If editNews.Count = 1 Then
-            Dim creationdate1 = editNews.Item(0).Cells(1).Value
-            Dim filePath As String = String.Empty
-            Dim Info As String()
-            Dim newForm
-            If newsDict.ContainsKey(creationdate1) Then
-                filePath = newsDict(creationdate1)
-                Info = dirManipulator.readFile(filePath)
-                newForm = New NewsEdit(filePath)
-            ElseIf imageDict.ContainsKey(creationdate1) Then
-                filePath = imageDict(creationdate1)
-                Info = dirManipulator.readFile(filePath)
-                newForm = New ImageEdit(filePath)
+        If selectedNews.Count = 1 Then
+            Dim row = selectedNews(0)
+            Dim fileOb As FileWorxObject.File = New FileWorxObject.File()
+            fileOb.ID = Convert.ToInt32(row.Cells(3).Value)
+            Dim tagged As Integer
+            If fileOb.Read() Then
+                tagged = fileOb.ClassID
             Else
-                MessageBox.Show("Error")
-                Exit Sub
+                tagged = 0
             End If
 
-            If filePath <> String.Empty Then
 
-                Dim result = newForm.ShowDialog()
-                If result = DialogResult.OK Then
-                    Dim Info2 = dirManipulator.readFile(filePath)
-                    newsDataGridView.Rows.Remove(editNews(0))
-                    newsDataGridView.Rows.Add({Info2(0), Info2(1), Info2(2)}) 'adding a new row to the grid (Title, Creation date, description
+            If tagged = 3 Then
+                Using newForm = New NewsEdit(currentUser, fileOb.Name, fileOb.ID)
+                    If newForm.ShowDialog() = DialogResult.OK Then
+                        newsDataGridView.Rows.Remove(row)
+                        newsDataGridView.Rows.Add({newForm.newsOB.Name, newForm.newsOB.CreationDate.ToString(), newForm.newsOB.Description, newForm.newsOB.ID})
+                        MessageBox.Show("IT'S DONE")
+                    End If
+                End Using
+
+            ElseIf tagged = 4 Then
+                If PictureBox1.Image IsNot Nothing Then
+                    MessageBox.Show("HEre is the problem")
                 End If
+
+                Using newForm = New ImageEdit(currentUser, fileOb.Name, fileOb.ID)
+                    If newForm.ShowDialog() = DialogResult.OK Then
+                        newsDataGridView.Rows.Remove(row)
+                        newsDataGridView.Rows.Add({newForm.newOb.Name, newForm.newOb.CreationDate.ToString(), newForm.newOb.Description, newForm.newOb.ID})
+                        'addingRow(newForm., imageDict)
+                    End If
+                End Using
+
+            ElseIf tagged = -1 Then
+                MessageBox.Show("Couldn't Access DB")
+            ElseIf tagged = 0 Then
+                MessageBox.Show("No Match In DB")
             End If
         End If
 
@@ -190,21 +174,22 @@ Public Class newsApplication
     Private Sub Form1_Resize(sender As Object, e As EventArgs) Handles MyBase.Resize
         displayTabControl.Height = Me.Height \ 3
     End Sub
-    Private Sub newsDataGridView_SelectionChanged(sender As Object, e As EventArgs) Handles newsDataGridView.SelectionChanged
+    Private Sub NewsDataGridView_SelectionChanged(sender As Object, e As EventArgs) Handles newsDataGridView.SelectionChanged
         EmptyFields()
 
         Dim row = newsDataGridView.SelectedRows
         If row.Count > 0 Then
-            displayNewsData(row(0))
-
+            DisplayNewsData(row(0))
         End If
 
     End Sub
 
     Private Sub ImageToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ImageToolStripMenuItem.Click
-        Using newForm = New ImageAdd
+        Using newForm = New ImageAdd(currentUser)
             If newForm.ShowDialog() = DialogResult.OK Then
-                addingRow(newForm.filename, imageDict)
+                AddingRow(newForm.newOb.Name, newForm.newOb.CreationDate.ToString(), newForm.newOb.Description, newForm.newOb.ID)
+            Else
+                MessageBox.Show("Not completed.")
             End If
         End Using
     End Sub
@@ -214,65 +199,70 @@ Public Class newsApplication
         bodyTextBox.Text = String.Empty
         categoryTextBox.Text = String.Empty
         creationDateTextBox.Text = String.Empty
+        If PictureBox1.Image IsNot Nothing Then
+            PictureBox1.Image.Dispose()
+        End If
         PictureBox1.Image = Nothing
 
     End Sub
 
-    Private Sub newsDataGridView_RowsAdded(sender As Object, e As DataGridViewRowsAddedEventArgs) Handles newsDataGridView.RowsAdded
+    Private Sub NewsDataGridView_RowsAdded(sender As Object, e As DataGridViewRowsAddedEventArgs) Handles newsDataGridView.RowsAdded
         Dim row = newsDataGridView.Rows(0)
-        displayNewsData(row)
+        DisplayNewsData(row)
     End Sub
 
-    Private Sub displayNewsData(row As DataGridViewRow)
-        Dim creationDate1 = row.Cells(1).Value
-        If newsDict.ContainsKey(creationDate1) Then
+    Private Sub DisplayNewsData(row As DataGridViewRow)
+        EmptyFields()
+
+        Dim newob As FileWorxObject.File = New FileWorxObject.File()
+        newob.ID = Convert.ToInt32(row.Cells(3).Value)
+        Dim tagged As Integer
+        If newob.Read() Then
+            tagged = newob.ClassID
+        End If
+
+        If tagged = 3 Then
             categoryLabel.Enabled = True
             categoryTextBox.Enabled = True
             categoryLabel.Visible = True
             categoryTextBox.Visible = True
 
-            imageTabPage.Enabled = False
-            imageTabPage.Visible = False
+            Dim displayOb As FileWorxObject.News = New FileWorxObject.News()
+            displayOb.Name = newob.Name
+            displayOb.ID = newob.ID
+            displayOb.Read()
+            titleTextBox.Text = displayOb.Name
+            creationDateTextBox.Text = displayOb.CreationDate.ToString
+            categoryTextBox.Text = displayOb.Category
+            bodyTextBox.Text = displayOb.Body
 
-            displayTabControl.TabPages(1).Visible = False
-            displayTabControl.TabPages(1).Enabled = False
-
-            Dim filePath = newsDict(creationDate1)
-            Dim info = dirManipulator.readFile(filePath)
-
-            titleTextBox.Text = info(0)
-            creationDateTextBox.Text = info(1)
-            categoryTextBox.Text = info(3)
-            bodyTextBox.Text = info(4)
-
-        ElseIf imageDict.ContainsKey(creationDate1) Then
+        ElseIf tagged = 4 Then
             categoryLabel.Enabled = False
             categoryTextBox.Enabled = False
             categoryLabel.Visible = False
             categoryTextBox.Visible = False
 
-            imageTabPage.Enabled = True
-            imageTabPage.Visible = True
-
-            Dim filePath = imageDict(creationDate1)
-            Dim info = dirManipulator.readFile(filePath)
-
-            titleTextBox.Text = info(0)
-            creationDateTextBox.Text = info(1)
-            PictureBox1.Image = Image.FromFile(info(3))
-            bodyTextBox.Text = info(4)
+            Dim displayOb As FileWorxObject.Photo = New FileWorxObject.Photo()
+            displayOb.Name = newob.Name
+            displayOb.ID = newob.ID
+            displayOb.Read()
+            titleTextBox.Text = displayOb.Name
+            creationDateTextBox.Text = displayOb.CreationDate.ToString
+            PictureBox1.Image = Image.FromFile(displayOb.PhotoPath)
+            bodyTextBox.Text = displayOb.Body
 
         End If
     End Sub
 
-    Private Sub logoutToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles logoutToolStripMenuItem.Click
+    Private Sub LogoutToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles logoutToolStripMenuItem.Click
         currentUser = String.Empty
         Me.Hide()
+
         Using newForm = New LoginScreen()
             If newForm.ShowDialog = DialogResult.OK Then
-                currentUser = newForm.getUserName()
-                userPriv = newForm.getPriv()
-                MessageBox.Show(newForm.getUserName())
+                currentUser = newForm.UserName
+                userPriv = newForm.Priv
+                MessageBox.Show($"Welcome {currentUser}")
                 Me.Show()
             Else
                 Me.Dispose()
@@ -283,4 +273,276 @@ Public Class newsApplication
     Private Sub CurrentUserToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles CurrentUserToolStripMenuItem.Click
         MessageBox.Show(currentUser)
     End Sub
+
+    Private Sub IDConditionComboBox_SelectedIndexChanged(sender As Object, e As EventArgs) Handles IDConditionComboBox.SelectedIndexChanged
+        If IDConditionComboBox.SelectedItem = "Between" Then
+            IDSearchTextBox2.Enabled = True
+        ElseIf IDSearchTextBox2.Enabled Then
+            IDSearchTextBox2.Enabled = False
+            IDSearchTextBox2.Clear()
+        End If
+    End Sub
+
+    Private Sub IDFilterCheckBox_CheckedChanged(sender As Object, e As EventArgs) Handles IDFilterCheckBox.CheckedChanged
+        If Not IDFilterCheckBox.Checked Then
+            IDSearchTextBox.Enabled = False
+            IDConditionComboBox.Enabled = False
+            IDSearchTextBox2.Enabled = False
+        Else
+            IDSearchTextBox.Enabled = True
+            IDConditionComboBox.Enabled = True
+            If IDConditionComboBox.SelectedItem = "Between" Then
+                IDSearchTextBox2.Enabled = True
+            End If
+        End If
+    End Sub
+
+    Private Sub CreationDateConditionComboBox_SelectedIndexChanged(sender As Object, e As EventArgs) Handles CreationDateConditionComboBox.SelectedIndexChanged
+        If CreationDateConditionComboBox.SelectedItem = "Between" Then
+            DateTimePickerSearch2.Enabled = True
+        ElseIf DateTimePickerSearch2.Enabled Then
+            DateTimePickerSearch2.Enabled = False
+            DateTimePickerSearch2.ResetText()
+        End If
+    End Sub
+
+    Private Sub CreationDateFilterCheckBox_CheckedChanged(sender As Object, e As EventArgs) Handles CreationDateFilterCheckBox.CheckedChanged
+        If Not CreationDateFilterCheckBox.Checked Then
+            DateTimePickerSearch.Enabled = False
+            CreationDateConditionComboBox.Enabled = False
+            DateTimePickerSearch2.Enabled = False
+        Else
+            DateTimePickerSearch.Enabled = True
+            CreationDateConditionComboBox.Enabled = True
+            If CreationDateConditionComboBox.SelectedItem = "Between" Then
+                DateTimePickerSearch2.Enabled = True
+            End If
+        End If
+    End Sub
+
+    Private Sub TitleFilterCheckBox_CheckedChanged(sender As Object, e As EventArgs) Handles TitleFilterCheckBox.CheckedChanged
+        If Not TitleFilterCheckBox.Checked Then
+            TitleSearchTextBox.Enabled = False
+            TitleConditionComboBox.Enabled = False
+        Else
+            TitleSearchTextBox.Enabled = True
+            TitleConditionComboBox.Enabled = True
+        End If
+    End Sub
+
+    Private Sub DescriptionFilterCheckBox_CheckedChanged(sender As Object, e As EventArgs) Handles DescriptionFilterCheckBox.CheckedChanged
+        If Not DescriptionFilterCheckBox.Checked Then
+            DescriptionSearchTextBox.Enabled = False
+            DescriptionConditionComboBox.Enabled = False
+        Else
+            DescriptionSearchTextBox.Enabled = True
+            DescriptionConditionComboBox.Enabled = True
+        End If
+    End Sub
+
+    Private Sub ClassIDSearchComboBox_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ClassIDSearchComboBox.SelectedIndexChanged
+        If ClassIDSearchComboBox.SelectedItem = "News" Then
+            CategoryFilterCheckBox.Enabled = True
+            CategoryFilterCheckBox.Checked = False
+        Else
+            CategoryFilterCheckBox.Checked = False
+            CategoryFilterCheckBox.Enabled = False
+        End If
+    End Sub
+
+    Private Sub ClassIDFilterCheckBox_CheckedChanged(sender As Object, e As EventArgs) Handles ClassIDFilterCheckBox.CheckedChanged
+        If Not ClassIDFilterCheckBox.Checked Then
+            ClassIDSearchComboBox.Enabled = False
+            CategoryFilterCheckBox.Checked = False
+            CategoryFilterCheckBox.Enabled = False
+        Else
+            ClassIDSearchComboBox.Enabled = True
+
+            If ClassIDSearchComboBox.SelectedItem = "News" Then
+                CategoryFilterCheckBox.Enabled = True
+            End If
+
+        End If
+
+    End Sub
+
+    Private Sub CategoryFilterCheckBox_CheckedChanged(sender As Object, e As EventArgs) Handles CategoryFilterCheckBox.CheckedChanged
+        If Not CategoryFilterCheckBox.Checked Then
+            CategorySearchComboBox.Enabled = False
+        Else
+            CategorySearchComboBox.Enabled = True
+        End If
+    End Sub
+
+    Private Sub LastModifierFilterCheckBox_CheckedChanged(sender As Object, e As EventArgs) Handles LastModifierFilterCheckBox.CheckedChanged
+        If Not LastModifierFilterCheckBox.Checked Then
+            LastModifierConditionComboBox.Enabled = False
+            LastModifierSearchTextBox.Enabled = False
+        Else
+            LastModifierConditionComboBox.Enabled = True
+            LastModifierSearchTextBox.Enabled = True
+        End If
+    End Sub
+
+    Private Sub BodyFilterCheckBox_CheckedChanged(sender As Object, e As EventArgs) Handles BodyFilterCheckBox.CheckedChanged
+        If Not BodyFilterCheckBox.Checked Then
+            BodyConditionComboBox.Enabled = False
+            BodySearchTextBox.Enabled = False
+        Else
+            BodyConditionComboBox.Enabled = True
+            BodySearchTextBox.Enabled = True
+        End If
+    End Sub
+
+    Private Sub ResetButton_Click(sender As Object, e As EventArgs) Handles ResetButton.Click
+        IDFilterCheckBox.Checked = False
+        CreationDateFilterCheckBox.Checked = False
+        TitleFilterCheckBox.Checked = False
+        DescriptionFilterCheckBox.Checked = False
+        ClassIDFilterCheckBox.Checked = False
+        CategoryFilterCheckBox.Checked = False
+        LastModifierFilterCheckBox.Checked = False
+        BodyFilterCheckBox.Checked = False
+    End Sub
+
+    Private Sub SearchButton_Click(sender As Object, e As EventArgs) Handles SearchButton.Click
+        newsDataGridView.Rows.Clear()
+
+        Dim query As FileWorxObject.FileQuery = New FileWorxObject.FileQuery()
+
+        If ClassIDFilterCheckBox.Checked Then
+            If ClassIDSearchComboBox.SelectedItem = String.Empty Then
+                MessageBox.Show("Please Fill File Type Filter Feilds")
+                Exit Sub
+            End If
+            query.ClassID.ConditionType = 1
+
+            Dim classID = ClassIDSearchComboBox.SelectedItem
+            If classID = "All" Then
+
+                query.ClassID.ConditionType = 0
+            ElseIf classID = "News" Then
+                query.ClassID.ConditionType = 1
+                query.ClassID.ColumnValue = 3
+            ElseIf classID = "Photo" Then
+                query.ClassID.ColumnValue = 4
+            End If
+
+
+        End If
+
+        If IDFilterCheckBox.Checked Then
+            If IDSearchTextBox.Text = String.Empty Or IDConditionComboBox.SelectedItem = String.Empty Then
+                MessageBox.Show("Please Fill The ID Filter Feilds")
+                Exit Sub
+            End If
+
+            query.mID.ColumnValue = IDSearchTextBox.Text
+            query.mID.ConditionType = SelectCondition(IDConditionComboBox.SelectedItem)
+
+            If query.mID.ConditionType = 4 Then
+                If IDSearchTextBox2.Text = String.Empty Then
+                    MessageBox.Show("Please Fill The Second ID Value")
+                    Exit Sub
+                End If
+
+                query.mID.ColumnValue2 = IDSearchTextBox2.Text
+            End If
+
+        End If
+
+        If CreationDateFilterCheckBox.Checked Then
+            query.CreationDate.ColumnValue = DateTimePickerSearch.Value
+            query.CreationDate.ConditionType = SelectCondition(CreationDateConditionComboBox.SelectedItem)
+
+            If query.CreationDate.ConditionType = 4 Then
+                query.CreationDate.ColumnValue2 = DateTimePickerSearch2.Value
+            End If
+
+        End If
+
+        If TitleFilterCheckBox.Checked Then
+
+            If TitleSearchTextBox.Text = String.Empty Or TitleConditionComboBox.SelectedItem = String.Empty Then
+                MessageBox.Show("Please Fill The Name-Title Filter Feilds")
+                Exit Sub
+            End If
+
+            query.Name.ColumnValue = TitleSearchTextBox.Text
+            query.Name.ConditionType = SelectCondition(TitleConditionComboBox.SelectedItem)
+        End If
+
+        If DescriptionFilterCheckBox.Checked Then
+            If DescriptionSearchTextBox.Text = String.Empty Or DescriptionConditionComboBox.SelectedItem = String.Empty Then
+                MessageBox.Show("Please Fill Name-Description Filter Feilds")
+                Exit Sub
+            End If
+
+            query.Description.ColumnValue = DescriptionSearchTextBox.Text
+            query.Description.ConditionType = SelectCondition(DescriptionConditionComboBox.SelectedItem)
+        End If
+
+        If LastModifierFilterCheckBox.Checked Then
+            If LastModifierSearchTextBox.Text = String.Empty Or LastModifierConditionComboBox.SelectedItem = String.Empty Then
+                MessageBox.Show("Please Fill Last Modifier Filter Feilds")
+                Exit Sub
+            End If
+
+            query.LastModifier.ColumnValue = LastModifierSearchTextBox.Text
+            query.LastModifier.ConditionType = SelectCondition(LastModifierConditionComboBox.SelectedItem)
+
+        End If
+
+        If BodyFilterCheckBox.Checked Then
+            If BodySearchTextBox.Text = String.Empty Or BodyConditionComboBox.SelectedItem = String.Empty Then
+                MessageBox.Show("Please Fill Last Modifier Filter Feilds")
+                Exit Sub
+            End If
+
+            query.Body.ColumnValue = BodySearchTextBox.Text
+            query.Body.ConditionType = SelectCondition(BodyConditionComboBox.SelectedItem)
+
+        End If
+
+        If CategoryFilterCheckBox.Checked Then
+
+        End If
+
+        Dim result = query.Run()
+
+        If result IsNot Nothing AndAlso result.Count > 0 Then
+            AddingRows(result)
+        Else
+            MessageBox.Show("There is no rows that match ur order")
+        End If
+
+    End Sub
+
+    'Exactly
+    'Start With
+    'End With
+    'Contain
+
+    'After
+    'Before
+    'Between
+
+    'Exactly
+    'Greater
+    'Smaller
+    'Between
+    Private Function SelectCondition(condition As String) As Integer
+        Select Case condition
+            Case "Exactly"
+                Return 1
+            Case "Start With", "After", "Greater"
+                Return 2
+            Case "End With", "Before", "Smaller"
+                Return 3
+            Case "Contain", "Between"
+                Return 4
+        End Select
+
+        Return 0
+    End Function
 End Class

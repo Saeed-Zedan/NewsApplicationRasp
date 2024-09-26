@@ -1,10 +1,10 @@
 ﻿Imports System.Windows.Forms
 Imports System.IO
 Public Class UsersView
-    Dim userDict As Dictionary(Of String, String)
-    Dim curUser As String
-    Dim Priv As Boolean
 
+    Public curUser As String
+    Public priv As Boolean
+    Private strDeatail = "{0,-5}{1,-29}{2,-60}{3,-29}"
     Public Sub New(curUser As String, priv As Boolean)
 
         ' This call is required by the designer.
@@ -12,88 +12,96 @@ Public Class UsersView
 
         ' Add any initialization after the InitializeComponent() call.
         Me.curUser = curUser
-        Me.Priv = priv
+        Me.priv = priv
 
     End Sub
     Private Sub veiwUsers_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        Dim dirPath = My.Computer.FileSystem.SpecialDirectories.MyDocuments + "\Users"
+        Dim service = New DataLayer.UserQueryService()
+        Dim result = service.Run(New FileWorxObject.UserQuery())
 
-        If Not Directory.Exists(dirPath) Then
-            Directory.CreateDirectory(dirPath)
-        End If
-
-        Dim files = Directory.GetFiles(dirPath)
-
-        If files.Length = 0 Then
-            MessageBox.Show("There is no users in the system", "Empty Directory", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+        If result Is Nothing Then
+            MessageBox.Show("There is no users in the system", "That's Impossible", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
         Else
-            Dim w = Me.Width
-            Dim strDeatail = "{0,-60}{1,-60}{2,-60}"
-            usersListBox.Items.Add(String.Format(strDeatail, "Name", "Long Name", "Last Modifier"))
-            userDict = New Dictionary(Of String, String)
-            For Each filename In files
-                Dim Info = dirManipulator.readFile(filename)
-                usersListBox.Items.Add(String.Format(strDeatail, Info(0), Info(1), Info(3)))
-                userDict.Add(Info(0), filename)
+            usersListBox.Items.Add(String.Format(strDeatail, "ID", "Name", "Long Name", "Last Modifier"))
+
+            For Each user In result
+                Dim userInfo = Strings.Split(user, "^_^")
+                usersListBox.Items.Add(String.Format(strDeatail, userInfo(0), userInfo(2), userInfo(5), userInfo(4)))
             Next
 
-
         End If
+
     End Sub
     Private Sub usersListBox_DoubleClick(sender As Object, e As EventArgs) Handles usersListBox.DoubleClick
-        If Not Priv Then
-            MessageBox.Show("You are not allowed to modify users information", "Privilage Violation", MessageBoxButtons.OK, MessageBoxIcon.Warning)
-            Exit Sub
-        End If
         Dim row = usersListBox.SelectedItem
-        If row IsNot Nothing Then
-            Dim info = row.ToString().Split()
-            Dim filename = userDict(info(0))
-            Dim newForm As UserEdit = New UserEdit(filename, curUser)
-            Dim result = newForm.ShowDialog()
-            If result = DialogResult.OK Then
-                userDict.Remove(info(0))
-                info = dirManipulator.readFile(filename)
-                userDict.Add(info(0), filename)
-                usersListBox.Items.Remove(row)
-                Dim strDeatail = "{0,-60}{1,-60}{2,-60}"
-                usersListBox.Items.Add(String.Format(strDeatail, info(0), info(1), info(3)))
 
-            End If
-        End If
-    End Sub
-
-    Private Sub deleteToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles deleteToolStripMenuItem.Click
-        If Not Priv Then
-            MessageBox.Show("You are not allowed to modify users information", "Privilage Violation", MessageBoxButtons.OK, MessageBoxIcon.Warning)
-            Exit Sub
-        End If
-
-        Dim dirPath = My.Computer.FileSystem.SpecialDirectories.MyDocuments & "\Users" 'get the directory path where the file/s are saved
-        Dim row = usersListBox.SelectedItem
-        Dim files As List(Of String) = New List(Of String)
+        Dim rowCopy As String = row
+        Do Until InStr(row, "  ") = 0       ' Loop until there are no more double spaces
+            row = Replace(row, "  ", " ")   ' Replace 2 spaces with 1 space
+        Loop
 
         If row = String.Empty Then 'no selected file
             MessageBox.Show("There is no selected user/s", "Duck", MessageBoxButtons.OK, MessageBoxIcon.Warning)
             Exit Sub
-        End If
-
-        Dim strDeatail = "{0,-60}{1,-60}{2,-60}"
-        If row = String.Format(strDeatail, "Name", "Long Name", "Last Modifier") Then
+        ElseIf row = String.Format(strDeatail, "ID", "Name", "Long Name", "Last Modifier") Then 'Can't remove the header
+            Exit Sub
+        ElseIf Not priv And curUser <> row.ToString().Split()(1) Then 'only admins and user himself can delete his account
+            MessageBox.Show("You are not allowed to modify users information", "Privilage Violation", MessageBoxButtons.OK, MessageBoxIcon.Warning)
             Exit Sub
         End If
-        If Not (Directory.Exists(dirPath)) Then
-            FileSystem.MkDir(dirPath)
+
+        Dim info = row.ToString().Split()
+        Dim userOb As FileWorxObject.User = New FileWorxObject.User()
+        userOb.ID = info(0)
+
+        'userOb.Read()
+        'Dim newUser As FileWorxObject.User = New FileWorxObject.User(userOb)
+
+        Dim newForm As UserEdit = New UserEdit(userOb.ID, curUser)
+        Dim result = newForm.ShowDialog()
+
+        If result = DialogResult.OK Then
+            Dim service = New DataLayer.UserService()
+            Dim serviceResult = service.Read(userOb.ID)
+            userOb.FillData(serviceResult.Split("^_^"))
+            usersListBox.Items.Remove(rowCopy)
+            usersListBox.Items.Add(String.Format(strDeatail, userOb.ID, userOb.Name, userOb.FullName, userOb.LastModifier))
+            curUser = userOb.LastModifier
+        End If
+
+    End Sub
+
+    Private Sub deleteToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles deleteToolStripMenuItem.Click
+        Dim row = usersListBox.SelectedItem
+
+        If row = String.Empty Then 'no selected file
+            MessageBox.Show("There is no selected user/s", "Duck", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+            Exit Sub
+        ElseIf row = String.Format(strDeatail, "ID", "Name", "Long Name", "Last Modifier") Then 'Can't remove the header
+            Exit Sub
+        ElseIf Not priv And curUser <> row.ToString().Split()(1) Then 'only admins and user himself can delete his account
+            MessageBox.Show("You are not allowed to modify users information", "Privilage Violation", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+            Exit Sub
         End If
 
 
-        Dim result = MessageBox.Show("Aru u sure u want to delete the user : " & row.ToString.Split(" ")(0), "Warning msg", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
+        Dim result = MessageBox.Show("Aru u sure u want to delete the user : " & row.ToString.Split(" ")(1), "Warning msg", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
         If result = DialogResult.Yes Then
-            usersListBox.Items.Remove(row) 'remove the file from the gridview
             row = CType(row, String)
-            Dim rows As String() = Split(row)
-            File.Delete(userDict(rows(0))) 'using the creation date as primary key to retireive the file name from the dictionary and delete it
-            userDict.Remove(rows(0)) 'remove the file from the dictionaty 
+
+            Dim columns As String() = Split(row)
+            'Dim userOb As FileWorxObject.User = New FileWorxObject.User()
+            'userOb.ID = columns(0)
+
+            Dim service = New DataLayer.UserService()
+            Dim serviceResult = service.Delete(columns(0))
+            If serviceResult <> "Not Found" And serviceResult <> "Error" Then
+                usersListBox.Items.Remove(row) 'remove the file from the gridview
+                MessageBox.Show("User has been deleted", "POOR USER")
+            Else
+                MessageBox.Show("User doesn't exist", "LUCKY")
+            End If
+
         End If
 
     End Sub

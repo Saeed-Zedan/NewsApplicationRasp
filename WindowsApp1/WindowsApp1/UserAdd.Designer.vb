@@ -36,8 +36,9 @@ Partial Class UserAdd
         'nameLabel
         '
         Me.nameLabel.AutoSize = True
-        Me.nameLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.nameLabel.Location = New System.Drawing.Point(23, 13)
+        Me.nameLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point)
+        Me.nameLabel.Location = New System.Drawing.Point(27, 15)
+        Me.nameLabel.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.nameLabel.Name = "nameLabel"
         Me.nameLabel.Size = New System.Drawing.Size(49, 17)
         Me.nameLabel.TabIndex = 0
@@ -46,8 +47,9 @@ Partial Class UserAdd
         'longNameLabel
         '
         Me.longNameLabel.AutoSize = True
-        Me.longNameLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.longNameLabel.Location = New System.Drawing.Point(23, 52)
+        Me.longNameLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point)
+        Me.longNameLabel.Location = New System.Drawing.Point(27, 60)
+        Me.longNameLabel.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.longNameLabel.Name = "longNameLabel"
         Me.longNameLabel.Size = New System.Drawing.Size(90, 17)
         Me.longNameLabel.TabIndex = 0
@@ -56,8 +58,9 @@ Partial Class UserAdd
         'passwordLabel
         '
         Me.passwordLabel.AutoSize = True
-        Me.passwordLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.passwordLabel.Location = New System.Drawing.Point(23, 87)
+        Me.passwordLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point)
+        Me.passwordLabel.Location = New System.Drawing.Point(27, 100)
+        Me.passwordLabel.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.passwordLabel.Name = "passwordLabel"
         Me.passwordLabel.Size = New System.Drawing.Size(77, 17)
         Me.passwordLabel.TabIndex = 0
@@ -65,43 +68,48 @@ Partial Class UserAdd
         '
         'nameTextBox
         '
-        Me.nameTextBox.Location = New System.Drawing.Point(118, 13)
+        Me.nameTextBox.Location = New System.Drawing.Point(138, 15)
+        Me.nameTextBox.Margin = New System.Windows.Forms.Padding(4, 3, 4, 3)
         Me.nameTextBox.MaxLength = 255
         Me.nameTextBox.Name = "nameTextBox"
-        Me.nameTextBox.Size = New System.Drawing.Size(204, 20)
+        Me.nameTextBox.Size = New System.Drawing.Size(237, 23)
         Me.nameTextBox.TabIndex = 0
         '
         'longNameTextBox
         '
-        Me.longNameTextBox.Location = New System.Drawing.Point(118, 52)
+        Me.longNameTextBox.Location = New System.Drawing.Point(138, 60)
+        Me.longNameTextBox.Margin = New System.Windows.Forms.Padding(4, 3, 4, 3)
         Me.longNameTextBox.MaxLength = 255
         Me.longNameTextBox.Name = "longNameTextBox"
-        Me.longNameTextBox.Size = New System.Drawing.Size(204, 20)
+        Me.longNameTextBox.Size = New System.Drawing.Size(237, 23)
         Me.longNameTextBox.TabIndex = 1
         '
         'passwordTextBox
         '
-        Me.passwordTextBox.Location = New System.Drawing.Point(118, 87)
+        Me.passwordTextBox.Location = New System.Drawing.Point(138, 100)
+        Me.passwordTextBox.Margin = New System.Windows.Forms.Padding(4, 3, 4, 3)
         Me.passwordTextBox.MaxLength = 255
         Me.passwordTextBox.Name = "passwordTextBox"
         Me.passwordTextBox.PasswordChar = Global.Microsoft.VisualBasic.ChrW(42)
-        Me.passwordTextBox.Size = New System.Drawing.Size(204, 20)
+        Me.passwordTextBox.Size = New System.Drawing.Size(237, 23)
         Me.passwordTextBox.TabIndex = 2
         '
         'saveButton
         '
-        Me.saveButton.Location = New System.Drawing.Point(81, 169)
+        Me.saveButton.Location = New System.Drawing.Point(93, 168)
+        Me.saveButton.Margin = New System.Windows.Forms.Padding(4, 3, 4, 3)
         Me.saveButton.Name = "saveButton"
-        Me.saveButton.Size = New System.Drawing.Size(75, 23)
+        Me.saveButton.Size = New System.Drawing.Size(88, 27)
         Me.saveButton.TabIndex = 4
         Me.saveButton.Text = "Save"
         Me.saveButton.UseVisualStyleBackColor = True
         '
         'exitButton2
         '
-        Me.exitButton2.Location = New System.Drawing.Point(162, 169)
+        Me.exitButton2.Location = New System.Drawing.Point(189, 168)
+        Me.exitButton2.Margin = New System.Windows.Forms.Padding(4, 3, 4, 3)
         Me.exitButton2.Name = "exitButton2"
-        Me.exitButton2.Size = New System.Drawing.Size(75, 23)
+        Me.exitButton2.Size = New System.Drawing.Size(88, 27)
         Me.exitButton2.TabIndex = 5
         Me.exitButton2.Text = "Cancel"
         Me.exitButton2.UseVisualStyleBackColor = True
@@ -109,19 +117,20 @@ Partial Class UserAdd
         'adminCheckBox
         '
         Me.adminCheckBox.CheckAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.adminCheckBox.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.adminCheckBox.Location = New System.Drawing.Point(26, 113)
+        Me.adminCheckBox.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point)
+        Me.adminCheckBox.Location = New System.Drawing.Point(30, 130)
+        Me.adminCheckBox.Margin = New System.Windows.Forms.Padding(4, 3, 4, 3)
         Me.adminCheckBox.Name = "adminCheckBox"
-        Me.adminCheckBox.Size = New System.Drawing.Size(108, 28)
+        Me.adminCheckBox.Size = New System.Drawing.Size(126, 32)
         Me.adminCheckBox.TabIndex = 6
         Me.adminCheckBox.Text = "Admin"
         Me.adminCheckBox.UseVisualStyleBackColor = True
         '
         'UserAdd
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(7.0!, 15.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(334, 204)
+        Me.ClientSize = New System.Drawing.Size(390, 235)
         Me.ControlBox = False
         Me.Controls.Add(Me.adminCheckBox)
         Me.Controls.Add(Me.exitButton2)
@@ -133,6 +142,7 @@ Partial Class UserAdd
         Me.Controls.Add(Me.longNameLabel)
         Me.Controls.Add(Me.nameLabel)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
+        Me.Margin = New System.Windows.Forms.Padding(4, 3, 4, 3)
         Me.MaximizeBox = False
         Me.Name = "UserAdd"
         Me.Text = "New User Form"

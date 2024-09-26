@@ -89,6 +89,7 @@ Partial Class UserEdit
         'nameTextBox
         '
         Me.nameTextBox.Location = New System.Drawing.Point(106, 16)
+        Me.nameTextBox.MaxLength = 255
         Me.nameTextBox.Name = "nameTextBox"
         Me.nameTextBox.Size = New System.Drawing.Size(142, 20)
         Me.nameTextBox.TabIndex = 4
@@ -96,11 +97,12 @@ Partial Class UserEdit
         'longNameTextBox
         '
         Me.longNameTextBox.Location = New System.Drawing.Point(106, 56)
+        Me.longNameTextBox.MaxLength = 255
         Me.longNameTextBox.Name = "longNameTextBox"
         Me.longNameTextBox.Size = New System.Drawing.Size(142, 20)
         Me.longNameTextBox.TabIndex = 5
         '
-        'editUser
+        'UserEdit
         '
         Me.AcceptButton = Me.edit_Button
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -115,7 +117,7 @@ Partial Class UserEdit
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.MaximizeBox = False
         Me.MinimizeBox = False
-        Me.Name = "editUser"
+        Me.Name = "UserEdit"
         Me.ShowInTaskbar = False
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Edit User"

@@ -1,7 +1,8 @@
 Imports System.IO
+Imports System.Security.Cryptography
 
 Public Class LoginScreen
-    Private Priv As Boolean
+    Private privValue As Boolean
     ' TODO: Insert code to perform custom authentication using the provided username and password 
     ' (See https://go.microsoft.com/fwlink/?LinkId=35339).  
     ' The custom principal can then be attached to the current thread's principal as follows: 
@@ -9,39 +10,64 @@ Public Class LoginScreen
     ' where CustomPrincipal is the IPrincipal implementation used to perform authentication. 
     ' Subsequently, My.User will return identity information encapsulated in the CustomPrincipal object
     ' such as the username, display name, etc.
+    Public ReadOnly Property UserName As String
+        Get
+            Return UsernameTextBox.Text
+        End Get
+    End Property
 
+    Public ReadOnly Property Priv As Boolean
+        Get
+            Return privValue
+        End Get
+    End Property
+
+    Private Function HashingPassword(Password As String)
+        Dim hashingOb As New SHA1CryptoServiceProvider
+        Dim bytesToHash() As Byte = System.Text.Encoding.ASCII.GetBytes(Password)
+        bytesToHash = hashingOb.ComputeHash(bytesToHash)
+        Dim strResult As String = ""
+
+        For Each item In bytesToHash
+            strResult += item.ToString("x2")
+        Next
+
+        Return strResult
+    End Function
     Private Sub OK_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK.Click
 
-        Dim dirPath = My.Computer.FileSystem.SpecialDirectories.MyDocuments & "\Users" 'get the directory path where the files are saved
-        If Not (Directory.Exists(dirPath)) Then
-            FileSystem.MkDir(dirPath)
+        If UsernameTextBox.Text = Nothing Then
+            MessageBox.Show("You must enter a User!", "Not valid value", MessageBoxButtons.OK, MessageBoxIcon.Stop)
+            UsernameTextBox.Select()
+            Exit Sub
+        ElseIf PasswordTextBox.Text = Nothing Then
+            MessageBox.Show("You must enter a Password!", "Empty Password", MessageBoxButtons.OK, MessageBoxIcon.Stop)
+            PasswordTextBox.Select()
+            Exit Sub
         End If
 
-        Dim curUser As User = New User()
-        curUser.loginName = UsernameTextBox.Text
-        curUser.Password = PasswordTextBox.Text
-        Dim files = My.Computer.FileSystem.GetFiles(dirPath) 'retrieve all the files' name
-        Dim Info As String()
+        Dim curUser As FileWorxObject.UserQuery = New FileWorxObject.UserQuery()
 
+        curUser.Name.ColumnValue = UsernameTextBox.Text
+        curUser.Name.ConditionType = 1
+        curUser.Password.ColumnValue = HashingPassword(PasswordTextBox.Text)
+        curUser.Password.ConditionType = 1
+        curUser.ClassID.ColumnValue = 1
+        curUser.ClassID.ConditionType = 1
 
-        Try
-            For Each filename As String In files
-                If filename.EndsWith(".txt") Then
-                    Info = dirManipulator.readFile(filename)
-                    If Info(0) = curUser.loginName And Info(2) = curUser.Password Then
-                        Priv = Info(4)
+        Dim service As DataLayer.UserQueryService = New DataLayer.UserQueryService()
+        Dim result = service.Run(curUser)
 
-                        Me.DialogResult = DialogResult.OK
-
-                        Me.Close()
-                        Exit Sub
-                    End If
-                End If
-            Next
+        If result IsNot Nothing Then
+            Dim info = Strings.Split(result(0), "^_^")
+            privValue = info(7)
+            Me.DialogResult = DialogResult.OK
+            Me.Close()
+            Exit Sub
+        Else
             MessageBox.Show("Wrong name or password", "Invalid Login", MessageBoxButtons.OK, MessageBoxIcon.Stop)
-        Catch ex As IOException
-            MessageBox.Show("Process failed", "IO ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error)
-        End Try
+            Exit Sub
+        End If
 
     End Sub
 
@@ -50,14 +76,6 @@ Public Class LoginScreen
         Me.Close()
     End Sub
 
-    Public Function getUserName() As String
-        Return UsernameTextBox.Text
-    End Function
 
-    Public ReadOnly Property getPriv As Boolean
-        Get
-            Return Priv
-        End Get
-    End Property
 
 End Class

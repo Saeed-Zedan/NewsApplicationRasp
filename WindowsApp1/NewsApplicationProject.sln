@@ -3,7 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31005.135
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "NewsApplicationProject", "WindowsApp1\NewsApplicationProject.vbproj", "{033E9AA4-2324-493B-B7F9-9136F6510AF6}"
+Project("{778DAE3C-4631-46EA-AA77-85C1314464D9}") = "NewsApplicationProject", "WindowsApp1\NewsApplicationProject.vbproj", "{033E9AA4-2324-493B-B7F9-9136F6510AF6}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NewsApplicationAPI", "NewsApplicationAPI\NewsApplicationAPI.csproj", "{6DD2C934-1A1E-43B8-89C1-0BA4851301E2}"
+EndProject
+Project("{778DAE3C-4631-46EA-AA77-85C1314464D9}") = "FileWorxObject", "FileWorxObject\FileWorxObject.vbproj", "{D4C270AE-5DA3-4088-B49E-8B01141C5BCF}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataLayer", "DataLayer\DataLayer.csproj", "{7B6EDE96-07DB-0217-212A-3C25540FCF19}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NewsApplicationBlazor", "NewsApplicationBlazor\NewsApplicationBlazor.csproj", "{0E8BC836-4CDF-426B-BE10-0B285CD39D54}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DTO", "DTO\DTO.csproj", "{1FE7CA77-6F5A-4F54-B1BF-7629C9EF77AB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +25,26 @@ Global
 		{033E9AA4-2324-493B-B7F9-9136F6510AF6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{033E9AA4-2324-493B-B7F9-9136F6510AF6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{033E9AA4-2324-493B-B7F9-9136F6510AF6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6DD2C934-1A1E-43B8-89C1-0BA4851301E2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6DD2C934-1A1E-43B8-89C1-0BA4851301E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6DD2C934-1A1E-43B8-89C1-0BA4851301E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6DD2C934-1A1E-43B8-89C1-0BA4851301E2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D4C270AE-5DA3-4088-B49E-8B01141C5BCF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D4C270AE-5DA3-4088-B49E-8B01141C5BCF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D4C270AE-5DA3-4088-B49E-8B01141C5BCF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D4C270AE-5DA3-4088-B49E-8B01141C5BCF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7B6EDE96-07DB-0217-212A-3C25540FCF19}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7B6EDE96-07DB-0217-212A-3C25540FCF19}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7B6EDE96-07DB-0217-212A-3C25540FCF19}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7B6EDE96-07DB-0217-212A-3C25540FCF19}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0E8BC836-4CDF-426B-BE10-0B285CD39D54}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0E8BC836-4CDF-426B-BE10-0B285CD39D54}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0E8BC836-4CDF-426B-BE10-0B285CD39D54}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0E8BC836-4CDF-426B-BE10-0B285CD39D54}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1FE7CA77-6F5A-4F54-B1BF-7629C9EF77AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1FE7CA77-6F5A-4F54-B1BF-7629C9EF77AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1FE7CA77-6F5A-4F54-B1BF-7629C9EF77AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1FE7CA77-6F5A-4F54-B1BF-7629C9EF77AB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
